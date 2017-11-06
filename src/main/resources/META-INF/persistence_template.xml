@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd"
+             version="2.1">
+
+    <persistence-unit name="jpaTestingPU" transaction-type="RESOURCE_LOCAL">
+
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+
+        <!-- PERSISTENT CLASSES -->
+        <class>application.model.Order</class>
+        <class>application.model.Account</class>
+        <!-- More to come here... -->
+
+        <properties>
+
+            <!-- HIBERNATE DIALECT - POSTGRES VERSION -->
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQL91Dialect"/>
+
+            <!-- CREATE AND DROP ON START -->
+            <property name="hibernate.hbm2dll.auto" value="create-drop"/>
+            <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.action" value="drop-and-create"/>
+            <property name="javax.persistence.schema-generation.scripts.create-target" value="src/main/resources/META-INF/create-schema.ddl"/>
+            <property name="javax.persistence.schema-generation.scripts.drop-target" value="src/main/resources/META-INF/drop-schema.ddl"/>
+
+            <!-- DATABASE CONFIG -->
+            <property name="javax.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="javax.persistence.jdbc.url" value="jdbc:postgresql://localhost:5432/DATABASE_NAME"/>
+            <property name="javax.persistence.jdbc.account" value="USER_NAME"/>
+            <property name="javax.persistence.jdbc.password" value="PASS_WORD"/>
+
+            <!-- SHOW SQL QUERIES RUNNING -->
+            <property name = "hibernate.show_sql" value = "true"/>
+
+        </properties>
+
+    </persistence-unit>
+
+</persistence>

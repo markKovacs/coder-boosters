@@ -1,0 +1,99 @@
+
+<!DOCTYPE html>
+<html lang="en" xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
+
+<head>
+
+    <meta charset="utf-8" />
+    <meta name="author" content="Codecool" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- Font types -->
+    <link href="https://fonts.googleapis.com/css?family=Stoke" rel="stylesheet">
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans+Caption:400,700' rel='stylesheet' type='text/css'>
+
+    <!-- Latest compiled and minified Jquery -->
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"
+            integrity="sha256-hVVnYaiADRTO2PzUGmuLJr8BLUSjGIZsDYGmIJLv2b8=" crossorigin="anonymous" defer></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous" />
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css"
+          integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous" />
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
+            crossorigin="anonymous" defer></script>
+
+    <link rel="stylesheet" type="text/css" th:href="@{~/css/style.css}" />
+
+    <!-- Title formatted as title-pattern specifies -->
+    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">Cöder Boosters</title>
+
+    <!-- JavaScript files -->
+    <script th:src="@{~/js/utils.js}" defer></script>
+    <script th:src="@{~/js/data_handler.js}" defer></script>
+    <script th:src="@{~/js/logic.js}" defer></script>
+    <script th:src="@{~/js/main.js}" defer></script>
+
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="jumbotron text-center">
+
+        <h1>JPA Testing</h1>
+
+        <div class="container">
+            <div class="row">
+
+                <!-- NAV BAR -->
+                <th:block th:if="${currentUser != null}">
+                    <div class="col-xs-6 left text-left">
+                        <a class="btn" th:href="@{~/}">Index</a>
+                    </div>
+                    <div class="col-xs-6 right text-right">
+                        <!--<a th:href="@{~/profile}" class="btn">Profile</a>
+                        <form th:action="@{~/logout}" method="POST" class="btn">
+                            <input type="submit" value="Logout">
+                        </form>-->
+                    </div>
+                </th:block>
+                <th:block th:if="${currentUser == null}">
+                    <div class="col-xs-6 left text-left">
+                        <a class="btn" th:href="@{~/}">Index</a>
+                    </div>
+                    <div class="col-xs-6 right text-right">
+                        <!--<a th:href="@{~/register}" class="btn">Register</a>
+                        <a th:href="@{~/login}" class="btn">Login</a>-->
+                    </div>
+                </th:block>
+
+            </div>
+        </div>
+
+    </header>
+
+    <!-- CONTENT -->
+    <div class="container" layout:fragment="content"></div>
+
+    <!-- FOOTER -->
+    <footer class="text-center">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                &copy; 2017 Cöder Boosters
+            </div>
+        </div>
+    </footer>
+
+    <!-- TOAST MESSAGE -->
+    <div id="toast">Placeholder toast message.</div>
+
+</body>
+
+</html>
