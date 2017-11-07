@@ -4,11 +4,11 @@ import application.Config;
 
 public class DaoFactory {
 
-    public static AccountDao getUserDao() {
+    public static AccountDao getAccountDao() {
         if (Config.isStorageJPA) {
             return new AccountDaoJPA();
         }
-        return null;
+        return new AccountDaoJPA();
     }
 
 }
