@@ -7,7 +7,7 @@ public class Path {
     }
 
     public static class Template {
-        public final static String INDEX = "index";
+        public final static String INDEX = "customer-order";
     }
 
 }
