@@ -3,13 +3,13 @@ package application.model;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "order")
-public class Order {
+@Table(name = "boost_order")
+public class BoostOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    public Order() {
+    public BoostOrder() {
     }
 
     public Long getId() {
