@@ -1,0 +1,110 @@
+
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Profile</title>
+</head>
+
+<body>
+
+<div layout:fragment="content" class="container">
+
+    <div class="well well-sm">
+        <strong>Profile</strong>
+    </div>
+
+    <div id="profile" class="row list-group">
+
+        <div class="col-xs-12 col-lg-12">
+
+            <div class="row">
+
+                <div class="row">
+                    <div class="col-xs-offset-2 col-xs-8 text-center">
+
+                        <div th:if="${success}" id="success-messages" class="alert alert-success">
+                            <th:block th:each="message : ${success}">
+                                <p th:text="${message}"></p>
+                            </th:block>
+                        </div>
+
+                        <div th:if="${errors}" id="error-messages" class="alert alert-danger">
+                            <p>You have the following errors:</p>
+                            <ul th:each="error : ${errors}">
+                                <li th:text="${error}"></li>
+                            </ul>
+                        </div>
+
+                        <form th:action="@{~/profile}" method="POST">
+
+                            <div class="form-group">
+                                <label class="form-control-label" for="phone">Phone number:</label>
+                                <input class="form-control" id="phone" placeholder="XXX-XX-XXXXXXXXXX" name="phone" th:value="${userData.phone}" required title="> 10 chars">
+                            </div>
+
+                            <br>
+
+                            <h4 class="text-center"><strong>Billing Address</strong></h4>
+                            <div class="form-group">
+                                <label class="form-control-label" for="bill-country">Country:</label>
+                                <input class="form-control" id="bill-country" placeholder="Country Name" name="bill-country" th:value="${userData.billcountry}" required title="> 5 chars">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label" for="bill-city">City:</label>
+                                <input class="form-control" id="bill-city" placeholder="City Name" name="bill-city" th:value="${userData.billcity}" required title="> 5 chars">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-control-label" for="bill-zip">Zip:</label>
+                                <input class="form-control" id="bill-zip" placeholder="Zip Code" name="bill-zip" th:value="${userData.billzip}" required title="> 3 chars">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-control-label" for="bill-address">Address:</label>
+                                <input class="form-control" id="bill-address" placeholder="Address" name="bill-address" th:value="${userData.billaddress}" required title="> 5 chars">
+                            </div>
+
+                            <br>
+
+                            <h4 class="text-center"><strong>Shipping Address</strong></h4>
+                            <div class="form-group">
+                                <label class="form-control-label" for="ship-country">Country:</label>
+                                <input class="form-control" id="ship-country" placeholder="Country Name" name="ship-country" th:value="${userData.shipcountry}" required title="> 5 chars">
+                            </div>
+                            <div class="form-group">
+                                <label class="form-control-label" for="ship-city">City:</label>
+                                <input class="form-control" id="ship-city" placeholder="City Name" name="ship-city" th:value="${userData.shipcity}" required title="> 5 chars">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-control-label" for="ship-zip">Zip Code:</label>
+                                <input class="form-control" id="ship-zip" placeholder="Zip Code" name="ship-zip" th:value="${userData.shipzip}" required title="> 3 chars">
+                            </div>
+
+                            <div class="form-group">
+                                <label class="form-control-label" for="ship-address">Address:</label>
+                                <input class="form-control" id="ship-address" placeholder="Address" name="ship-address" th:value="${userData.shipaddress}" required title="> 5 chars">
+                            </div>
+
+                            <div class="text-center">
+                                <a class="btn btn-default" th:href="@{~/}">Back</a>
+                                <input class="btn btn-success" type="submit" value="Submit">
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>
