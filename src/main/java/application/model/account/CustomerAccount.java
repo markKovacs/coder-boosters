@@ -1,4 +1,4 @@
-package application.model;
+package application.model.account;
 
 import application.model.order.BoostOrder;
 
@@ -12,25 +12,28 @@ import java.util.List;
 @Table(name = "customer_account")
 public class CustomerAccount extends Account {
 
+    int boostCoin;
+
     @OneToMany(
             mappedBy = "account",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<GameAccount> gameAccountList = new ArrayList<>();
+    List<GameAccount> gameAccountList = new ArrayList<>();
 
     @OneToMany(
             mappedBy = "customerAccount",
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    private List<BoostOrder> boostOrderList = new ArrayList<>();
+    List<BoostOrder> boostOrderList = new ArrayList<>();
 
     public CustomerAccount() {
     }
 
     public CustomerAccount(String accountName, String email, String password) {
         super(accountName, email, password);
+        this.boostCoin = 100;
     }
 
     public void addGameAccountBiDir(GameAccount gameAccount) {

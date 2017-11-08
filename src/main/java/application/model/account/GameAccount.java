@@ -1,4 +1,6 @@
-package application.model;
+package application.model.account;
+
+import application.model.GameType;
 
 import javax.persistence.*;
 

@@ -1,4 +1,4 @@
-package application.model;
+package application.model.account;
 
 import javax.persistence.*;
 
