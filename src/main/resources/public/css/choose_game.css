@@ -1,0 +1,121 @@
+html {
+    box-sizing: border-box;
+    background:#ffc600;
+    font-family:'helvetica neue';
+    font-size: 20px;
+    font-weight: 200;
+}
+
+body {
+    margin: 0;
+}
+
+*, *:before, *:after {
+    box-sizing: inherit;
+}
+
+.panels {
+    min-height:100vh;
+    overflow: hidden;
+    display: flex;
+}
+
+.panel {
+    background:#6B0F9C;
+    box-shadow:inset 0 0 0 5px rgba(255,255,255,0.1);
+    color:white;
+    text-align: center;
+    align-items:center;
+    /* Safari transitionend event.propertyName === flex */
+    /* Chrome + FF transitionend event.propertyName === flex-grow */
+    transition:
+            font-size 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+            flex 0.7s cubic-bezier(0.61,-0.19, 0.7,-0.11),
+            background 0.2s;
+    font-size: 20px;
+    background-size:cover;
+    background-position:center;
+    flex: 1;
+    justify-content: center;
+    display: flex;
+    flex-direction: column;
+}
+
+.panel1 { background-image:url(http://media.blizzard.com/wow/media/wallpapers/other/legion/legion-2048x1536-standard.jpg); }
+.panel2 { background-image:url(https://na.leagueoflegends.com/sites/default/files/styles/scale_large/public/upload/art/riven_v_shyvana_1920x1080.jpg?itok=jVn5Nrq6); }
+.panel3 { background-image:url(https://d1u1mce87gyfbn.cloudfront.net/media/wallpaper/tracer-wallpaper-standard.jpg); }
+.panel4 { background-image:url(https://media.contentapi.ea.com/content/dam/ea/easports/fifa/features/2017/cristiano-ronaldo/june5/ronaldo1-lg.jpg); }
+.panel5 { background-image:url(https://cdn.wallpapersafari.com/34/3/8um5AR.jpg); }
+/* Flex Items */
+.panel > * {
+    margin:0;
+    width: 100%;
+    transition:transform 0.5s;
+    flex: 1 0 auto;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.panel > *:first-child { transform: translateY(-100%); }
+.panel.open-active > *:first-child { transform: translateY(0); }
+.panel > *:last-child { transform: translateY(100%); }
+.panel.open-active > *:last-child { transform: translateY(0); }
+.panel p {
+    text-transform: uppercase;
+    font-family: 'Amatic SC', cursive;
+    text-shadow:0 0 4px rgba(0, 0, 0, 0.72), 0 0 14px rgba(0, 0, 0, 0.45);
+    font-size: 2em;
+}
+
+.panel p:nth-child(2) {
+    font-size: 4em;
+}
+
+.panel.open {
+    flex: 5;
+    font-size:40px;
+}
+
+.panel > *:last-child {
+    background-color:#44c767;
+    -moz-border-radius:28px;
+    -webkit-border-radius:28px;
+    border-radius:28px;
+    border:1px solid #18ab29;
+    display:inline-block;
+    cursor:pointer;
+    color:#ffffff;
+    font-family:Arial;
+    font-size:17px;
+    padding:16px 31px;
+    text-decoration:none;
+    text-shadow:0px 1px 0px purple;
+}
+.panel > *:last-child:hover {
+    background-color:#5cbf2a;
+}
+.panel > *:last-child:active {
+    position:relative;
+    top:1px;
+}
+
+#lol {
+    background-color: orangered;
+    border:1px solid orange;
+}
+
+#ow {
+    background-color: skyblue;
+    border:1px solid blue;
+}
+
+#fifa {
+    background-color: whitesmoke;
+    border:1px solid white;
+}
+
+#csgo {
+    background-color: yellowgreen;
+    border:1px solid yellow;
+}
