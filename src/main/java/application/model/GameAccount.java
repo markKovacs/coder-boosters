@@ -3,6 +3,7 @@ package application.model;
 import javax.persistence.*;
 
 @Entity
+@Table(name = "game_account")
 public class GameAccount {
 
     @Id
@@ -14,6 +15,7 @@ public class GameAccount {
 
     private String password;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "acc_type")
     private GameType gameType;
 
@@ -60,5 +62,13 @@ public class GameAccount {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
     }
 }

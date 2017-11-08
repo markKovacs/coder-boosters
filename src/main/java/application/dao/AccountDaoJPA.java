@@ -3,9 +3,7 @@ package application.dao;
 import application.model.Account;
 
 import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
-
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +14,13 @@ public class AccountDaoJPA implements AccountDao {
     @Override
     public Long add(Account account) {
         EntityManager em = EMFactory.createEntityManager();
+
         em.getTransaction().begin();
+
         em.persist(account);
+
         em.getTransaction().commit();
+        em.close();
 
         return account.getId();
     }

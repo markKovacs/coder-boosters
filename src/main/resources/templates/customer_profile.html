@@ -37,56 +37,20 @@
                             </ul>
                         </div>
 
-                        <form th:action="@{~/profile}" method="POST">
+                        <form th:action="@{~/customer-profile}" method="POST">
 
                             <div class="form-group">
-                                <label class="form-control-label" for="phone">Phone number:</label>
-                                <input class="form-control" id="phone" placeholder="XXX-XX-XXXXXXXXXX" name="phone" th:value="${userData.phone}" required title="> 10 chars">
-                            </div>
-
-                            <br>
-
-                            <h4 class="text-center"><strong>Billing Address</strong></h4>
-                            <div class="form-group">
-                                <label class="form-control-label" for="bill-country">Country:</label>
-                                <input class="form-control" id="bill-country" placeholder="Country Name" name="bill-country" th:value="${userData.billcountry}" required title="> 5 chars">
+                                <label class="form-control-label" for="username">Account name:</label>
+                                <p class="form-control" id="username" name="username" th:text="${userData.accountName}">JohnDoe</p>
                             </div>
                             <div class="form-group">
-                                <label class="form-control-label" for="bill-city">City:</label>
-                                <input class="form-control" id="bill-city" placeholder="City Name" name="bill-city" th:value="${userData.billcity}" required title="> 5 chars">
+                                <label class="form-control-label" for="email">E-mail:</label>
+                                <p class="form-control" id="email" name="email" th:text="${userData.email}">example@gmail.com</p>
                             </div>
 
-                            <div class="form-group">
-                                <label class="form-control-label" for="bill-zip">Zip:</label>
-                                <input class="form-control" id="bill-zip" placeholder="Zip Code" name="bill-zip" th:value="${userData.billzip}" required title="> 3 chars">
-                            </div>
+                            <!-- TODO: game accounts list, add, remove, edit -->
 
-                            <div class="form-group">
-                                <label class="form-control-label" for="bill-address">Address:</label>
-                                <input class="form-control" id="bill-address" placeholder="Address" name="bill-address" th:value="${userData.billaddress}" required title="> 5 chars">
-                            </div>
-
-                            <br>
-
-                            <h4 class="text-center"><strong>Shipping Address</strong></h4>
-                            <div class="form-group">
-                                <label class="form-control-label" for="ship-country">Country:</label>
-                                <input class="form-control" id="ship-country" placeholder="Country Name" name="ship-country" th:value="${userData.shipcountry}" required title="> 5 chars">
-                            </div>
-                            <div class="form-group">
-                                <label class="form-control-label" for="ship-city">City:</label>
-                                <input class="form-control" id="ship-city" placeholder="City Name" name="ship-city" th:value="${userData.shipcity}" required title="> 5 chars">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-control-label" for="ship-zip">Zip Code:</label>
-                                <input class="form-control" id="ship-zip" placeholder="Zip Code" name="ship-zip" th:value="${userData.shipzip}" required title="> 3 chars">
-                            </div>
-
-                            <div class="form-group">
-                                <label class="form-control-label" for="ship-address">Address:</label>
-                                <input class="form-control" id="ship-address" placeholder="Address" name="ship-address" th:value="${userData.shipaddress}" required title="> 5 chars">
-                            </div>
+                            <!-- TODO: editable data as input fields, non-editable data as read-only text elements -->
 
                             <div class="text-center">
                                 <a class="btn btn-default" th:href="@{~/}">Back</a>

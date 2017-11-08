@@ -20,7 +20,7 @@ public class App {
         EMFactory = Persistence.createEntityManagerFactory("jpaTestingPU");
 
         // INIT TEST DATA
-        //initTestData();
+        initTestData();
 
         // SERVER SETTINGS
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
@@ -47,13 +47,19 @@ public class App {
         EntityManager em = EMFactory.createEntityManager();
 
         // CREATE TEST DATA ENTITIES
-        Account account1 = new CustomerAccount();
+        CustomerAccount customerMark = new CustomerAccount("mark", "mark@mark.hu", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
+        customerMark.addGameAccountBiDir(new GameAccount("proph", "pass", GameType.OW));
+        customerMark.addGameAccountBiDir(new GameAccount("elitekiller", "pass", GameType.WOW));
+
+        CustomerAccount customerAttila = new CustomerAccount("attila", "attila@attila.hu", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
+        customerAttila.addGameAccountBiDir(new GameAccount("lol_king", "pass", GameType.LOL));
 
         // BEGIN TRANSACTION
         em.getTransaction().begin();
 
         // PERSIST ENTITIES
-        em.persist(account1);
+        em.persist(customerMark);
+        em.persist(customerAttila);
 
         // END TRANSACTION AND CLOSE ENTITY MANAGER
         em.getTransaction().commit();

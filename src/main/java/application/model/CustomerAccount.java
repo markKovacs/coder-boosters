@@ -7,15 +7,14 @@ import java.util.List;
 @Entity
 @PrimaryKeyJoinColumn(referencedColumnName="id")
 @DiscriminatorValue(value = "customer")
+@Table(name = "customer_account")
 public class CustomerAccount extends Account {
 
-/*    @ElementCollection
-    @CollectionTable(
-            name = "game_account",
-            joinColumns = @JoinColumn(name = "customer_id")
+    @OneToMany(
+            mappedBy = "account",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
     )
-    @Column(name = "game_acc_name")*/
-    @OneToMany(mappedBy = "account")
     private List<GameAccount> gameAccountList = new ArrayList<>();
 
     public CustomerAccount() {
@@ -25,8 +24,9 @@ public class CustomerAccount extends Account {
         super(accountName, email, password);
     }
 
-    public void addGameAccount(GameAccount gameAccount) {
+    public void addGameAccountBiDir(GameAccount gameAccount) {
         this.gameAccountList.add(gameAccount);
+        gameAccount.setAccount(this);
     }
 
     public void removeGameAccount(Long gameAccId) {
@@ -37,8 +37,9 @@ public class CustomerAccount extends Account {
         if (gameAccount == null) {
             return;
         }
-
         this.gameAccountList.remove(gameAccount);
+
+        // TODO: make bidirectional??? maybe not needed because cascade...
     }
 
     public List<GameAccount> getGameAccountList() {
@@ -48,4 +49,5 @@ public class CustomerAccount extends Account {
     public void setGameAccountList(List<GameAccount> gameAccountList) {
         this.gameAccountList = gameAccountList;
     }
+
 }

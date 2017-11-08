@@ -9,6 +9,8 @@ import javax.persistence.*;
         @NamedQuery(name = "Account.getEmails", query = "SELECT a.email FROM Account a")
 })
 @Entity
+@Table
+@DiscriminatorColumn(name = "acc_type")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class Account {
 
