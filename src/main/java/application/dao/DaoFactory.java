@@ -11,4 +11,11 @@ public class DaoFactory {
         return new AccountDaoJPA();
     }
 
+    public static GameAccountDao getGameAccountDao() {
+        if (Config.isStorageJPA) {
+            return new GameAccountDaoJPA();
+        }
+        return new GameAccountDaoJPA();
+    }
+
 }

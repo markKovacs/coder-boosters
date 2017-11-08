@@ -33,6 +33,8 @@ public class AccountDaoJPA implements AccountDao {
                 .setParameter("accountId", accountId);
         List<Account> accounts = result.getResultList();
 
+        em.close();
+
         if (!accounts.isEmpty()) {
             return accounts.get(0);
         }
@@ -46,6 +48,7 @@ public class AccountDaoJPA implements AccountDao {
         TypedQuery<Account> result = em.createNamedQuery("Account.findAccountByAccountName", Account.class)
                 .setParameter("accountName", accountName);
         List<Account> accounts = result.getResultList();
+        em.close();
 
         if (!accounts.isEmpty()) {
             return accounts.get(0);
@@ -63,6 +66,7 @@ public class AccountDaoJPA implements AccountDao {
         EntityManager em = EMFactory.createEntityManager();
         TypedQuery<String> result = em.createNamedQuery("Account.getAccountNames", String.class);
 
+        em.close();
         return result.getResultList();
     }
 
@@ -71,6 +75,7 @@ public class AccountDaoJPA implements AccountDao {
         EntityManager em = EMFactory.createEntityManager();
         TypedQuery<String> result = em.createNamedQuery("Account.getEmails", String.class);
 
+        em.close();
         return result.getResultList();
     }
 
