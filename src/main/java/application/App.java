@@ -33,6 +33,9 @@ public class App {
         // INIT TEST DATA
         DataUtil.initTestData();
 
+        // TEST MODIFICATIONS
+        DataUtil.modifyTestData();
+
         // SERVER SETTINGS
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
         staticFileLocation("/public");
