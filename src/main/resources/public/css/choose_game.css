@@ -100,22 +100,30 @@ body {
     top:1px;
 }
 
+#wow {
+    font-size: 30px;
+}
+
 #lol {
     background-color: orangered;
     border:1px solid orange;
+    font-size: 30px;
 }
 
 #ow {
     background-color: skyblue;
     border:1px solid blue;
+    font-size: 30px;
 }
 
 #fifa {
     background-color: whitesmoke;
     border:1px solid white;
+    font-size: 30px;
 }
 
 #csgo {
     background-color: yellowgreen;
     border:1px solid yellow;
+    font-size: 30px;
 }
