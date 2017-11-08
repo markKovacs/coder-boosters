@@ -1,6 +1,7 @@
 package application.model.account;
 
 import application.model.order.BoostOrder;
+import application.model.order.Status;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -41,22 +42,27 @@ public class CustomerAccount extends Account {
         gameAccount.setAccount(this);
     }
 
+    public void removeGameAccount(GameAccount gameAccount) {
+        this.gameAccountList.remove(gameAccount);
+        // gameAccount.setAccount(null); // if need to be bidirectional
+    }
+
     public void addBoostOrderBiDir(BoostOrder boostOrder) {
         this.boostOrderList.add(boostOrder);
         boostOrder.setCustomerAccount(this);
     }
 
-    public void removeGameAccount(Long gameAccId) {
-        GameAccount gameAccount = gameAccountList.stream()
-                .filter(g -> g.getId() == gameAccId)
+    public void removeBoostOrder(Long boostOrderId) {
+        // TODO: maybe this will need to be similar to removeGameAccount!!!
+        BoostOrder boostOrder = boostOrderList.stream()
+                .filter(bo -> bo.getId().equals(boostOrderId))
                 .findFirst().orElse(null);
 
-        if (gameAccount == null) {
+        if (boostOrder == null || !boostOrder.getStatus().equals(Status.AVAILABLE)) {
             return;
         }
-        this.gameAccountList.remove(gameAccount);
-
-        // TODO: make bidirectional??? maybe not needed because cascade...
+        this.boostOrderList.remove(boostOrder);
+        // boostOrder.setCustomerAccount(null); // if need to be bidirectional
     }
 
     public List<GameAccount> getGameAccountList() {

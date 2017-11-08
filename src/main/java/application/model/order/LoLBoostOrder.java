@@ -16,8 +16,11 @@ public class LoLBoostOrder extends BoostOrder {
     /*@Enumerated(EnumType.STRING)
     private LeagueDivision desiredRank;*/
 
+    public LoLBoostOrder() {
+    }
+
     public LoLBoostOrder(LeagueDivision currentRank, int numberOfGames,
-                         OrderType orderType,double bonusPercentage, Date deadLine) {
+                         OrderType orderType, double bonusPercentage, Date deadLine) {
         this.gameType = GameType.LOL;
         this.currentRank = currentRank;
         this.status = Status.AVAILABLE;
