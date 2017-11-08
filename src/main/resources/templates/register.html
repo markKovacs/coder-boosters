@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html layout:decorate="~{layout}" lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Registration</title>
+</head>
+
+<body>
+
+<div layout:fragment="content" class="container">
+
+    <div class="well well-sm">
+        <strong>Registration</strong>
+    </div>
+
+    <div id="register" class="row list-group">
+
+        <div class="col-xs-12 col-lg-12">
+
+            <div class="row">
+
+                <div class="row">
+                    <div class="col-xs-offset-2 col-xs-8 text-center">
+
+                        <div th:if="${errors}" id="error-messages" class="alert alert-danger">
+                            <p>You have the following errors:</p>
+                            <ul th:each="error : ${errors}">
+                                <li th:text="${error}"></li>
+                            </ul>
+                        </div>
+
+                        <form th:action="@{~/register}" method="POST">
+                            <div>
+                                <label for="username">Username: </label>
+                                <input th:value="${userData.username}" id="username" name="username" class="name-input" placeholder="Enter username..." required>
+                            </div>
+                            <div>
+                                <label for="email">E-mail: </label>
+                                <input th:value="${userData.email}" id="email" name="email" class="name-input" placeholder="Enter e-mail..." required>
+                            </div>
+                            <div>
+                                <label for="password1">Password: </label>
+                                <input id="password1" type="password" name="password1" class="name-input" placeholder="Enter password..." required>
+                            </div>
+                            <div>
+                                <label for="password2">Password: </label>
+                                <input id="password2" type="password" name="password2" class="name-input" placeholder="Confirm password..." required>
+                            </div>
+                            <div class="text-center">
+                                <a class="btn btn-default" th:href="@{~/}">Back</a>
+                                <input class="btn btn-success" type="submit" value="Register">
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

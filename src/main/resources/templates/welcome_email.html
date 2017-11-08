@@ -1,0 +1,313 @@
+<!doctype html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Simple Transactional Email</title>
+    <style>
+        /* -------------------------------------
+            GLOBAL RESETS
+        ------------------------------------- */
+        img {
+            border: none;
+            -ms-interpolation-mode: bicubic;
+            max-width: 100%; }
+        body {
+            background-color: #f6f6f6;
+            font-family: sans-serif;
+            -webkit-font-smoothing: antialiased;
+            font-size: 14px;
+            line-height: 1.4;
+            margin: 0;
+            padding: 0;
+            -ms-text-size-adjust: 100%;
+            -webkit-text-size-adjust: 100%; }
+        table {
+            border-collapse: separate;
+            mso-table-lspace: 0pt;
+            mso-table-rspace: 0pt;
+            width: 100%; }
+        table td {
+            font-family: sans-serif;
+            font-size: 14px;
+            vertical-align: top; }
+        /* -------------------------------------
+            BODY & CONTAINER
+        ------------------------------------- */
+        .body {
+            background-color: #f6f6f6;
+            width: 100%; }
+        /* Set a max-width, and make it display as block so it will automatically stretch to that width, but will also shrink down on a phone or something */
+        .container {
+            display: block;
+            Margin: 0 auto !important;
+            /* makes it centered */
+            max-width: 580px;
+            padding: 10px;
+            width: 580px; }
+        /* This should also be a block element, so that it will fill 100% of the .container */
+        .content {
+            box-sizing: border-box;
+            display: block;
+            Margin: 0 auto;
+            max-width: 580px;
+            padding: 10px; }
+        /* -------------------------------------
+            HEADER, FOOTER, MAIN
+        ------------------------------------- */
+        .main {
+            background: #ffffff;
+            border-radius: 3px;
+            width: 100%; }
+        .wrapper {
+            box-sizing: border-box;
+            padding: 20px; }
+        .content-block {
+            padding-bottom: 10px;
+            padding-top: 10px;
+        }
+        .footer {
+            clear: both;
+            Margin-top: 10px;
+            text-align: center;
+            width: 100%; }
+        .footer td,
+        .footer p,
+        .footer span,
+        .footer a {
+            color: #999999;
+            font-size: 12px;
+            text-align: center; }
+        /* -------------------------------------
+            TYPOGRAPHY
+        ------------------------------------- */
+        h1,
+        h2,
+        h3,
+        h4 {
+            color: #000000;
+            font-family: sans-serif;
+            font-weight: 400;
+            line-height: 1.4;
+            margin: 0;
+            Margin-bottom: 30px; }
+        h1 {
+            font-size: 35px;
+            font-weight: 300;
+            text-align: center;
+            text-transform: capitalize; }
+        p,
+        ul,
+        ol {
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: normal;
+            margin: 0;
+            Margin-bottom: 15px; }
+        p li,
+        ul li,
+        ol li {
+            list-style-position: inside;
+            margin-left: 5px; }
+        a {
+            color: #3498db;
+            text-decoration: underline; }
+        /* -------------------------------------
+            BUTTONS
+        ------------------------------------- */
+        .btn {
+            box-sizing: border-box;
+            width: 100%; }
+        .btn > tbody > tr > td {
+            padding-bottom: 15px; }
+        .btn table {
+            width: auto; }
+        .btn table td {
+            background-color: #ffffff;
+            border-radius: 5px;
+            text-align: center; }
+        .btn a {
+            background-color: #ffffff;
+            border: solid 1px #3498db;
+            border-radius: 5px;
+            box-sizing: border-box;
+            color: #3498db;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 14px;
+            font-weight: bold;
+            margin: 0;
+            padding: 12px 25px;
+            text-decoration: none;
+            text-transform: capitalize; }
+        .btn-primary table td {
+            background-color: #3498db; }
+        .btn-primary a {
+            background-color: #3498db;
+            border-color: #3498db;
+            color: #ffffff; }
+        /* -------------------------------------
+            OTHER STYLES THAT MIGHT BE USEFUL
+        ------------------------------------- */
+        .last {
+            margin-bottom: 0; }
+        .first {
+            margin-top: 0; }
+        .align-center {
+            text-align: center; }
+        .align-right {
+            text-align: right; }
+        .align-left {
+            text-align: left; }
+        .clear {
+            clear: both; }
+        .mt0 {
+            margin-top: 0; }
+        .mb0 {
+            margin-bottom: 0; }
+        .mall {
+            display: block;
+            margin: 0 auto; }
+        .preheader {
+            color: transparent;
+            display: none;
+            height: 0;
+            max-height: 0;
+            max-width: 0;
+            opacity: 0;
+            overflow: hidden;
+            mso-hide: all;
+            visibility: hidden;
+            width: 0; }
+        .powered-by a {
+            text-decoration: none; }
+        hr {
+            border: 0;
+            border-bottom: 1px solid #f6f6f6;
+            Margin: 20px 0; }
+        /* -------------------------------------
+            RESPONSIVE AND MOBILE FRIENDLY STYLES
+        ------------------------------------- */
+        @media only screen and (max-width: 620px) {
+            table[class=body] h1 {
+                font-size: 28px !important;
+                margin-bottom: 10px !important; }
+            table[class=body] p,
+            table[class=body] ul,
+            table[class=body] ol,
+            table[class=body] td,
+            table[class=body] span,
+            table[class=body] a {
+                font-size: 16px !important; }
+            table[class=body] .wrapper,
+            table[class=body] .article {
+                padding: 10px !important; }
+            table[class=body] .content {
+                padding: 0 !important; }
+            table[class=body] .container {
+                padding: 0 !important;
+                width: 100% !important; }
+            table[class=body] .main {
+                border-left-width: 0 !important;
+                border-radius: 0 !important;
+                border-right-width: 0 !important; }
+            table[class=body] .btn table {
+                width: 100% !important; }
+            table[class=body] .btn a {
+                width: 100% !important; }
+            table[class=body] .img-responsive {
+                height: auto !important;
+                max-width: 100% !important;
+                width: auto !important; }}
+        /* -------------------------------------
+            PRESERVE THESE STYLES IN THE HEAD
+        ------------------------------------- */
+        @media all {
+            .ExternalClass {
+                width: 100%; }
+            .ExternalClass,
+            .ExternalClass p,
+            .ExternalClass span,
+            .ExternalClass font,
+            .ExternalClass td,
+            .ExternalClass div {
+                line-height: 100%; }
+            .apple-link a {
+                color: inherit !important;
+                font-family: inherit !important;
+                font-size: inherit !important;
+                font-weight: inherit !important;
+                line-height: inherit !important;
+                text-decoration: none !important; }
+            .btn-primary table td:hover {
+                background-color: #34495e !important; }
+            .btn-primary a:hover {
+                background-color: #34495e !important;
+                border-color: #34495e !important; } }
+    </style>
+</head>
+<body class="" th:object="${model}">
+<table border="0" cellpadding="0" cellspacing="0" class="body">
+    <tr>
+        <td>&nbsp;</td>
+        <td class="container">
+            <div class="content">
+                <!-- START CENTERED WHITE CONTAINER -->
+                <span class="preheader"></span>
+                <table class="main">
+
+                    <!-- START MAIN CONTENT AREA -->
+                    <tr>
+                        <td class="wrapper">
+                            <img class="mall" src="data:image/png;base64,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" alt="">
+                            <br>
+                            <table border="0" cellpadding="0" cellspacing="0">
+                                <tr>
+                                    <td>
+                                        <p>Dear <span th:text="*{userData.accountName}">Someone</span>,</p>
+                                        <p>this email was generated automatically by the CöderBoosters server. We would like to welcome you and hope that your are going to enjoy browsing.</p>
+                                        <p>You can log in using your given e-mail address and password.</p>
+                                        <br><br>
+                                        <p>Registration Information</p>
+                                        <p>
+                                            Username: <span th:text="*{userData.accountName}">Some Name</span>
+                                            <br>
+                                            E-mail: <span th:text="*{userData.email}">example1999@gmail.com</span>
+                                        </p>
+
+                                        <p>Thanks,</p>
+                                        <p>The CöderBoosters Team</p>
+                                    </td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+
+                    <!-- END MAIN CONTENT AREA -->
+                </table>
+
+                <!-- START FOOTER -->
+                <div class="footer">
+                    <table border="0" cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="content-block">
+                                <span class="apple-link">CöderBoosters Inc, Budapest</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="content-block powered-by">
+                                Powered by CöderBoosters.
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+                <!-- END FOOTER -->
+
+                <!-- END CENTERED WHITE CONTAINER -->
+            </div>
+        </td>
+        <td>&nbsp;</td>
+    </tr>
+</table>
+</body>
+</html>
