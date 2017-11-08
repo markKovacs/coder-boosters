@@ -1,43 +1,48 @@
 package application.model.order;
 
+import application.model.GameType;
+
+import javax.persistence.*;
+import java.util.Date;
+
+@Entity
+@Table(name = "lol_boost_order")
 public class LoLBoostOrder extends BoostOrder {
 
-    @Override
-    public void calcBasePrice() {
+    @Enumerated(EnumType.STRING)
+    private LeagueDivision currentRank;
 
+    // TODO: for later use
+    /*@Enumerated(EnumType.STRING)
+    private LeagueDivision desiredRank;*/
+
+    public LoLBoostOrder(LeagueDivision currentRank, int numberOfGames,
+                         OrderType orderType,double bonusPercentage, Date deadLine) {
+        this.gameType = GameType.LOL;
+        this.currentRank = currentRank;
+        this.status = Status.AVAILABLE;
+        this.numberOfGames = numberOfGames;
+        this.orderType = orderType;
+        this.bonusPercentage = bonusPercentage;
+        this.deadLine = deadLine;
+        this.basePrice = calcBasePrice();
+        this.totalPrice = basePrice * (bonusPercentage/100.0 + 1.0);
+
+    }
+
+    @Override
+    public double calcBasePrice() {
         // TODO: implement!!!
         double calcedPrice = 100;
 
-        this.basePrice = calcedPrice;
+        return calcedPrice;
     }
 
-    private enum LeagueDivision {
-        Challenger,
-        Master,
-        Diamond_I,
-        Diamond_II,
-        Diamond_III,
-        Diamond_IV,
-        Diamond_V,
-        Platinum_I,
-        Platinum_II,
-        Platinum_III,
-        Platinum_IV,
-        Platinum_V,
-        Gold_I,
-        Gold_II,
-        Gold_III,
-        Gold_IV,
-        Gold_V,
-        Silver_I,
-        Silver_II,
-        Silver_III,
-        Silver_IV,
-        Silver_V,
-        Bronze_I,
-        Bronze_II,
-        Bronze_III,
-        Bronze_IV,
-        Bronze_V
+    public LeagueDivision getCurrentRank() {
+        return currentRank;
+    }
+
+    public void setCurrentRank(LeagueDivision currentRank) {
+        this.currentRank = currentRank;
     }
 }
