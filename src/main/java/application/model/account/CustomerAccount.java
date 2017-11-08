@@ -1,5 +1,7 @@
 package application.model;
 
+import application.model.order.BoostOrder;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +19,13 @@ public class CustomerAccount extends Account {
     )
     private List<GameAccount> gameAccountList = new ArrayList<>();
 
+    @OneToMany(
+            mappedBy = "customerAccount",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private List<BoostOrder> boostOrderList = new ArrayList<>();
+
     public CustomerAccount() {
     }
 
@@ -27,6 +36,11 @@ public class CustomerAccount extends Account {
     public void addGameAccountBiDir(GameAccount gameAccount) {
         this.gameAccountList.add(gameAccount);
         gameAccount.setAccount(this);
+    }
+
+    public void addBoostOrderBiDir(BoostOrder boostOrder) {
+        this.boostOrderList.add(boostOrder);
+        boostOrder.setCustomerAccount(this);
     }
 
     public void removeGameAccount(Long gameAccId) {
@@ -50,4 +64,11 @@ public class CustomerAccount extends Account {
         this.gameAccountList = gameAccountList;
     }
 
+    public List<BoostOrder> getBoostOrderList() {
+        return boostOrderList;
+    }
+
+    public void setBoostOrderList(List<BoostOrder> boostOrderList) {
+        this.boostOrderList = boostOrderList;
+    }
 }
