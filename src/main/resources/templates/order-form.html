@@ -1,12 +1,12 @@
 <!DOCTYPE html>
-<html layout:decorate="~{account/orders-page-body}" lang="en"
+<html layout:decorate="~{account/layout}" lang="en"
       xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <title>Order form</title>
 </head>
 <body>
 <div layout:fragment="customer-order">
-    <form action="/order-form" method="post">
+    <form action="/create-order" method="POST">
         <div th:replace="fragments :: general-order-part"></div>
         <th:block th:switch="${game_type}">
             <div th:case="'WOW'">

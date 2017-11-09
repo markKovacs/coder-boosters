@@ -1,11 +1,5 @@
 package application.controller;
 
-import application.model.GameType;
-import application.model.order.LeagueDivision;
-import application.utils.Path;
-import application.utils.ViewUtil;
-import spark.Route;
-import java.util.*;
 import application.dao.DaoFactory;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
@@ -17,11 +11,6 @@ import application.model.order.OrderType;
 import application.utils.*;
 import spark.Request;
 import spark.Route;
-import application.utils.Path;
-import application.utils.ViewUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import java.util.*;
 
@@ -37,7 +26,11 @@ public class OrderController {
         Map<String, Object> model = new HashMap<>();
         model.put("orders", DaoFactory.getBoostOrderDao().getOrdersByAccount(account));
 
-        return ViewUtil.render(request, model, Path.Template.ORDER_LIST);
+        // TODO: Path.Template.CUSTOMER_ORDERS & BOOSTER_ORDERS could be merged and th:if...
+        if (account instanceof BoosterAccount) {
+            return ViewUtil.render(request, model, Path.Template.BOOSTER_ORDERS);
+        }
+        return ViewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS);
     };
 
     public static Route handleAcceptOrder = (request, response) -> {
@@ -56,7 +49,7 @@ public class OrderController {
 
         // TODO: success message could be added.
 
-        response.redirect(Path.Web.ORDER_LIST);
+        response.redirect(Path.Web.CUSTOMER_ORDERS);
         return null;
     };
 
@@ -95,29 +88,29 @@ public class OrderController {
         // TODO: GameAccount object to be created and persisted here, added to BoostOrder.
         DaoFactory.getBoostOrderDao().addBoostOrder(account, boostOrder);
 
-        response.redirect(Path.Web.ORDER_LIST);
+        response.redirect(Path.Web.CUSTOMER_ORDERS);
         return null;
     };
 
-    public static Route serveOrdersPage = (request, response) -> {
+    public static Route serveCustomerOrders = (request, response) -> {
 
         Map<String, Object> model = new HashMap<>();
 
-        return ViewUtil.render(request, model, Path.Template.ORDERS_PAGE);
+        return ViewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS);
     };
 
-    public static Route serveBoosterPage = (request, response) -> {
+    public static Route serveBoosterOrders = (request, response) -> {
 
         Map<String, Object> model = new HashMap<>();
 
-        return ViewUtil.render(request, model, Path.Template.BOOSTER_PAGE);
+        return ViewUtil.render(request, model, Path.Template.BOOSTER_ORDERS);
     };
 
-    public static Route serveChooseGamePage = (request, response) -> {
+    public static Route serveSelectGamePage = (request, response) -> {
 
         Map<String, Object> model = new HashMap<>();
 
-        return ViewUtil.render(request, model, Path.Template.CHOOSE_GAME);
+        return ViewUtil.render(request, model, Path.Template.SELECT_GAME);
     };
   
     public static Route serveOrderForm = (request, response) -> {
