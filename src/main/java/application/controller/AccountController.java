@@ -105,7 +105,8 @@ public class AccountController {
         Account account = DaoFactory.getAccountDao().findAccountById(accountId);
 
         if (account instanceof BoosterAccount) {
-            response.redirect(Path.Web.BOOSTER_ORDERS);
+            //TODO: It's not a final path
+            response.redirect(Path.Web.BOOSTER_DEMO);
         } else {
             response.redirect(Path.Web.CUSTOMER_ORDERS);
         }

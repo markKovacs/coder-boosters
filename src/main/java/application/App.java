@@ -44,6 +44,7 @@ public class App {
         post(Path.Web.REGISTER, AccountController.handleRegistration);
 
         get(Path.Web.BOOSTER_ORDERS, OrderController.serveOrderListPage);
+        get(Path.Web.BOOSTER_DEMO, OrderController.serverOrderDemo);
         get(Path.Web.CUSTOMER_ORDERS, OrderController.serveOrderListPage);
 
         get(Path.Web.CUSTOMER_PROFILE, AccountController.serveCustomerProfilePage);
