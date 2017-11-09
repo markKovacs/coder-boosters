@@ -17,8 +17,6 @@ import java.util.List;
 @Table(name = "customer_account")
 public class CustomerAccount extends Account {
 
-    int boostCoin;
-
     @OneToMany(
             mappedBy = "account",
             cascade = CascadeType.ALL,
@@ -38,7 +36,6 @@ public class CustomerAccount extends Account {
 
     public CustomerAccount(String accountName, String email, String password) {
         super(accountName, email, password);
-        this.boostCoin = 100;
     }
 
     public void addGameAccountBiDir(GameAccount gameAccount) {

@@ -5,7 +5,7 @@
     <title>Order form</title>
 </head>
 <body>
-<div layout:fragment="customer-order">
+<div layout:fragment="content">
     <form action="/create-order" method="POST">
         <div th:replace="fragments :: general-order-part"></div>
         <th:block th:switch="${game_type}">

@@ -90,6 +90,11 @@ public class BoostOrderDaoJPA implements BoostOrderDao {
         } else {
             boostOrders = ((CustomerAccount) mergedAccount).getBoostOrderList();
         }
+        em.close();
+
+        for (BoostOrder boostOrder : boostOrders) {
+            boostOrder.calcTotal();
+        }
 
         return boostOrders;
     }

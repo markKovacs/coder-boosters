@@ -16,6 +16,7 @@ public class Path {
         public static final String SELECT_GAME = "/select-game";
         public static final String ORDER_FORM = "/order-form";
         public static final String CREATE_ORDER = "/create-order";
+        public static final String CUSTOMER_PAYPAL = "/customer-paypal";
     }
 
     public static class Template {
@@ -28,6 +29,7 @@ public class Path {
         public static final String BOOSTER_ORDERS = "account/booster-orders";
         public static final String SELECT_GAME = "select-game";
         public static final String ORDER_FORM = "order-form";
+        public static final String CUSTOMER_PAYPAL = "account/customer-paypal";
     }
 
 }

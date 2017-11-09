@@ -143,6 +143,25 @@ public class AccountController {
         return null;
     };
 
+    public static Route serveCustomerPayPal = (request, response) -> {
+
+        Map<String, Object> model = new HashMap<>();
+
+        return ViewUtil.render(request, model, Path.Template.CUSTOMER_PAYPAL);
+    };
+
+    public static Route handleCustomerPayPal = (request, response) -> {
+
+        Long accountId = RequestUtil.getSessionAccountId(request);
+        CustomerAccount customerAccount = DaoFactory.getAccountDao().findCustomerById(accountId);
+
+        int amount = Integer.parseInt(request.queryParams("amount"));
+
+        DaoFactory.getAccountDao().changeBoostCoinByAmount(customerAccount, amount);
+
+        response.redirect(Path.Web.CUSTOMER_PROFILE);
+        return null;
+    };
 
     // ACCESSORY METHODS
 

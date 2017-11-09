@@ -5,6 +5,8 @@ import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
 
 import javax.persistence.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 @Entity
@@ -48,7 +50,14 @@ public abstract class BoostOrder {
     public abstract double calcBasePrice();
 
     public BoostOrder() {
-        this.totalPrice = basePrice * (bonusPercentage/100.0 + 1.0);
+    }
+
+    public BoostOrder(GameType gameType, int numberOfGames, OrderType orderType, double bonusPercentage, Date deadLine) {
+        this.gameType = gameType;
+        this.numberOfGames = numberOfGames;
+        this.orderType = orderType;
+        this.bonusPercentage = bonusPercentage;
+        this.deadLine = deadLine;
         this.status = Status.AVAILABLE;
     }
 
@@ -139,4 +148,15 @@ public abstract class BoostOrder {
     public void setBoosterAccount(BoosterAccount boosterAccount) {
         this.boosterAccount = boosterAccount;
     }
+
+    public String deadlineString() {
+        DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
+        return df.format(deadLine);
+    }
+
+    public void calcTotal() {
+        this.totalPrice = this.basePrice * (bonusPercentage/100.0 + 1.0);
+    }
+
+
 }

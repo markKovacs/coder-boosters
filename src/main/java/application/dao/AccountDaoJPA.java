@@ -117,4 +117,16 @@ public class AccountDaoJPA implements AccountDao {
         return emails;
     }
 
+    @Override
+    public void changeBoostCoinByAmount(Account account, int amount) {
+        EntityManager em = EMFactory.createEntityManager();
+
+        em.getTransaction().begin();
+
+        Account mergedAccount = em.merge(account);
+        mergedAccount.setBoostCoin(mergedAccount.getBoostCoin() + amount);
+
+        em.getTransaction().commit();
+        em.close();
+    }
 }

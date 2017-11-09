@@ -2,24 +2,43 @@
 <html layout:decorate="~{account/layout}" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.w3.org/1999/xhtml">
 
-<div layout:fragment="customer-order">
+<div layout:fragment="content">
+
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Orders
+        </h1>
+    </section>
+
+    <a class="btn btn-default" role="button" href="/select-game">New Order</a>
+
+    <!--<form action="/create-order" method="GET">
+        <input type="submit" class="btn btn-default">
+        <select name="gametype" id="select-gametype">
+            <option th:each="game : ${gameTypes}" th:text="${game}" th:value="${game}"></option>
+        </select>
+    </form>-->
 
     <div id="pricing-table" class="clear">
-        <div class="plan lol">
+        <div th:each="order : ${orders}" th:attr="class=${order.gameType + ' plan'}">
             <h3><img
-                    th:src="@{~/pictures/game-picture/lol.png}"
+                    th:attr="src=${order.gameType.getIcon()}"
                     class="img-circle"></h3>
-            <a class="signup" href="">Accept</a>
             <ul>
-                <li><b>League Of Legends</b>
+                <li><b>[[${order.status}]]</b>
                 </li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
+                <li><b>[[${order.gameType.getName()}]]</b>
+                </li>
+                <li><b>Current Rank</b> [[${order.currentRank}]]</li>
+                <!--<li><b>Goal</b> Plat V</li>-->
+                <li><b>Price</b> [[${#numbers.formatDecimal(order.getTotalPrice(), 0, 'COMMA', 2, 'POINT')}]]$</li>
+                <li><b>DeadLine</b> [[${order.deadlineString()}]]</li>
             </ul>
         </div>
-        <div class="plan cs-go">
+
+
+<!--        <div class="plan cs-go">
             <h3><img th:src="@{~/pictures/game-picture/csgo.png}" class="img-circle">
             </h3>
             <a class="signup" href="">Accept</a>
@@ -66,7 +85,9 @@
                 <li><b>Price</b> 100$</li>
                 <li><b>DeadLine</b> 06/12/2017</li>
             </ul>
-        </div>
+        </div>-->
+
+
     </div>
 </div>
 

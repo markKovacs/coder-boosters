@@ -19,4 +19,6 @@ public interface AccountDao {
 
     List<String> getAllAccountNames();
     List<String> getAllEmails();
+
+    void changeBoostCoinByAmount(Account account, int amount);
 }

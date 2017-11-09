@@ -1,6 +1,7 @@
 package application.controller;
 
 import application.dao.DaoFactory;
+import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
@@ -25,6 +26,7 @@ public class OrderController {
 
         Map<String, Object> model = new HashMap<>();
         model.put("orders", DaoFactory.getBoostOrderDao().getOrdersByAccount(account));
+        model.put("gameTypes", Arrays.asList(GameType.values()));
 
         // TODO: Path.Template.CUSTOMER_ORDERS & BOOSTER_ORDERS could be merged and th:if...
         if (account instanceof BoosterAccount) {
@@ -87,6 +89,8 @@ public class OrderController {
 
         // TODO: GameAccount object to be created and persisted here, added to BoostOrder.
         DaoFactory.getBoostOrderDao().addBoostOrder(account, boostOrder);
+        // TODO: unifiy USD - BoostCoin and int - double
+        DaoFactory.getAccountDao().changeBoostCoinByAmount(account, (-1) * (int) boostOrder.getTotalPrice());
 
         response.redirect(Path.Web.CUSTOMER_ORDERS);
         return null;
@@ -117,7 +121,6 @@ public class OrderController {
 
         String gameTypeString = request.queryParams("game_type");
         List<LeagueDivision> leagueDivisions = Arrays.asList(LeagueDivision.values());
-
 
         Map<String, Object> model = new HashMap<>();
         model.put("game_type", gameTypeString);

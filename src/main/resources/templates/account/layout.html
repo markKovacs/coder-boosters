@@ -26,7 +26,7 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<div layout:fragment="content" >
+<div layout:fragment="content2" >
 
 <body class="hold-transition skin-black sidebar-mini">
 <div class="wrapper">
@@ -169,10 +169,15 @@ desired effect
               <!-- Menu Footer-->
               <li class="user-footer">
                 <div class="pull-left">
-                  <a href="#" class="btn btn-default btn-flat">Profile</a>
+                  <th:block th:if="${loggedInAs} eq 'customer'">
+                    <a href="/customer-profile" class="btn btn-default btn-flat">Profile</a>
+                  </th:block>
+                  <th:block th:if="${loggedInAs} eq 'booster'">
+                    <a href="/booster-profile" class="btn btn-default btn-flat">Profile</a>
+                  </th:block>
                 </div>
                 <div class="pull-right">
-                  <a href="#" class="btn btn-default btn-flat">Sign out</a>
+                  <a href="/logout" class="btn btn-default btn-flat">Sign out</a>
                 </div>
               </li>
             </ul>
@@ -220,9 +225,16 @@ desired effect
       <!-- Sidebar Menu -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">Menu</li>
+
         <!-- Optionally, you can add icons to the links -->
-        <li class="active"><a href="#"><i class="fa fa-link"></i> <span>Link</span></a></li>
-        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
+        <th:block th:if="${loggedInAs} eq 'customer'">
+          <li class="active"><a href="/customer-orders"><i class="fa fa-link"></i> <span>Orders</span></a></li>
+        </th:block>
+        <th:block th:if="${loggedInAs} eq 'booster'">
+          <li class="active"><a href="/booster-orders"><i class="fa fa-link"></i> <span>Orders</span></a></li>
+        </th:block>
+
+<!--        <li><a href="#"><i class="fa fa-link"></i> <span>Another Link</span></a></li>
         <li class="treeview">
           <a href="#"><i class="fa fa-link"></i> <span>Multilevel</span>
             <span class="pull-right-container">
@@ -233,19 +245,13 @@ desired effect
             <li><a href="#">Link in level 2</a></li>
             <li><a href="#">Link in level 2</a></li>
           </ul>
-        </li>
+        </li>-->
       </ul>
       <!-- /.sidebar-menu -->
     </section>
   </aside>
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
-    <!-- Content Header (Page header) -->
-    <section class="content-header">
-      <h1>
-        Orders
-      </h1>
-    </section>
 
     <!-- Main content -->
     <section class="content container-fluid">
@@ -253,7 +259,7 @@ desired effect
       <!--------------------------
         | Your Page Content Here |
         -------------------------->
-        <div layout:fragment="customer-order"></div>
+        <div layout:fragment="content"></div>
 
     </section>
     <!-- /.content -->

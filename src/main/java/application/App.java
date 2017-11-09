@@ -40,7 +40,7 @@ public class App {
         get(Path.Web.REGISTER, AccountController.serveRegistrationPage);
 
         post(Path.Web.LOGIN, AccountController.handleLogin);
-        post(Path.Web.LOGOUT, AccountController.handleLogout);
+        get(Path.Web.LOGOUT, AccountController.handleLogout);
         post(Path.Web.REGISTER, AccountController.handleRegistration);
 
         get(Path.Web.BOOSTER_ORDERS, OrderController.serveOrderListPage);
@@ -53,6 +53,9 @@ public class App {
         get(Path.Web.ORDER_FORM, OrderController.serveOrderForm);
 
         post(Path.Web.CREATE_ORDER, OrderController.handleOrderCreation);
+
+        get(Path.Web.CUSTOMER_PAYPAL, AccountController.serveCustomerPayPal);
+        post(Path.Web.CUSTOMER_PAYPAL, AccountController.handleCustomerPayPal);
 
     }
 
