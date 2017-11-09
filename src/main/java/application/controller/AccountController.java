@@ -79,7 +79,7 @@ public class AccountController {
 
         // SEND WELCOME EMAIL
         String to = account.getEmail();
-        String body = Email.renderEmailTemplate("index/welcome_email",
+        String body = Email.renderEmailTemplate("index/welcome-email",
                 new HashMap<String, Object>(){{ put("userData", account); }});
         String subject = "Welcome " + account.getAccountName() + " in the CöderBoosters community!";
         // Email.send(to, body, subject); TODO: once SMTP properly set, we can start using this
@@ -101,7 +101,14 @@ public class AccountController {
         }
 
         request.session().attribute("account_id", accountId);
-        response.redirect(Path.Web.INDEX);
+
+        Account account = DaoFactory.getAccountDao().findAccountById(accountId);
+
+        if (account instanceof BoosterAccount) {
+            response.redirect(Path.Web.BOOSTER_ORDERS);
+        } else {
+            response.redirect(Path.Web.CUSTOMER_ORDERS);
+        }
         return null;
     };
 
