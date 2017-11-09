@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html layout:decorate="~{index/index-head}" lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.w3.org/1999/xhtml">
+
+<head>
+    <title>Registration</title>
+</head>
+
+<body>
+
+<div layout:fragment="index-content" class="container text-center">
+
+
+    <div class="well well-sm">
+        <strong>Registration</strong>
+    </div>
+
+    <div id="register" class="row list-group">
+
+        <div class="col-xs-12 col-lg-12">
+
+            <div class="row">
+
+                <div class="row">
+                    <div class="col-xs-offset-2 col-xs-8 text-center">
+
+                        <div th:if="${errors}" id="error-messages" >
+                            <div class="alert" th:each="error : ${errors}">
+                                <span class="alert" th:text="${error}"></span>
+                                <br>
+                            </div>
+
+
+                        </div>
+
+                        <form th:action="@{~/register}" method="POST">
+                            <div>
+                                <label for="username">Username: </label>
+                                <input th:value="${userData.username}" type="text" id="username" name="username"
+                                       class="name-input" placeholder="Enter username..." required>
+                            </div>
+                            <div>
+                                <label for="email">E-mail: </label>
+                                <input th:value="${userData.email}" type="text" id="email" name="email"
+                                       class="name-input" placeholder="Enter e-mail..." required>
+                            </div>
+                            <div>
+                                <label for="password1">Password: </label>
+                                <input id="password1" type="password" name="password1" class="name-input"
+                                       placeholder="Enter password..." required>
+                            </div>
+                            <div>
+                                <label for="password2">Password: </label>
+                                <input id="password2" type="password" name="password2" class="name-input"
+                                       placeholder="Confirm password..." required>
+                            </div>
+                            <div>
+                                <label for="usertype">Account type: </label>
+                                <input checked="checked" id="usertype" type="radio" name="usertype" value="customer">Customer<br>
+                                <input type="radio" name="usertype" value="booster">Booster<br>
+                            </div>
+                            <div class="text-center">
+                                <input type="button" class="btn btn-success" value="Back" th:href="@{~/}">
+                                <input class="btn btn-success special" type="submit" value="Register">
+                            </div>
+
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+</body>
+
+</html>

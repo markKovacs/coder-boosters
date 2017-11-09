@@ -1,7 +1,9 @@
 package application;
 
+import application.controller.AccountController;
 import application.controller.IndexController;
-import application.model.*;
+import application.controller.OrderController;
+import application.utils.DataUtil;
 import application.utils.Path;
 import javax.persistence.*;
 
@@ -19,7 +21,10 @@ public class App {
         EMFactory = Persistence.createEntityManagerFactory("jpaTestingPU");
 
         // INIT TEST DATA
-        initTestData();
+        DataUtil.initTestData();
+
+        // TEST MODIFICATIONS
+        DataUtil.modifyTestData();
 
         // SERVER SETTINGS
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
@@ -31,24 +36,28 @@ public class App {
 
         // ROUTING ENDPOINTS
         get(Path.Web.INDEX, IndexController.serveIndexPage);
+        get(Path.Web.LOGIN, AccountController.serveLoginPage);
+        get(Path.Web.REGISTER, AccountController.serveRegistrationPage);
 
-    }
+        post(Path.Web.LOGIN, AccountController.handleLogin);
+        get(Path.Web.LOGOUT, AccountController.handleLogout);
+        post(Path.Web.REGISTER, AccountController.handleRegistration);
 
-    private static void initTestData() {
-        EntityManager em = EMFactory.createEntityManager();
+        get(Path.Web.BOOSTER_ORDERS, OrderController.serveOrderListPage);
+        get(Path.Web.BOOSTER_DEMO, OrderController.serverOrderDemo);
+        get(Path.Web.CUSTOMER_ORDERS, OrderController.serveOrderListPage);
 
-        // CREATE TEST DATA ENTITIES
-        Account account1 = new Account();
+        get(Path.Web.CUSTOMER_PROFILE, AccountController.serveCustomerProfilePage);
+        //post(Path.Web.CUSTOMER_PROFILE, AccountController.handleCustomerProfileEditing);
 
-        // BEGIN TRANSACTION
-        em.getTransaction().begin();
+        get(Path.Web.SELECT_GAME, OrderController.serveSelectGamePage);
+        get(Path.Web.ORDER_FORM, OrderController.serveOrderForm);
 
-        // PERSIST ENTITIES
-        em.persist(account1);
+        post(Path.Web.CREATE_ORDER, OrderController.handleOrderCreation);
 
-        // END TRANSACTION AND CLOSE ENTITY MANAGER
-        em.getTransaction().commit();
-        em.close();
+        get(Path.Web.CUSTOMER_PAYPAL, AccountController.serveCustomerPayPal);
+        post(Path.Web.CUSTOMER_PAYPAL, AccountController.handleCustomerPayPal);
+
     }
 
 }

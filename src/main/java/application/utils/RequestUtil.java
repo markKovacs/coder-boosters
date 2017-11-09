@@ -4,8 +4,8 @@ import spark.Request;
 
 public class RequestUtil {
 
-    public static String getSessionCurrentUser(Request request) {
-        return request.session().attribute("currentUser");
+    public static Long getSessionAccountId(Request request) {
+        return request.session().attribute("account_id");
     }
 
 }

@@ -9,9 +9,13 @@
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
 
         <!-- PERSISTENT CLASSES -->
-        <class>application.model.Order</class>
-        <class>application.model.Account</class>
-        <!-- More to come here... -->
+        <class>application.model.account.Account</class>
+        <class>application.model.account.CustomerAccount</class>
+        <class>application.model.account.BoosterAccount</class>
+        <class>application.model.account.GameAccount</class>
+
+        <class>application.model.order.BoostOrder</class>
+        <class>application.model.order.LoLBoostOrder</class>
 
         <properties>
 
