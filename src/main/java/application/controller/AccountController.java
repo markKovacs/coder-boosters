@@ -1,8 +1,8 @@
 package application.controller;
 
 import application.dao.DaoFactory;
-import application.model.Account;
-import application.model.CustomerAccount;
+import application.model.account.Account;
+import application.model.account.CustomerAccount;
 import application.utils.*;
 import spark.Request;
 import spark.Route;

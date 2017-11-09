@@ -2,9 +2,9 @@ package application.utils;
 
 import application.dao.AccountDao;
 import application.dao.DaoFactory;
-import application.model.Account;
-import application.model.BoosterAccount;
-import application.model.CustomerAccount;
+import application.model.account.Account;
+import application.model.account.BoosterAccount;
+import application.model.account.CustomerAccount;
 import spark.ModelAndView;
 import spark.Request;
 

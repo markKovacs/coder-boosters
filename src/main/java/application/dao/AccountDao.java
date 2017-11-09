@@ -1,6 +1,6 @@
 package application.dao;
 
-import application.model.Account;
+import application.model.account.Account;
 
 import java.util.List;
 import java.util.Map;
