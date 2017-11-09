@@ -3907,3 +3907,11 @@
 			}
 
 	}
+
+#login,#register {
+	padding: 1cm;
+	margin-top: 5em;
+	margin-left: 30%;
+	margin-right: 30%;
+	border: solid white 2px;
+}
