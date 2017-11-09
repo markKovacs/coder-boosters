@@ -11,6 +11,10 @@ import application.model.order.OrderType;
 import application.utils.*;
 import spark.Request;
 import spark.Route;
+import application.utils.Path;
+import application.utils.ViewUtil;
+import java.util.HashMap;
+import java.util.Map;
 
 import java.util.*;
 
@@ -88,6 +92,13 @@ public class OrderController {
         return null;
     };
 
+    public static Route serveChooseGamePage = (request, response) -> {
+
+        Map<String, Object> model = new HashMap<>();
+
+        return ViewUtil.render(request, model, Path.Template.CHOOSE_GAME);
+    };
+    
     private static List<String> validateOrderData(Request request) {
         List<String> errors = new ArrayList<>();
 

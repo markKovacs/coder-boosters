@@ -2,6 +2,7 @@ package application;
 
 import application.controller.AccountController;
 import application.controller.IndexController;
+import application.controller.OrderController;
 import application.model.*;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
@@ -49,6 +50,7 @@ public class App {
         get(Path.Web.LOGIN, AccountController.serveLoginPage);
         get(Path.Web.REGISTER, AccountController.serveRegistrationPage);
         get(Path.Web.CUSTOMER_PROFILE, AccountController.serveCustomerProfilePage);
+        get(Path.Web.CHOOSE_GAME, OrderController.serveChooseGamePage);
 
         post(Path.Web.LOGIN, AccountController.handleLogin);
         post(Path.Web.LOGOUT, AccountController.handleLogout);
