@@ -33,7 +33,7 @@
 
                         <form th:action="@{~/register}" method="POST">
                             <div>
-                                <label for="username">Username: </label>
+                                <label for="username">Account name: </label>
                                 <input th:value="${userData.username}" id="username" name="username" class="name-input" placeholder="Enter username..." required>
                             </div>
                             <div>
@@ -47,6 +47,11 @@
                             <div>
                                 <label for="password2">Password: </label>
                                 <input id="password2" type="password" name="password2" class="name-input" placeholder="Confirm password..." required>
+                            </div>
+                            <div>
+                                <label for="usertype">Account type: </label>
+                                <input checked="checked" id="usertype" type="radio" name="usertype" value="customer">Customer<br>
+                                <input type="radio" name="usertype" value="booster">Booster<br>
                             </div>
                             <div class="text-center">
                                 <a class="btn btn-default" th:href="@{~/}">Back</a>
