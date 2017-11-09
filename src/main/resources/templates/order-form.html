@@ -1,11 +1,37 @@
 <!DOCTYPE html>
 <html layout:decorate="~{layout}" lang="en"
-      xmlns:layout="http://www.w3.org/1999/xhtml">
+      xmlns:layout="http://www.w3.org/1999/xhtml" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
-    <meta charset="UTF-8">
     <title>Order form</title>
 </head>
 <body>
-
+<div layout:fragment="content">
+    <form action="/order-form" method="post">
+        <div th:replace="fragments :: general-order-part"></div>
+        <th:block th:switch="${game_type}">
+            <div th:case="'WOW'">
+                <!-- print object is not active -->
+            </div>
+            <div th:case="'LOL'">
+                <br>CurrentRank:<br>
+                <select name="currentRank">
+                    <option th:each="lg : ${league_divisions}"
+                    th:text="${lg}"
+                     th:value="${lg}"></option>
+                </select>
+            </div>
+            <div th:case="'OW'">
+                <!-- print object is new and active -->
+            </div>
+            <div th:case="'FIFA'">
+                <!-- print object is new and active -->
+            </div>
+            <div th:case="'CSGO'">
+                <!-- print object is new and active -->
+            </div>
+        </th:block>
+        <button type="submit">Submit</button>
+    </form>
+</div>
 </body>
 </html>
