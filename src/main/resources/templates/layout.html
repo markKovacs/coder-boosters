@@ -45,38 +45,20 @@
 <body>
 
     <!-- HEADER -->
-    <header class="jumbotron text-center">
+    <header id="header">
+        <h1 id="logo"><a href="index.html">CöderBoosters</a></h1>
+        <nav id="nav">
+            <ul>
+                <li><a href="index.html">Home</a></li>
+                <li>
+                    <a href="#">Boosters</a>
+                </li>
+                <li><a href="#">Services</a></li>
+                <li><a href="/login" class="button special">Sign Up</a></li>
+                <li><a href="/register" class="button special">Log In</a></li>
 
-        <h1>JPA Testing</h1>
-
-        <div class="container">
-            <div class="row">
-
-                <!-- NAV BAR -->
-                <th:block th:if="${currentUser != null}">
-                    <div class="col-xs-6 left text-left">
-                        <a class="btn" th:href="@{~/}">Index</a>
-                    </div>
-                    <div class="col-xs-6 right text-right">
-                        <a th:href="@{~/customer-profile}" class="btn">Profile</a>
-                        <form th:action="@{~/logout}" method="POST" class="btn">
-                            <input type="submit" value="Logout">
-                        </form>
-                    </div>
-                </th:block>
-                <th:block th:if="${currentUser == null}">
-                    <div class="col-xs-6 left text-left">
-                        <a class="btn" th:href="@{~/}">Index</a>
-                    </div>
-                    <div class="col-xs-6 right text-right">
-                        <a th:href="@{~/register}" class="btn">Register</a>
-                        <a th:href="@{~/login}" class="btn">Login</a>
-                    </div>
-                </th:block>
-
-            </div>
-        </div>
-
+            </ul>
+        </nav>
     </header>
 
     <!-- CONTENT -->

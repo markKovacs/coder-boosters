@@ -1,6 +1,5 @@
-
 <!DOCTYPE html>
-<html layout:decorate="~{layout}" lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
+<html layout:decorate="~{index-header}" lang="en" xmlns:th="http://www.w3.org/1999/xhtml"
       xmlns:layout="http://www.w3.org/1999/xhtml">
 
 <head>
@@ -9,11 +8,8 @@
 
 <body>
 
-<div layout:fragment="content" class="container">
 
-    <div class="well well-sm">
-        <strong>Login</strong>
-    </div>
+<div layout:fragment="index-content" class="container text-center" >
 
     <div id="login" class="row list-group">
 
@@ -24,21 +20,24 @@
                 <div class="row">
                     <div class="col-xs-offset-2 col-xs-8 text-center">
 
-                        <div th:if="${errors}" id="error-messages" class="alert alert-danger">
-                            <p>You have the following errors:</p>
-                            <ul th:each="error : ${errors}">
-                                <li th:text="${error}"></li>
-                            </ul>
+                        <div th:if="${errors}" id="error-messages" >
+                            <div class="alert" th:each="error : ${errors}">
+                                <span class="alert" th:text="${error}"></span>
+                                <br>
+                            </div>
                         </div>
 
                         <form th:action="@{~/login}" method="POST">
                             <div>
                                 <label for="username">Username: </label>
-                                <input id="username" name="username" class="name-input" placeholder="Enter username..." required>
+                                <input id="username" name="username" type="text" class="name-input"
+                                       placeholder="Enter username..."
+                                       required>
                             </div>
                             <div>
                                 <label for="password">Password: </label>
-                                <input id="password" type="password" name="password" class="name-input" placeholder="Enter password..." required>
+                                <input id="password" type="password" name="password" class="name-input"
+                                       placeholder="Enter password..." required>
                             </div>
                             <div class="text-center">
                                 <a class="btn btn-default" th:href="@{~/}">Back</a>
