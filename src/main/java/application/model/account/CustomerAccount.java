@@ -7,6 +7,10 @@ import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@NamedQueries({
+        @NamedQuery(name = "CustomerAccount.findCustomerById",
+                query = "SELECT ca FROM CustomerAccount ca WHERE ca.id = :accountId")
+})
 @Entity
 @PrimaryKeyJoinColumn(referencedColumnName="id")
 @DiscriminatorValue(value = "customer")

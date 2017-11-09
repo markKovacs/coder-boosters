@@ -20,32 +20,37 @@ public class GameAccountDaoJPA implements GameAccountDao {
     @Override
     public Long addGameAccount(CustomerAccount account, GameAccount gameAccount) {
 
-        // ADD TO MEMORY
-        account.addGameAccountBiDir(gameAccount);
-
-        // ADD TO DATABASE
         EntityManager em = EMFactory.createEntityManager();
         em.getTransaction().begin();
 
-        em.persist(gameAccount);
+        CustomerAccount mergedAccount = em.merge(account);
+        GameAccount mergedGameAccount = em.merge(gameAccount);
+
+        // ADD TO MEMORY
+        mergedAccount.addGameAccountBiDir(mergedGameAccount);
+
+        // ADD TO DATABASE
+        em.persist(mergedGameAccount);
 
         em.getTransaction().commit();
         em.close();
 
-        return gameAccount.getId();
+        return mergedGameAccount.getId();
     }
 
     @Override
     public void removeGameAccount(CustomerAccount account, GameAccount gameAccount) {
 
-        // REMOVE FROM MEMORY
-        account.removeGameAccountBiDir(gameAccount);
-
-        // REMOVE FROM DATABASE
         EntityManager em = EMFactory.createEntityManager();
         em.getTransaction().begin();
 
+        CustomerAccount mergedAccount = em.merge(account);
         GameAccount mergedGameAccount = em.merge(gameAccount);
+
+        // REMOVE FROM MEMORY
+        mergedAccount.removeGameAccountBiDir(mergedGameAccount);
+
+        // REMOVE FROM DATABASE
         em.remove(mergedGameAccount);
 
         em.getTransaction().commit();

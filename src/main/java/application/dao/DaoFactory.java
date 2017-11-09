@@ -18,4 +18,11 @@ public class DaoFactory {
         return new GameAccountDaoJPA();
     }
 
+    public static BoostOrderDao getBoostOrderDao() {
+        if (Config.isStorageJPA) {
+            return new BoostOrderDaoJPA();
+        }
+        return new BoostOrderDaoJPA();
+    }
+
 }

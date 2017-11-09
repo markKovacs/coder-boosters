@@ -1,17 +1,15 @@
 package application.model.account;
 
-import application.model.GameType;
 import application.model.order.BoostOrder;
 import application.model.order.Status;
+
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @NamedQueries({
-        @NamedQuery(name = "BoosterAccount.getAllOrders",
-                query = "SELECT o FROM BoostOrder o WHERE o.status = :status")
+        @NamedQuery(name = "BoosterAccount.findBoosterById",
+                query = "SELECT ba FROM BoosterAccount ba WHERE ba.id = :accountId")
 })
 @Entity
 @PrimaryKeyJoinColumn(referencedColumnName="id")

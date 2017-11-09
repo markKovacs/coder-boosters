@@ -16,7 +16,7 @@ public class ViewUtil {
 
         AccountDao accDao = DaoFactory.getAccountDao();
         Long currentAccId = RequestUtil.getSessionAccountId(request);
-        Account account = accDao.find(currentAccId);
+        Account account = accDao.findAccountById(currentAccId);
 
         String accountType = null;
         if (account instanceof CustomerAccount) {

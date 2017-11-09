@@ -1,6 +1,8 @@
 package application.dao;
 
 import application.model.account.Account;
+import application.model.account.BoosterAccount;
+import application.model.account.CustomerAccount;
 
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
@@ -26,7 +28,7 @@ public class AccountDaoJPA implements AccountDao {
     }
 
     @Override
-    public Account find(Long accountId) {
+    public Account findAccountById(Long accountId) {
         EntityManager em = EMFactory.createEntityManager();
 
         TypedQuery<Account> result = em.createNamedQuery("Account.findAccountById", Account.class)
@@ -42,7 +44,39 @@ public class AccountDaoJPA implements AccountDao {
     }
 
     @Override
-    public Account find(String accountName) {
+    public CustomerAccount findCustomerById(Long accountId) {
+        EntityManager em = EMFactory.createEntityManager();
+
+        TypedQuery<CustomerAccount> result = em.createNamedQuery("CustomerAccount.findCustomerById", CustomerAccount.class)
+                .setParameter("accountId", accountId);
+        List<CustomerAccount> accounts = result.getResultList();
+
+        em.close();
+
+        if (!accounts.isEmpty()) {
+            return accounts.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public BoosterAccount findBoosterById(Long accountId) {
+        EntityManager em = EMFactory.createEntityManager();
+
+        TypedQuery<BoosterAccount> result = em.createNamedQuery("BoosterAccount.findBoosterById", BoosterAccount.class)
+                .setParameter("accountId", accountId);
+        List<BoosterAccount> accounts = result.getResultList();
+
+        em.close();
+
+        if (!accounts.isEmpty()) {
+            return accounts.get(0);
+        }
+        return null;
+    }
+
+    @Override
+    public Account findAccountByName(String accountName) {
         EntityManager em = EMFactory.createEntityManager();
 
         TypedQuery<Account> result = em.createNamedQuery("Account.findAccountByAccountName", Account.class)
