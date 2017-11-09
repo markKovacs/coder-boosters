@@ -14,6 +14,7 @@ public class Path {
         public static final String ORDERS_PAGE = "/orders-page";
 
 
+        public static final String CHOOSE_GAME = "/choose-game";
     }
 
     public static class Template {
@@ -24,6 +25,7 @@ public class Path {
         public static final String BOOSTER_PROFILE = "account/booster_profile";
         public static final String ORDERS_PAGE = "account/orders-page";
 
+        public static final String CHOOSE_GAME = "choose_game";
     }
 
 }

@@ -50,6 +50,7 @@ public class App {
         get(Path.Web.LOGIN, AccountController.serveLoginPage);
         get(Path.Web.REGISTER, AccountController.serveRegistrationPage);
         get(Path.Web.CUSTOMER_PROFILE, AccountController.serveCustomerProfilePage);
+        get(Path.Web.CHOOSE_GAME, OrderController.serveChooseGamePage);
         get(Path.Web.ORDERS_PAGE, OrderController.serveOrdersPage);
 
         post(Path.Web.LOGIN, AccountController.handleLogin);
