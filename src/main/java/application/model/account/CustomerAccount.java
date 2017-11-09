@@ -42,27 +42,21 @@ public class CustomerAccount extends Account {
         gameAccount.setAccount(this);
     }
 
-    public void removeGameAccount(GameAccount gameAccount) {
+    public void removeGameAccountBiDir(GameAccount gameAccount) {
         this.gameAccountList.remove(gameAccount);
-        // gameAccount.setAccount(null); // if need to be bidirectional
+        gameAccount.setAccount(null);
     }
 
+    @Override
     public void addBoostOrderBiDir(BoostOrder boostOrder) {
         this.boostOrderList.add(boostOrder);
         boostOrder.setCustomerAccount(this);
     }
 
-    public void removeBoostOrder(Long boostOrderId) {
-        // TODO: maybe this will need to be similar to removeGameAccount!!!
-        BoostOrder boostOrder = boostOrderList.stream()
-                .filter(bo -> bo.getId().equals(boostOrderId))
-                .findFirst().orElse(null);
-
-        if (boostOrder == null || !boostOrder.getStatus().equals(Status.AVAILABLE)) {
-            return;
-        }
+    @Override
+    public void removeBoostOrderBiDir(BoostOrder boostOrder) {
         this.boostOrderList.remove(boostOrder);
-        // boostOrder.setCustomerAccount(null); // if need to be bidirectional
+        boostOrder.setCustomerAccount(null);
     }
 
     public List<GameAccount> getGameAccountList() {

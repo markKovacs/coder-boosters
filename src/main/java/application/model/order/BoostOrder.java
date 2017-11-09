@@ -72,6 +72,8 @@ public abstract class BoostOrder {
     public abstract double calcBasePrice();
 
     public BoostOrder() {
+        this.totalPrice = basePrice * (bonusPercentage/100.0 + 1.0);
+        this.status = Status.AVAILABLE;
     }
 
     public Long getId() {

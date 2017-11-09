@@ -20,10 +20,10 @@ public class GameAccountDaoJPA implements GameAccountDao {
     @Override
     public Long addGameAccount(CustomerAccount account, GameAccount gameAccount) {
 
-        // REMOVE FROM MEMORY
+        // ADD TO MEMORY
         account.addGameAccountBiDir(gameAccount);
 
-        // REMOVE FROM DATABASE
+        // ADD TO DATABASE
         EntityManager em = EMFactory.createEntityManager();
         em.getTransaction().begin();
 
@@ -39,7 +39,7 @@ public class GameAccountDaoJPA implements GameAccountDao {
     public void removeGameAccount(CustomerAccount account, GameAccount gameAccount) {
 
         // REMOVE FROM MEMORY
-        account.removeGameAccount(gameAccount);
+        account.removeGameAccountBiDir(gameAccount);
 
         // REMOVE FROM DATABASE
         EntityManager em = EMFactory.createEntityManager();
