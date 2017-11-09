@@ -79,7 +79,7 @@ public class DataUtil {
 
     }
 
-    private static Date createDate(int y, int m, int d, int h) {
+    public static Date createDate(int y, int m, int d, int h) {
         Calendar cal = Calendar.getInstance();
         cal.set(y, m, d, h, 0);
         return cal.getTime();

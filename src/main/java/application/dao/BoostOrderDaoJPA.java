@@ -1,10 +1,14 @@
 package application.dao;
 
 import application.model.account.Account;
+import application.model.account.BoosterAccount;
+import application.model.account.CustomerAccount;
 import application.model.order.BoostOrder;
 import application.model.order.Status;
 
 import javax.persistence.EntityManager;
+
+import java.util.List;
 
 import static application.App.EMFactory;
 
@@ -75,4 +79,18 @@ public class BoostOrderDaoJPA implements BoostOrderDao {
         em.close();
     }
 
+    @Override
+    public List<BoostOrder> getOrdersByAccount(Account account) {
+        EntityManager em = EMFactory.createEntityManager();
+        Account mergedAccount = em.merge(account);
+
+        List<BoostOrder> boostOrders;
+        if (account instanceof BoosterAccount) {
+            boostOrders = ((BoosterAccount) mergedAccount).getBoostOrderList();
+        } else {
+            boostOrders = ((CustomerAccount) mergedAccount).getBoostOrderList();
+        }
+
+        return boostOrders;
+    }
 }
