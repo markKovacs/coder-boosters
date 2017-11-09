@@ -12,6 +12,7 @@ public class Path {
         public static final String BOOSTER_PROFILE_EDIT_SUCCESS = "/booster-profile?edited=successful";
         public static final String LOGOUT = "/logout";
         public static final String ORDERS_PAGE = "/orders-page";
+        public static final String BOOSTER_PAGE = "/booster-page";
 
 
         public static final String CHOOSE_GAME = "/choose-game";
@@ -24,7 +25,7 @@ public class Path {
         public static final String CUSTOMER_PROFILE = "account/customer_profile";
         public static final String BOOSTER_PROFILE = "account/booster_profile";
         public static final String ORDERS_PAGE = "account/orders-page";
-
+        public static final String BOOSTER_PAGE = "account/booster-order";
         public static final String CHOOSE_GAME = "choose_game";
     }
 
