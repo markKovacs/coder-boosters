@@ -25,13 +25,13 @@ public class OrderController {
         Account account = DaoFactory.getAccountDao().findAccountById(accountId);
 
         Map<String, Object> model = new HashMap<>();
-        model.put("orders", DaoFactory.getBoostOrderDao().getOrdersByAccount(account));
-        model.put("gameTypes", Arrays.asList(GameType.values()));
 
         // TODO: Path.Template.CUSTOMER_ORDERS & BOOSTER_ORDERS could be merged and th:if...
         if (account instanceof BoosterAccount) {
+            // TODO: orders need to be added to model differently: where booster_id is null or current booster's id
             return ViewUtil.render(request, model, Path.Template.BOOSTER_ORDERS);
         }
+        model.put("orders", DaoFactory.getBoostOrderDao().getOrdersByAccount(account));
         return ViewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS);
     };
 
