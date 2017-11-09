@@ -1,38 +1,12 @@
 package application.model.order;
 
+import application.model.GameType;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
-import application.model.GameType;
 
 import javax.persistence.*;
 import java.util.Date;
 
-/**
- * GameType:
- *      - game icon
- *
- *      - LOL subclass
- *          -
- *
- *      - eloBoost (target elo selected)
- *      - gameCount (number of games played)
- *      - winCount (based on difference: win-loss)
- *      - coaching (number of games coached... duo/solo???, hour-based???)
- *      -
- * Duo/Solo
- *
- * BasePrice(calculated by system)
- * BonusFee(%, added by user, default 0%)
- * TotalPrice(calculated: BasePrice*(1+BonusFee))
- *
- * customerId
- * boosterId (default = null...)
- *
- * deadline / can be null / timestamp (minute-sharp)
- *
- *
- *
- * */
 @Entity
 @Table(name = "boost_order")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -68,6 +42,8 @@ public abstract class BoostOrder {
     @ManyToOne
     @JoinColumn(name = "booster_id")
     BoosterAccount boosterAccount;
+
+    // TODO: GameAccount need to be added to this entity.
 
     public abstract double calcBasePrice();
 
