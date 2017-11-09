@@ -54,6 +54,11 @@
                                 <input id="password2" type="password" name="password2" class="name-input"
                                        placeholder="Confirm password..." required>
                             </div>
+                            <div>
+                                <label for="usertype">Account type: </label>
+                                <input checked="checked" id="usertype" type="radio" name="usertype" value="customer">Customer<br>
+                                <input type="radio" name="usertype" value="booster">Booster<br>
+                            </div>
                             <div class="text-center">
                                 <a class="btn btn-default" th:href="@{~/}">Back</a>
                                 <input class="btn btn-success" type="submit" value="Register">

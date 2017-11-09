@@ -104,6 +104,7 @@ public class OrderController {
         Map<String, Object> model = new HashMap<>();
 
         return ViewUtil.render(request, model, Path.Template.ORDERS_PAGE);
+    };
 
     public static Route serveBoosterPage = (request, response) -> {
 
@@ -112,7 +113,6 @@ public class OrderController {
         return ViewUtil.render(request, model, Path.Template.BOOSTER_PAGE);
     };
 
-    };
     public static Route serveChooseGamePage = (request, response) -> {
 
         Map<String, Object> model = new HashMap<>();

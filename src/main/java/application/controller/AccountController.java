@@ -79,7 +79,7 @@ public class AccountController {
 
         // SEND WELCOME EMAIL
         String to = account.getEmail();
-        String body = Email.renderEmailTemplate("welcome_email",
+        String body = Email.renderEmailTemplate("index/welcome_email",
                 new HashMap<String, Object>(){{ put("userData", account); }});
         String subject = "Welcome " + account.getAccountName() + " in the CöderBoosters community!";
         // Email.send(to, body, subject); TODO: once SMTP properly set, we can start using this
