@@ -21,7 +21,7 @@ body {
 }
 
 .panel {
-    background:#6B0F9C;
+    background: black;
     box-shadow:inset 0 0 0 5px rgba(255,255,255,0.1);
     color:white;
     text-align: center;
@@ -41,11 +41,11 @@ body {
     flex-direction: column;
 }
 
-.panel1 { background-image:url(http://media.blizzard.com/wow/media/wallpapers/other/legion/legion-2048x1536-standard.jpg); }
-.panel2 { background-image:url(https://na.leagueoflegends.com/sites/default/files/styles/scale_large/public/upload/art/riven_v_shyvana_1920x1080.jpg?itok=jVn5Nrq6); }
-.panel3 { background-image:url(https://d1u1mce87gyfbn.cloudfront.net/media/wallpaper/tracer-wallpaper-standard.jpg); }
-.panel4 { background-image:url(https://media.contentapi.ea.com/content/dam/ea/easports/fifa/features/2017/cristiano-ronaldo/june5/ronaldo1-lg.jpg); }
-.panel5 { background-image:url(https://cdn.wallpapersafari.com/34/3/8um5AR.jpg); }
+.panel1 { background-image:url(../pictures/select-game-pictures/WoW.jpg); }
+.panel2 { background-image:url(../pictures/select-game-pictures/LoL.jpg); }
+.panel3 { background-image:url(../pictures/select-game-pictures/OW.jpg); }
+.panel4 { background-image:url(../pictures/select-game-pictures/FIFA.jpg); }
+.panel5 { background-image:url(../pictures/select-game-pictures/CSGO.jpg); }
 /* Flex Items */
 .panel > * {
     margin:0;
