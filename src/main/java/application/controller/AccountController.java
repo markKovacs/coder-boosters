@@ -2,6 +2,7 @@ package application.controller;
 
 import application.dao.DaoFactory;
 import application.model.account.Account;
+import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
 import application.utils.*;
 import spark.Request;
@@ -68,8 +69,12 @@ public class AccountController {
         }
 
         // SAVE ACCOUNT TO DATABASE
-        // TODO: NOW FIXED AS CUSTOMER BUT WE NEED LATER A RADIO BUTTON TO SELECT CUSTOMER/BOOSTER
-        Account account = new CustomerAccount(inputData.get("username"), inputData.get("email"), hashedPasswordAndSalt);
+        Account account;
+        if (inputData.get("usertype").equals("customer")) {
+            account = new CustomerAccount(inputData.get("username"), inputData.get("email"), hashedPasswordAndSalt);
+        } else {
+            account = new BoosterAccount(inputData.get("username"), inputData.get("email"), hashedPasswordAndSalt);
+        }
         DaoFactory.getAccountDao().add(account);
 
         // SEND WELCOME EMAIL
@@ -162,6 +167,7 @@ public class AccountController {
         registrationData.put("email", req.queryParams("email"));
         registrationData.put("password1", req.queryParams("password1"));
         registrationData.put("password2", req.queryParams("password2"));
+        registrationData.put("usertype", req.queryParams("usertype"));
         return registrationData;
     }
 
@@ -182,6 +188,9 @@ public class AccountController {
         } else if (!InputField.PASSWORD.validate(regInput.get("password1")) ||
                 !InputField.PASSWORD.validate(regInput.get("password2"))){
             errorMessages.add("Password incorrect. Has to be 4-8 characters long and use regular characters.");
+        }
+        if (!Arrays.asList("customer", "booster").contains(regInput.get("usertype"))) {
+            errorMessages.add("Account type must be either customer or booster.");
         }
         return errorMessages;
 
