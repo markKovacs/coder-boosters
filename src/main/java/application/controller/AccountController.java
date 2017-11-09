@@ -29,7 +29,7 @@ public class AccountController {
     public static Route serveCustomerProfilePage = (request, response) -> {
 
         Long accountId = RequestUtil.getSessionAccountId(request);
-        Account account = DaoFactory.getAccountDao().find(accountId);
+        CustomerAccount account = DaoFactory.getAccountDao().findCustomerById(accountId);
 
         Map<String, Object> model = new HashMap<>();
         model.put("userData", account);
@@ -149,7 +149,7 @@ public class AccountController {
 
         // TODO: might be needed to extract data from account which will be passed into edit customer profile
 
-        Account account = DaoFactory.getAccountDao().find(userId);
+        //Account account = DaoFactory.getAccountDao().find(userId);
         Map<String, String> modUser = new HashMap<>();
         modUser.put("gameAccounts", ""); // TODO: maybe pass in the game accounts list
 
@@ -197,7 +197,7 @@ public class AccountController {
     private static Long validateLoginCredentials(Map<String, String> loginInput) {
         String accountName = loginInput.get("username");
         String password = loginInput.get("password");
-        Account account = DaoFactory.getAccountDao().find(accountName);
+        Account account = DaoFactory.getAccountDao().findAccountByName(accountName);
         if (account == null) {
             return -1L;
         }

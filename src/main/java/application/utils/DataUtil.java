@@ -5,10 +5,7 @@ import application.model.GameType;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
-import application.model.order.BoostOrder;
-import application.model.order.LeagueDivision;
-import application.model.order.LoLBoostOrder;
-import application.model.order.OrderType;
+import application.model.order.*;
 
 import javax.persistence.EntityManager;
 import java.util.Calendar;
@@ -37,7 +34,6 @@ public class DataUtil {
         customerMark.addBoostOrderBiDir(order2);
 
         BoosterAccount boosterBarna = new BoosterAccount("barna", "barna@elite.com", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
-        //boosterBarna.addBoostOrderBiDir(order2); // TODO: BoosterOrderDao - add, (remove), etc...
 
         DaoFactory.getAccountDao().add(customerMark);
         DaoFactory.getAccountDao().add(customerAttila);
@@ -47,15 +43,39 @@ public class DataUtil {
 
     public static void modifyTestData() {
 
-        EntityManager em = EMFactory.createEntityManager();
-        CustomerAccount customerAccount = em.find(CustomerAccount.class, 1L);
+        CustomerAccount customerAccount = DaoFactory.getAccountDao().findCustomerById(1L);
+        BoosterAccount boosterAccount = DaoFactory.getAccountDao().findBoosterById(3L);
 
         GameAccount gameAccount = new GameAccount("newplayer", "pass123", GameType.CSGO);
 
         DaoFactory.getGameAccountDao().addGameAccount(customerAccount, gameAccount);
         DaoFactory.getGameAccountDao().removeGameAccount(customerAccount, gameAccount);
+
         GameAccount foundGameAcc = DaoFactory.getGameAccountDao().findGameAccount(1L);
         DaoFactory.getGameAccountDao().removeGameAccount(customerAccount, foundGameAcc);
+
+        BoostOrder newBoostOrder1 = new LoLBoostOrder(LeagueDivision.GOLD_V, 20, OrderType.GAMES_WON,
+                20, createDate(2020, 6, 5, 10));
+        DaoFactory.getBoostOrderDao().addBoostOrder(customerAccount, newBoostOrder1);
+        DaoFactory.getBoostOrderDao().addBoostOrder(boosterAccount, newBoostOrder1);
+
+        BoostOrder newBoostOrder2 = new LoLBoostOrder(LeagueDivision.CHALLENGER, 20, OrderType.GAMES_WON,
+                20, createDate(2030, 6, 5, 10));
+        Long anAddedId = DaoFactory.getBoostOrderDao().addBoostOrder(customerAccount, newBoostOrder2);
+
+        BoostOrder newBoostOrder3 = new LoLBoostOrder(LeagueDivision.DIAMOND_I, 20, OrderType.GAMES_WON,
+                20, createDate(2040, 6, 5, 10));
+        Long lastAddedId = DaoFactory.getBoostOrderDao().addBoostOrder(customerAccount, newBoostOrder3);
+
+        BoostOrder foundBoostOrder = DaoFactory.getBoostOrderDao().findBoostOrder(lastAddedId);
+        DaoFactory.getBoostOrderDao().removeBoostOrder(customerAccount, foundBoostOrder);
+
+        BoostOrder anotherFoundBoostOrder = DaoFactory.getBoostOrderDao().findBoostOrder(anAddedId);
+        DaoFactory.getBoostOrderDao().setStatus(anotherFoundBoostOrder, Status.DONE);
+
+        System.out.println(anotherFoundBoostOrder.getStatus());
+        BoostOrder anotherFoundBoostOrder2 = DaoFactory.getBoostOrderDao().findBoostOrder(anAddedId);
+        System.out.println(anotherFoundBoostOrder2.getStatus());
 
     }
 

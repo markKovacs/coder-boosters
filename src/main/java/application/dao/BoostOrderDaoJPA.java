@@ -2,6 +2,7 @@ package application.dao;
 
 import application.model.account.Account;
 import application.model.order.BoostOrder;
+import application.model.order.Status;
 
 import javax.persistence.EntityManager;
 
@@ -22,33 +23,53 @@ public class BoostOrderDaoJPA implements BoostOrderDao {
     @Override
     public Long addBoostOrder(Account account, BoostOrder boostOrder) {
 
-        // ADD TO MEMORY
-        account.addBoostOrderBiDir(boostOrder);
-
-        // ADD TO DATABASE
         EntityManager em = EMFactory.createEntityManager();
         em.getTransaction().begin();
 
-        em.persist(boostOrder);
+        Account mergedAccount = em.merge(account);
+        BoostOrder mergedOrder = em.merge(boostOrder);
+
+        // ADD TO MEMORY (POLYMORPHISM)
+        mergedAccount.addBoostOrderBiDir(mergedOrder);
+
+        // ADD TO DATABASE
+        em.persist(mergedOrder);
 
         em.getTransaction().commit();
         em.close();
 
-        return boostOrder.getId();
+        return mergedOrder.getId();
     }
 
     @Override
     public void removeBoostOrder(Account account, BoostOrder boostOrder) {
 
-        // REMOVE FROM MEMORY
-        account.removeBoostOrderBiDir(boostOrder);
-
-        // REMOVE FROM DATABASE
         EntityManager em = EMFactory.createEntityManager();
         em.getTransaction().begin();
 
-        BoostOrder mergedBoostOrder = em.merge(boostOrder);
-        em.remove(mergedBoostOrder);
+        Account mergedAccount = em.merge(account);
+        BoostOrder mergedOrder = em.merge(boostOrder);
+
+        // REMOVE FROM MEMORY (POLYMORPHISM)
+        mergedAccount.removeBoostOrderBiDir(mergedOrder);
+
+        // REMOVE FROM DATABASE
+        em.remove(mergedOrder);
+
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @Override
+    public void setStatus(BoostOrder boostOrder, Status newStatus) {
+
+        // MEMORY UPDATE
+        boostOrder.setStatus(newStatus);
+
+        EntityManager em = EMFactory.createEntityManager();
+        em.getTransaction().begin();
+
+        BoostOrder mergedOrder = em.merge(boostOrder);
 
         em.getTransaction().commit();
         em.close();
