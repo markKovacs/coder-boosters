@@ -100,8 +100,10 @@ public class AccountDaoJPA implements AccountDao {
         EntityManager em = EMFactory.createEntityManager();
         TypedQuery<String> result = em.createNamedQuery("Account.getAccountNames", String.class);
 
+        List<String> accountNames = result.getResultList();
         em.close();
-        return result.getResultList();
+        
+        return accountNames;
     }
 
     @Override
@@ -109,8 +111,10 @@ public class AccountDaoJPA implements AccountDao {
         EntityManager em = EMFactory.createEntityManager();
         TypedQuery<String> result = em.createNamedQuery("Account.getEmails", String.class);
 
+        List<String> emails = result.getResultList();
         em.close();
-        return result.getResultList();
+
+        return emails;
     }
 
 }
