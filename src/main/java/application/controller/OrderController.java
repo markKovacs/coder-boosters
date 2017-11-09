@@ -34,6 +34,13 @@ public class OrderController {
         model.put("orders", DaoFactory.getBoostOrderDao().getOrdersByAccount(account));
         return ViewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS);
     };
+    public static Route serverOrderDemo = (request, response) -> {
+        Map<String, Object> model = new HashMap<>();
+
+        // TODO: Path.Template.CUSTOMER_ORDERS & BOOSTER_ORDERS could be merged and th:if...
+
+        return ViewUtil.render(request, model, Path.Template.BOOSTER_DEMO);
+    };
 
     public static Route handleAcceptOrder = (request, response) -> {
 
