@@ -1,52 +1,14 @@
 function main() {
-
-    // $("#show-unfinished").css("opacity", 0.4);
-    // $("#show-finished").css("opacity", 0.4);
-
-    // $(".finished").parent().css("display", "none");
-    // $(".unfinished").parent().css("display", "none");
+    $("#asd").children().hide();
 
     function sortStatusBy(selected) {
-        // var activeGameText = findActiveGame();
-        // var activeGame;
-        // if(activeGameText.includes("lol")) {
-        //     activeGame = "lol";
-        // } else if(activeGameText.includes("wow")) {
-        //     activeGame = "wow";
-        // } else if(activeGameText.includes("fifa")) {
-        //     activeGame = "fifa";
-        // } else if(activeGameText.includes("csgo")) {
-        //     activeGame = "csgo";
-        // } else if(activeGameText.includes("overwatch")) {
-        //     activeGame = "overwatch";
-        // }
-        // console.log(activeGame);
-
-        var order = $("."+selected).parent();
-        var toogler = $("#show-"+selected);
-        if(order.css("display") == "block") {
-            order.css("display", "none");
-            toogler.css("opacity", 0.4);
-            toogler.addClass("active");
-        } else {
-            order.css("display", "block");
-            toogler.css("opacity", 1);
-            toogler.addClass('inactive');
-        }
+        $("#pricing-table").children().hide();
+        // $("#pricing-table").find(".free").hide();
+        // $("#pricing-table").find(".finished").hide();
+        // $("#pricing-table").find(".unfinished").hide();                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                           .hide();
+        console.log($("#pricing-table").find("."+selected));
+        $("#pricing-table").find("."+selected).parent().show();
     }
-
-    // function findActiveGame() {
-    //     var content = $("#gamePicker").children();
-    //     console.log(content);
-    //     for (var index = 0; index < content.length; index++) {
-    //         var element = content[index];
-            
-    //         if(element.includes('active')) {
-    //             return element;
-    //         }
-    //     }
-        
-    // }
 
     function toogleGame(clicked) {
         $("#show-lol").css("opacity", 0.4);
@@ -56,18 +18,17 @@ function main() {
         $("#show-csgo").css("opacity", 0.4);
         $("#show-"+clicked).css("opacity", 1);
 
-        // var content = $("."+clicked+"-order").html();
-        // var div = '<div class="plan lol-order">';
-        // $(".content").empty();
-        // $(".database").hide();
-        // $("#pricing-table").append(div + content + "</div>");
-
-        $(".lol-order").hide();
-        $(".overwatch-order").hide();
-        $(".fifa-order").hide();
-        $(".wow-order").hide();
-        $(".csgo-order").hide();
-        $("."+clicked+"-order").css("display", "block");
+        $(".database > .lol-order").hide();
+        $(".database > .overwatch-order").hide();   
+        $(".database > .fifa-order").hide();
+        $(".database > .wow-order").hide();
+        $(".database > .csgo-order").hide();
+        $("#pricing-table").empty();
+        
+        $("#asd").find("."+ clicked + "-order").each(function() {
+            $("#pricing-table").append('<div class="plan '+ clicked + '"-order">' + $(this).html() + '</div>');
+        });
+        
     }
 
     $("#show-lol").click(function () {
