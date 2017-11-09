@@ -1,11 +1,11 @@
 package application.model;
 
 public enum GameType {
-    OW("Overwatch", "ow.jpg"),
-    LOL("League of Legends", "lol.jpg"),
-    FIFA("FIFA", "fifa.jpg"),
-    WOW("World of Warcraft", "wow.jpg"),
-    CSGO("Counter-Strike: Global Offensive", "csgo.jpg");
+    OW("Overwatch", "ow.png"),
+    LOL("League of Legends", "lol.png"),
+    FIFA("FIFA", "fifa.png"),
+    WOW("World of Warcraft", "wow.png"),
+    CSGO("Counter-Strike: Global Offensive", "csgo.png");
 
     private String name;
     private String icon;
@@ -20,6 +20,6 @@ public enum GameType {
     }
 
     public String getIcon() {
-        return "/img/" + icon;
+        return "/pictures/game-picture/" + icon;
     }
 }

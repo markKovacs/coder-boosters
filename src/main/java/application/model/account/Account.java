@@ -28,6 +28,8 @@ public abstract class Account {
 
     private String password;
 
+    private int boostCoin;
+
     public Account() {
     }
 
@@ -35,6 +37,7 @@ public abstract class Account {
         this.accountName = accountName;
         this.email = email;
         this.password = password;
+        this.boostCoin = 150;
     }
 
     // ABSTRACT METHODS
@@ -66,5 +69,10 @@ public abstract class Account {
     public void setPassword(String password) {
         this.password = password;
     }
-
+    public int getBoostCoin() {
+        return boostCoin;
+    }
+    public void setBoostCoin(int boostCoin) {
+        this.boostCoin = boostCoin;
+    }
 }

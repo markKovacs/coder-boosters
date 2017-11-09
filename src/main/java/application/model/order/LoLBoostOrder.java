@@ -21,19 +21,17 @@ public class LoLBoostOrder extends BoostOrder {
 
     public LoLBoostOrder(LeagueDivision currentRank, int numberOfGames,
                          OrderType orderType, double bonusPercentage, Date deadLine) {
-        super();
-        this.gameType = GameType.LOL;
+        super(GameType.LOL, numberOfGames, orderType, bonusPercentage, deadLine);
+
+        super.basePrice = calcBasePrice();
+        super.calcTotal();
+
         this.currentRank = currentRank;
-        this.numberOfGames = numberOfGames;
-        this.orderType = orderType;
-        this.bonusPercentage = bonusPercentage;
-        this.deadLine = deadLine;
-        this.basePrice = calcBasePrice();
     }
 
     @Override
     public double calcBasePrice() {
-        // TODO: implement!!!
+        // TODO: implement algorithm
         double calcedPrice = 100;
 
         return calcedPrice;
