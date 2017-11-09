@@ -60,6 +60,7 @@ public class App {
         post(Path.Web.LOGOUT, AccountController.handleLogout);
         post(Path.Web.REGISTER, AccountController.handleRegistration);
         post(Path.Web.CUSTOMER_PROFILE, AccountController.handleCustomerProfileEditing);
+        post(Path.Web.CREATE_ORDER, OrderController.handleOrderCreation);
 
     }
 

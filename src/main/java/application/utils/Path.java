@@ -13,11 +13,9 @@ public class Path {
         public static final String LOGOUT = "/logout";
         public static final String ORDERS_PAGE = "/orders-page";
         public static final String BOOSTER_PAGE = "/booster-page";
-
-
         public static final String CHOOSE_GAME = "/choose-game";
         public static final String ORDER_FORM = "/order-form";
-        public static final String ORDER_LIST = "/orders";
+        public static final String CREATE_ORDER = "/create-order";
     }
 
     public static class Template {
@@ -30,7 +28,6 @@ public class Path {
         public static final String BOOSTER_PAGE = "account/booster-order";
         public static final String CHOOSE_GAME = "choose_game";
         public static final String ORDER_FORM = "order-form";
-        public static String ORDER_LIST = "order-list";
     }
 
 }

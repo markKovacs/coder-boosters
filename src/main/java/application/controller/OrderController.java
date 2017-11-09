@@ -1,11 +1,5 @@
 package application.controller;
 
-import application.model.GameType;
-import application.model.order.LeagueDivision;
-import application.utils.Path;
-import application.utils.ViewUtil;
-import spark.Route;
-import java.util.*;
 import application.dao.DaoFactory;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
@@ -17,11 +11,6 @@ import application.model.order.OrderType;
 import application.utils.*;
 import spark.Request;
 import spark.Route;
-import application.utils.Path;
-import application.utils.ViewUtil;
-
-import java.util.HashMap;
-import java.util.Map;
 
 import java.util.*;
 
@@ -37,7 +26,7 @@ public class OrderController {
         Map<String, Object> model = new HashMap<>();
         model.put("orders", DaoFactory.getBoostOrderDao().getOrdersByAccount(account));
 
-        return ViewUtil.render(request, model, Path.Template.ORDER_LIST);
+        return ViewUtil.render(request, model, Path.Template.ORDERS_PAGE);
     };
 
     public static Route handleAcceptOrder = (request, response) -> {
@@ -56,7 +45,7 @@ public class OrderController {
 
         // TODO: success message could be added.
 
-        response.redirect(Path.Web.ORDER_LIST);
+        response.redirect(Path.Web.ORDERS_PAGE);
         return null;
     };
 
@@ -95,7 +84,7 @@ public class OrderController {
         // TODO: GameAccount object to be created and persisted here, added to BoostOrder.
         DaoFactory.getBoostOrderDao().addBoostOrder(account, boostOrder);
 
-        response.redirect(Path.Web.ORDER_LIST);
+        response.redirect(Path.Web.ORDERS_PAGE);
         return null;
     };
 
