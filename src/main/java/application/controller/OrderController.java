@@ -19,6 +19,7 @@ import spark.Request;
 import spark.Route;
 import application.utils.Path;
 import application.utils.ViewUtil;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -98,6 +99,20 @@ public class OrderController {
         return null;
     };
 
+    public static Route serveOrdersPage = (request, response) -> {
+
+        Map<String, Object> model = new HashMap<>();
+
+        return ViewUtil.render(request, model, Path.Template.ORDERS_PAGE);
+
+    public static Route serveBoosterPage = (request, response) -> {
+
+        Map<String, Object> model = new HashMap<>();
+
+        return ViewUtil.render(request, model, Path.Template.BOOSTER_PAGE);
+    };
+
+    };
     public static Route serveChooseGamePage = (request, response) -> {
 
         Map<String, Object> model = new HashMap<>();

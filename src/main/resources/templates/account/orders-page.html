@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html layout:decorate="~{starter}" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
+<html layout:decorate="~{account/orders-page-body}" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.w3.org/1999/xhtml">
 
 <div layout:fragment="customer-order">
@@ -7,12 +7,11 @@
     <div id="pricing-table" class="clear">
         <div class="plan lol">
             <h3><img
-                    src="https://i1.wp.com/wiki-fx.net/wp-content/uploads/2013/05/League_Of_Legends_Logo1.png?fit=256%2C256"
+                    th:src="@{~/pictures/game-picture/lol.png}"
                     class="img-circle"></h3>
             <a class="signup" href="">Accept</a>
             <ul>
-                <li><b><img class="name"
-                            src="http://image.noelshack.com/fichiers/2014/24/1402778259-league-of-legends-logo.png"></b>
+                <li><b>League Of Legends</b>
                 </li>
                 <li><b>Divisio</b> Gold V</li>
                 <li><b>Goal</b> Plat V</li>
@@ -20,14 +19,12 @@
                 <li><b>DeadLine</b> 06/12/2017</li>
             </ul>
         </div>
-
         <div class="plan cs-go">
-            <h3><img src="https://versatileservers.com/wp-content/uploads/2017/08/csgo-icon-4.png" class="img-circle">
+            <h3><img th:src="@{~/pictures/game-picture/csgo.png}" class="img-circle">
             </h3>
             <a class="signup" href="">Accept</a>
             <ul>
-                <li><b><img src="https://upload.wikimedia.org/wikipedia/en/3/33/Counter-Strike_Logo.png"
-                            class="name"></b></li>
+                <li><b>Counter-Striek:GO</b></li>
                 <li><b>Divisio</b> Gold V</li>
                 <li><b>Goal</b> Plat V</li>
                 <li><b>Price</b> 100$</li>
@@ -36,10 +33,10 @@
         </div>
 
         <div class="plan fifa">
-            <h3><img src="http://www.godisageek.com/wp-content/uploads/EA_Sports_LOGO.png" class="img-circle"></h3>
+            <h3><img th:src="@{~/pictures/game-picture/fifa.png}" class="img-circle"></h3>
             <a class="signup" href="">Accept</a>
             <ul>
-                <li><b><img src="http://downdetector.com/i/logo/Fifa-ea.png" class="name"></b></li>
+                <li><b>FIFA</b></li>
                 <li><b>Divisio</b> Amature 2</li>
                 <li><b>Goal</b> Pro 2</li>
                 <li><b>Price</b> 50$</li>
@@ -48,13 +45,11 @@
         </div>
         <div class="plan wow">
             <h3><img
-                    src="https://vignette.wikia.nocookie.net/wow/images/7/77/World_of_warcraft-icon.png/revision/latest?cb=20110530143143&path-prefix=nl"
+                    th:src="@{~/pictures/game-picture/wow.png}"
                     class="img-circle"></h3>
             <a class="signup" href="">Accept</a>
             <ul>
-                <li><b><img
-                        src="https://vignette.wikia.nocookie.net/wow/images/7/7d/WoWlogo.png/revision/latest?cb=20090316092304&path-prefix=hu"
-                        class="name"></b></li>
+                <li><b> World Of Warcraft </b></li>
                 <li><b>Divisio</b> Gold V</li>
                 <li><b>Goal</b> Plat V</li>
                 <li><b>Price</b> 100$</li>
@@ -62,11 +57,10 @@
             </ul>
         </div>
         <div class="plan overwatch">
-            <h3><img class="img-circle" src="http://www.gamasutra.com/db_area/images/news/2017/Sep/306316/ow.jpg"></h3>
+            <h3><img class="img-circle" th:src="@{~/pictures/game-picture/ow.png}"></h3>
             <a class="signup" href="">Accept</a>
             <ul>
-                <li><b><img src="https://us.battle.net/forums/static/images/game-logos/game-logo-overwatch.png"
-                            class="name"></b></li>
+                <li><b> Overwatch</b></li>
                 <li><b>Divisio</b> Gold V</li>
                 <li><b>Goal</b> Plat V</li>
                 <li><b>Price</b> 100$</li>
