@@ -17,6 +17,10 @@ public class App {
 
     public static void main(String[] args) {
 
+        /*DIContainer di = new DIContainer();
+        MyApp app = di.init(); // has tons of new ..
+        app.start(); // setup code, start Spark,..*/
+
         // INIT ENTITY MANAGER FACTORY
         EMFactory = Persistence.createEntityManagerFactory("jpaTestingPU");
 

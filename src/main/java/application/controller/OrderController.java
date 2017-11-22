@@ -1,7 +1,6 @@
 package application.controller;
 
 import application.dao.DaoFactory;
-import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;

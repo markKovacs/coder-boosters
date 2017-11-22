@@ -2,26 +2,41 @@
 <html layout:decorate="~{account/layout}" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.w3.org/1999/xhtml">
 
+<head><title>Customer Orders</title></head>
+
 <div layout:fragment="content">
 
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Orders
+            Customer Orders
         </h1>
     </section>
 
     <a class="btn btn-default" role="button" href="/select-game">New Order</a>
 
-    <!--<form action="/create-order" method="GET">
-        <input type="submit" class="btn btn-default">
-        <select name="gametype" id="select-gametype">
-            <option th:each="game : ${gameTypes}" th:text="${game}" th:value="${game}"></option>
-        </select>
-    </form>-->
+    <!-- GAME FILTER SECTION -->
+    <div class="row">
+        <div class="col-sm-12" id="gamePicker">
+            <img class="img-circle" id="show-lol" src="https://i1.wp.com/wiki-fx.net/wp-content/uploads/2013/05/League_Of_Legends_Logo1.png?fit=256%2C256">
+            <img class="img-circle" id="show-csgo" src="https://versatileservers.com/wp-content/uploads/2017/08/csgo-icon-4.png">
+            <img class="img-circle" id="show-fifa" src="http://www.godisageek.com/wp-content/uploads/EA_Sports_LOGO.png">
+            <img class="img-circle" id="show-wow" src="https://vignette.wikia.nocookie.net/wow/images/7/77/World_of_warcraft-icon.png/revision/latest?cb=20110530143143&path-prefix=nl">
+            <img class="img-circle" id="show-ow" src="http://www.gamasutra.com/db_area/images/news/2017/Sep/306316/ow.jpg">
+        </div>
 
-    <div id="pricing-table" class="clear">
-        <div th:each="order : ${orders}" th:attr="class=${order.gameType + ' plan'}">
+        <div class="col-sm-12">
+            <button id="show-available" type="button" class="btn btn-danger">Available</button>
+            <button id="show-taken" type="button" class="btn btn-primary">Taken</button>
+            <button id="show-done" type="button" class="btn btn-success">Done</button>
+        </div>
+    </div>
+
+    <!-- ORDERS LIST SECTION -->
+    <div id="pricing-table" class="clear content"></div>
+    <div id="all-orders" class="clear">
+        <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
+         '-order plan ' + #strings.toLowerCase(order.status)}">
             <h3><img
                     th:attr="src=${order.gameType.getIcon()}"
                     class="img-circle"></h3>
@@ -36,57 +51,6 @@
                 <li><b>DeadLine</b> [[${order.deadlineString()}]]</li>
             </ul>
         </div>
-
-
-<!--        <div class="plan cs-go">
-            <h3><img th:src="@{~/pictures/game-picture/csgo.png}" class="img-circle">
-            </h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b>Counter-Striek:GO</b></li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
-            </ul>
-        </div>
-
-        <div class="plan fifa">
-            <h3><img th:src="@{~/pictures/game-picture/fifa.png}" class="img-circle"></h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b>FIFA</b></li>
-                <li><b>Divisio</b> Amature 2</li>
-                <li><b>Goal</b> Pro 2</li>
-                <li><b>Price</b> 50$</li>
-                <li><b>DeadLine</b> 05/12/2017</li>
-            </ul>
-        </div>
-        <div class="plan wow">
-            <h3><img
-                    th:src="@{~/pictures/game-picture/wow.png}"
-                    class="img-circle"></h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b> World Of Warcraft </b></li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
-            </ul>
-        </div>
-        <div class="plan overwatch">
-            <h3><img class="img-circle" th:src="@{~/pictures/game-picture/ow.png}"></h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b> Overwatch</b></li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
-            </ul>
-        </div>-->
-
 
     </div>
 </div>
