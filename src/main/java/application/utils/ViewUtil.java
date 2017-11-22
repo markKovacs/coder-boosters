@@ -1,7 +1,6 @@
 package application.utils;
 
 import application.dao.AccountDao;
-import application.dao.DaoFactory;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
@@ -12,11 +11,11 @@ import java.util.Map;
 
 public class ViewUtil {
 
-    public static String render(Request request, Map<String, Object> model, String view) {
+    public String render(Request request, Map<String, Object> model, String view, Account account) {
 
-        AccountDao accDao = DaoFactory.getAccountDao();
-        Long currentAccId = RequestUtil.getSessionAccountId(request);
-        Account account = accDao.findAccountById(currentAccId);
+//        AccountDao accDao = DaoFactory.getAccountDao();
+//        Long currentAccId = RequestUtil.getSessionAccountId(request);
+//        Account account = accDao.findAccountById(currentAccId);
 
         String accountType = null;
         if (account instanceof CustomerAccount) {

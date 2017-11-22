@@ -1,6 +1,7 @@
 package application.controller;
 
-import application.dao.DaoFactory;
+import application.dao.AccountDao;
+import application.dao.BoostOrderDao;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
@@ -17,34 +18,40 @@ import java.util.*;
 import static spark.Spark.halt;
 
 public class OrderController {
+    private AccountDao accountDao;
+    private BoostOrderDao boostOrderDao;
+    private ViewUtil viewUtil;
+    private RequestUtil requestUtil;
+    private DataUtil dataUtil;
 
-    public static Route serveOrderListPage = (request, response) -> {
+    public OrderController(AccountDao accountDao, BoostOrderDao boostOrderDao, ViewUtil viewUtil, RequestUtil requestUtil, DataUtil dataUtil) {
+        this.accountDao = accountDao;
+        this.boostOrderDao = boostOrderDao;
+        this.viewUtil = viewUtil;
+        this.requestUtil = requestUtil;
+        this.dataUtil = dataUtil;
+    }
 
-        Long accountId = RequestUtil.getSessionAccountId(request);
-        Account account = DaoFactory.getAccountDao().findAccountById(accountId);
+    public Route serveOrderListPage = (request, response) -> {
+
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Account account = accountDao.findAccountById(accountId);
 
         Map<String, Object> model = new HashMap<>();
 
-        // TODO: Path.Template.CUSTOMER_ORDERS & BOOSTER_ORDERS could be merged and th:if...
         if (account instanceof BoosterAccount) {
             // TODO: orders need to be added to model differently: where booster_id is null or current booster's id
-            return ViewUtil.render(request, model, Path.Template.BOOSTER_ORDERS);
+            model.put("orders", new ArrayList<BoostOrder>());
+            return viewUtil.render(request, model, Path.Template.BOOSTER_ORDERS, account);
         }
-        model.put("orders", DaoFactory.getBoostOrderDao().getOrdersByAccount(account));
-        return ViewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS);
-    };
-    public static Route serverOrderDemo = (request, response) -> {
-        Map<String, Object> model = new HashMap<>();
-
-        // TODO: Path.Template.CUSTOMER_ORDERS & BOOSTER_ORDERS could be merged and th:if...
-
-        return ViewUtil.render(request, model, Path.Template.BOOSTER_DEMO);
+        model.put("orders", boostOrderDao.getOrdersByAccount(account));
+        return viewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS, account);
     };
 
-    public static Route handleAcceptOrder = (request, response) -> {
+    public Route handleAcceptOrder = (request, response) -> {
 
-        Long accountId = RequestUtil.getSessionAccountId(request);
-        BoosterAccount boosterAccount = DaoFactory.getAccountDao().findBoosterById(accountId);
+        Long accountId = requestUtil.getSessionAccountId(request);
+        BoosterAccount boosterAccount = accountDao.findBoosterById(accountId);
 
         if (boosterAccount == null) {
             response.redirect(Path.Web.INDEX);
@@ -52,8 +59,8 @@ public class OrderController {
         }
 
         Long boostOrderId = Long.parseLong(request.params("boostOrderId"));
-        BoostOrder boostOrder = DaoFactory.getBoostOrderDao().findBoostOrder(boostOrderId);
-        DaoFactory.getBoostOrderDao().addBoostOrder(boosterAccount, boostOrder);
+        BoostOrder boostOrder = boostOrderDao.findBoostOrder(boostOrderId);
+        boostOrderDao.addBoostOrder(boosterAccount, boostOrder);
 
         // TODO: success message could be added.
 
@@ -61,10 +68,10 @@ public class OrderController {
         return null;
     };
 
-    public static Route handleOrderCreation = (request, response) -> {
+    public Route handleOrderCreation = (request, response) -> {
 
-        Long accountId = RequestUtil.getSessionAccountId(request);
-        CustomerAccount account = DaoFactory.getAccountDao().findCustomerById(accountId);
+        Long accountId = requestUtil.getSessionAccountId(request);
+        CustomerAccount account = accountDao.findCustomerById(accountId);
 
         List<String> errorMessages = validateOrderData(request);
 
@@ -72,7 +79,7 @@ public class OrderController {
             Map<String, Object> model = new HashMap<>();
             model.put("errors", errorMessages);
 
-            return ViewUtil.render(request, model, Path.Template.ORDER_FORM);
+            return viewUtil.render(request, model, Path.Template.ORDER_FORM, account);
         }
 
         BoostOrder boostOrder = null;
@@ -83,7 +90,7 @@ public class OrderController {
                         Integer.parseInt(request.queryParams("numberOfGames")),
                         OrderType.valueOf(request.queryParams("orderType")),
                         Double.parseDouble(request.queryParams("bonusPercentage")),
-                        DataUtil.createDate(
+                        dataUtil.createDate(
                                 Integer.parseInt(request.queryParams("year")),
                                 Integer.parseInt(request.queryParams("month")),
                                 Integer.parseInt(request.queryParams("day")),
@@ -94,36 +101,45 @@ public class OrderController {
         }
 
         // TODO: GameAccount object to be created and persisted here, added to BoostOrder.
-        DaoFactory.getBoostOrderDao().addBoostOrder(account, boostOrder);
+        boostOrderDao.addBoostOrder(account, boostOrder);
         // TODO: unifiy USD - BoostCoin and int - double
-        DaoFactory.getAccountDao().changeBoostCoinByAmount(account, (-1) * (int) boostOrder.getTotalPrice());
+        accountDao.changeBoostCoinByAmount(account, (-1) * (int) boostOrder.getTotalPrice());
 
         response.redirect(Path.Web.CUSTOMER_ORDERS);
         return null;
     };
 
-    public static Route serveCustomerOrders = (request, response) -> {
+    public Route serveCustomerOrders = (request, response) -> {
 
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Account account = accountDao.findAccountById(accountId);
         Map<String, Object> model = new HashMap<>();
 
-        return ViewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS);
+        return viewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS, account);
     };
 
-    public static Route serveBoosterOrders = (request, response) -> {
+    public Route serveBoosterOrders = (request, response) -> {
 
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Account account = accountDao.findAccountById(accountId);
         Map<String, Object> model = new HashMap<>();
 
-        return ViewUtil.render(request, model, Path.Template.BOOSTER_ORDERS);
+        return viewUtil.render(request, model, Path.Template.BOOSTER_ORDERS, account);
     };
 
-    public static Route serveSelectGamePage = (request, response) -> {
+    public Route serveSelectGamePage = (request, response) -> {
 
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Account account = accountDao.findAccountById(accountId);
         Map<String, Object> model = new HashMap<>();
 
-        return ViewUtil.render(request, model, Path.Template.SELECT_GAME);
+        return viewUtil.render(request, model, Path.Template.SELECT_GAME, account);
     };
-  
-    public static Route serveOrderForm = (request, response) -> {
+
+    public Route serveOrderForm = (request, response) -> {
+
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Account account = accountDao.findAccountById(accountId);
 
         String gameTypeString = request.queryParams("game_type");
         List<LeagueDivision> leagueDivisions = Arrays.asList(LeagueDivision.values());
@@ -132,10 +148,10 @@ public class OrderController {
         model.put("game_type", gameTypeString);
         model.put("league_divisions", leagueDivisions);
 
-        return ViewUtil.render(request, model, Path.Template.ORDER_FORM);
+        return viewUtil.render(request, model, Path.Template.ORDER_FORM, account);
     };
-    
-    private static List<String> validateOrderData(Request request) {
+
+    private List<String> validateOrderData(Request request) {
         List<String> errors = new ArrayList<>();
 
         switch (request.queryParams("gameType")) {
