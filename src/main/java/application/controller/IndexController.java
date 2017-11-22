@@ -8,11 +8,17 @@ import java.util.Map;
 
 public class IndexController {
 
-    public static Route serveIndexPage = (request, response) -> {
+    private ViewUtil viewUtil;
+
+    public IndexController(ViewUtil viewUtil) {
+        this.viewUtil = viewUtil;
+    }
+
+    public Route serveIndexPage = (request, response) -> {
 
         Map<String, Object> model = new HashMap<>();
 
-        return ViewUtil.render(request, model, Path.Template.INDEX);
+        return viewUtil.render(request, model, Path.Template.INDEX, null);
     };
 
 }
