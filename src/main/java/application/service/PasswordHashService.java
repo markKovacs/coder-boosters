@@ -1,4 +1,4 @@
-package application.utils;
+package application.service;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
@@ -7,7 +7,7 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
 
-public class PasswordStorage {
+public class PasswordHashService {
 
     @SuppressWarnings("serial")
     static public class InvalidHashException extends Exception {
@@ -44,7 +44,7 @@ public class PasswordStorage {
     public static final int SALT_INDEX = 3;
     public static final int PBKDF2_INDEX = 4;
 
-    public static String createHashedPassword(String password) {
+    public String createHashedPassword(String password) {
         String hash = null;
         try {
             hash = createHash(password);
@@ -54,13 +54,13 @@ public class PasswordStorage {
         return hash;
     }
 
-    public static String createHash(String password)
+    private static String createHash(String password)
             throws CannotPerformOperationException
     {
         return createHash(password.toCharArray());
     }
 
-    public static String createHash(char[] password)
+    private static String createHash(char[] password)
             throws CannotPerformOperationException
     {
         // Generate a random salt
@@ -83,13 +83,13 @@ public class PasswordStorage {
         return parts;
     }
 
-    public static boolean verifyPassword(String password, String correctHash)
+    public boolean verifyPassword(String password, String correctHash)
             throws CannotPerformOperationException, InvalidHashException
     {
         return verifyPassword(password.toCharArray(), correctHash);
     }
 
-    public static boolean verifyPassword(char[] password, String correctHash)
+    private static boolean verifyPassword(char[] password, String correctHash)
             throws CannotPerformOperationException, InvalidHashException
     {
         // Decode the hash into its parameters
