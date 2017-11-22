@@ -18,6 +18,8 @@ public class Path {
         public static final String CREATE_ORDER = "/create-order";
         public static final String CUSTOMER_PAYPAL = "/customer-paypal";
         public static final String BOOSTER_DEMO = "/booster-order";
+        public static final String BOOSTERS ="/boosters";
+
     }
 
     public static class Template {
@@ -33,6 +35,7 @@ public class Path {
         public static final String CUSTOMER_PAYPAL = "account/customer-paypal";
         public static final String BOOSTER_DEMO = "booster-demo";
 
+        public static final String BOOSTERS ="index/boosters";
     }
 
 }

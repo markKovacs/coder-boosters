@@ -15,4 +15,10 @@ public class IndexController {
         return ViewUtil.render(request, model, Path.Template.INDEX);
     };
 
+    public static Route serverBoostersPage = (request, response) -> {
+
+        Map<String, Object> model = new HashMap<>();
+        return ViewUtil.render(request, model, Path.Template.BOOSTERS);
+    };
+
 }

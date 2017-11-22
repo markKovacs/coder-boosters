@@ -36,6 +36,7 @@ public class App {
 
         // ROUTING ENDPOINTS
         get(Path.Web.INDEX, IndexController.serveIndexPage);
+        get(Path.Web.BOOSTERS, IndexController.serverBoostersPage);
         get(Path.Web.LOGIN, AccountController.serveLoginPage);
         get(Path.Web.REGISTER, AccountController.serveRegistrationPage);
 
