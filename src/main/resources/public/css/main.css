@@ -1578,7 +1578,6 @@
 		-webkit-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
 		-ms-transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
 		transition: border-color 0.2s ease-in-out, color 0.2s ease-in-out;
-		border-bottom: dotted 1px;
 		color: #e44c65;
 		text-decoration: none;
 	}
@@ -2248,8 +2247,7 @@
 		background: transparent;
 	}
 
-	input[type="checkbox"],
-	input[type="radio"] {
+	input[type="checkbox"] {
 		-moz-appearance: none;
 		-webkit-appearance: none;
 		-ms-appearance: none;
