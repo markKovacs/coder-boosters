@@ -21,4 +21,10 @@ public class IndexController {
         return viewUtil.render(request, model, Path.Template.INDEX, null);
     };
 
+    public static Route serverBoostersPage = (request, response) -> {
+
+        Map<String, Object> model = new HashMap<>();
+        return ViewUtil.render(request, model, Path.Template.BOOSTERS);
+    };
+
 }
