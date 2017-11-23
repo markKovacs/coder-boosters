@@ -2,7 +2,10 @@ package application.model.order;
 
 import application.model.GameType;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
 import java.util.Date;
 
 @Entity
@@ -30,9 +33,9 @@ public class LoLBoostOrder extends BoostOrder {
     }
 
     @Override
-    public double calcBasePrice() {
+    public int calcBasePrice() {
         // TODO: implement algorithm
-        double calcedPrice = 100;
+        int calcedPrice = 100;
 
         return calcedPrice;
     }

@@ -10,7 +10,6 @@ import application.model.order.Status;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
-
 import java.util.List;
 
 public class OrderDaoJPA implements OrderDao {
@@ -26,6 +25,7 @@ public class OrderDaoJPA implements OrderDao {
         EntityManager em = entityManagerFactory.createEntityManager();
 
         BoostOrder boostOrder = em.find(BoostOrder.class, boostOrderId);
+        boostOrder.calcTotal();
 
         em.close();
         return boostOrder;
@@ -49,6 +49,8 @@ public class OrderDaoJPA implements OrderDao {
         em.getTransaction().commit();
         em.close();
 
+        mergedOrder.calcTotal();
+
         return mergedOrder;
     }
 
@@ -58,22 +60,15 @@ public class OrderDaoJPA implements OrderDao {
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
 
-
-
         GameAccount mergedGameAccount = em.merge(gameAccount);
         BoostOrder mergedOrder = em.merge(boostOrder);
 
         mergedOrder.setGameAccount(mergedGameAccount);
         mergedGameAccount.addBoostOrderList(mergedOrder);
 
-        //em.persist(mergedOrder);
-
         em.getTransaction().commit();
         em.close();
     }
-
-//    public Long closeBoostOrder (Account account, BoostOrder boostOrder) {
-//    }
 
     @Override
     public void removeBoostOrder(Account account, BoostOrder boostOrder) {
@@ -96,6 +91,7 @@ public class OrderDaoJPA implements OrderDao {
 
     @Override
     public void closeBoostOrder(Account account, BoostOrder boostOrder) {
+
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
 
@@ -105,7 +101,6 @@ public class OrderDaoJPA implements OrderDao {
 
         em.getTransaction().commit();
         em.close();
-
     }
 
     @Override

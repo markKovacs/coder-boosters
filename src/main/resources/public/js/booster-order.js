@@ -1,5 +1,5 @@
 function main() {
-    // $("#all-orders").children().hide();
+    $("#all-orders").children().hide();
     toogleGame("lol");
     sortStatusBy("available");
 
