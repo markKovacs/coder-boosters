@@ -27,6 +27,7 @@ public class ViewUtil {
         // ADDED TO EVERY VIEW TO BE RENDERED
         model.put("currentUser", account != null ? account.getAccountName() : null);
         model.put("loggedInAs", accountType);
+        model.put("balance", account != null ? account.getBoostCoin() : 0);
 
         return new ThymeleafTemplateEngine().render(new ModelAndView(model, view));
     }
