@@ -37,7 +37,6 @@ public abstract class Account {
         this.accountName = accountName;
         this.email = email;
         this.password = password;
-        this.boostCoin = 150;
     }
 
     // ABSTRACT METHODS

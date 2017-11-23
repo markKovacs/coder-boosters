@@ -30,6 +30,7 @@ public class BoosterAccount extends Account {
     public BoosterAccount(String accountName, String email, String password) {
         super(accountName, email, password);
         this.honorPoints = 100;
+        this.setBoostCoin(0);
     }
 
     @Override
