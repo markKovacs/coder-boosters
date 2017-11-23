@@ -51,6 +51,9 @@ public class OrderDaoJPA implements OrderDao {
         return mergedOrder.getId();
     }
 
+//    public Long closeBoostOrder (Account account, BoostOrder boostOrder) {
+//    }
+
     @Override
     public void removeBoostOrder(Account account, BoostOrder boostOrder) {
 
@@ -68,6 +71,20 @@ public class OrderDaoJPA implements OrderDao {
 
         em.getTransaction().commit();
         em.close();
+    }
+
+    @Override
+    public void closeBoostOrder(Account account, BoostOrder boostOrder) {
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+
+        BoostOrder mergedOrder = em.merge(boostOrder);
+
+        mergedOrder.setStatus(Status.DONE);
+
+        em.getTransaction().commit();
+        em.close();
+
     }
 
     @Override
@@ -112,7 +129,7 @@ public class OrderDaoJPA implements OrderDao {
         EntityManager em = entityManagerFactory.createEntityManager();
 
         TypedQuery<BoostOrder> result = em.createNamedQuery("BoostOrder.getOrdersForBoosterAndAllAvailable", BoostOrder.class)
-                .setParameter("accountId", account.getId());
+                .setParameter("account", account);
 
         List<BoostOrder> orders = result.getResultList();
 

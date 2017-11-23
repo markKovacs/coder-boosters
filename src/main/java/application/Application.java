@@ -53,6 +53,8 @@ public class Application {
 
         get(Path.Web.BOOSTER_ORDERS, orderController.serveOrderListPage);
         get(Path.Web.CUSTOMER_ORDERS, orderController.serveOrderListPage);
+        post(Path.Web.ACCEPT_ORDER, orderController.handleAcceptOrder);
+        post(Path.Web.CLOSE_ORDER, orderController.handleCloseOrder);
 
         get(Path.Web.CUSTOMER_PROFILE, accountController.serveCustomerProfilePage);
         //post(Path.Web.CUSTOMER_PROFILE, accountController.handleCustomerProfileEditing);

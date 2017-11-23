@@ -11,8 +11,11 @@ import java.util.Date;
 
 @NamedQueries({
         @NamedQuery(name = "BoostOrder.getOrdersForBoosterAndAllAvailable",
-                query = "SELECT o FROM BoostOrder o WHERE o.id = :accountId OR o.id IS NULL")
+                query = "SELECT o FROM BoostOrder o WHERE o.boosterAccount = :account OR o.boosterAccount IS NULL"),
+        @NamedQuery(name ="BoostOrder.getBoosterOrderById",
+                query = "SELECT o from BoostOrder o WHERE o.id = :boostOrderId")
 })
+
 @Entity
 @Table(name = "boost_order")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -162,5 +165,20 @@ public abstract class BoostOrder {
         this.totalPrice = this.basePrice * (bonusPercentage/100.0 + 1.0);
     }
 
-
+    @Override
+    public String toString() {
+        return "BoostOrder{" +
+                "id=" + id +
+                ", gameType=" + gameType +
+                ", status=" + status +
+                ", numberOfGames=" + numberOfGames +
+                ", orderType=" + orderType +
+                ", basePrice=" + basePrice +
+                ", bonusPercentage=" + bonusPercentage +
+                ", totalPrice=" + totalPrice +
+                ", deadLine=" + deadLine +
+                ", customerAccount=" + customerAccount +
+                ", boosterAccount=" + boosterAccount +
+                '}';
+    }
 }
