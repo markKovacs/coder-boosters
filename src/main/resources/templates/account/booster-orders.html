@@ -4,6 +4,13 @@
 
 <div layout:fragment="content">
 
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+        <h1>
+            Booster Orders
+        </h1>
+    </section>
+
     <!-- GAME FILTER SECTION -->
     <div class="row">
         <div class="col-sm-12" id="gamePicker">
@@ -15,13 +22,12 @@
         </div>
 
         <div class="col-sm-12">
-            <button id="show-available" type="button" class="btn btn-danger">Available to take orders</button>
-            <button id="show-taken" type="button" class="btn btn-primary">Taken orders</button>
-            <button id="show-done" type="button" class="btn btn-success">Done orders</button>
+            <button id="show-available" type="button" class="btn btn-danger">Available</button>
+            <button id="show-taken" type="button" class="btn btn-primary">Taken</button>
+            <button id="show-done" type="button" class="btn btn-success">Done</button>
         </div>
     </div>
 
-    <!-- TODO: make it booster-like (buttons, extra stuff) -->
     <!-- ORDERS LIST SECTION -->
     <div id="pricing-table" class="clear content"></div>
     <div id="all-orders" class="clear" style="display: none">
@@ -38,7 +44,7 @@
                 </li>
                 <li><b>Current Rank</b> [[${order.currentRank}]]</li>
                 <!--<li><b>Goal</b> Plat V</li>-->
-                <li><b>Price</b> [[${#numbers.formatDecimal(order.getTotalPrice(), 0, 'COMMA', 2, 'POINT')}]]$</li>
+                <li><b>Price</b> [[${order.getTotalPrice()}]]Ƀ</li>
                 <li><b>DeadLine</b> [[${order.deadlineString()}]]</li>
                 <th:block th:if="${order.status.toString()} eq 'AVAILABLE'">
                     <li><b>Account Name</b> N/A</li>
@@ -49,9 +55,8 @@
                     </form>
                 </th:block>
                 <th:block th:if="${order.status.toString()} eq 'TAKEN'">
-                    <!-- TODO: order does NOT have gameAccount yet! fix needed -->
-                    <li><b>Account Name</b> [[${order.id}]]</li>
-                    <li><b>Account Password</b> [[${order.id}]]</li>
+                    <li><b>Account Name</b> [[${order.getGameAccountName()}]]</li>
+                    <li><b>Account Password</b> [[${order.getGameAccountPassword()}]]</li>
                     <form th:action="@{~/close-order}" method="POST">
                         <input type="text" th:value="${order.id}" name="boostOrderId" hidden>
                         <input type="submit" name="Close" value="Close" class="btn btn-success">
@@ -60,7 +65,7 @@
                 <th:block th:if="${order.status.toString()} eq 'DONE'">
                     <li><b>Account Name</b> N/A</li>
                     <li><b>Account Password</b> N/A</li>
-                    <button type="button" class="btn btn-primary">Result</button>
+                    <button type="button" class="btn btn-primary">History</button>
                 </th:block>
             </ul>
         </div>

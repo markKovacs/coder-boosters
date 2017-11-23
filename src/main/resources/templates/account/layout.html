@@ -72,9 +72,16 @@ desired effect
 
                     <ul class="nav navbar-nav">
                         <li class="dropdown user user-menu">
-                            <a href="/customer-paypal">
-                                Current Boost Coin: [[${balance}]]
-                            </a>
+                            <th:block th:if="${loggedInAs} eq 'customer'">
+                                <a href="/customer-paypal">
+                                    Current Boost Coin: [[${balance}]]Ƀ
+                                </a>
+                            </th:block>
+                            <th:block th:if="${loggedInAs} eq 'booster'">
+                                <a href="#">
+                                    Current Boost Coin: [[${balance}]]Ƀ
+                                </a>
+                            </th:block>
                         </li>
                         <!-- Messages: style can be found in dropdown.less-->
                         <li class="dropdown messages-menu">
@@ -199,7 +206,7 @@ desired effect
                                             <a href="/customer-profile" class="btn btn-default btn-flat">Profile</a>
                                         </th:block>
                                         <th:block th:if="${loggedInAs} eq 'booster'">
-                                            <a href="/booster-profile" class="btn btn-default btn-flat">Profile</a>
+                                            <a href="#" class="btn btn-default btn-flat">Profile</a>
                                         </th:block>
                                     </div>
                                     <div class="pull-right">
