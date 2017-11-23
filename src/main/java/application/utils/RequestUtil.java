@@ -66,7 +66,7 @@ public class RequestUtil {
         }
     }
 
-    public long getQueryParamBoostOrderId(Request request) {
+    public Long getQueryParamBoostOrderId(Request request) {
         try {
             return Long.parseLong(request.queryParams("boostOrderId"));
         } catch (InputMismatchException e) {

@@ -12,6 +12,8 @@ public interface OrderDao {
     BoostOrder findBoostOrder(Long gameAccountId);
     BoostOrder addBoostOrder(Account account, BoostOrder boostOrder);
     void setGameAccount(BoostOrder order, GameAccount gameAccount);
+    Long addBoostOrder(Account account, BoostOrder boostOrder);
+    void closeBoostOrder(Account account, BoostOrder boostOrder);
     void removeBoostOrder(Account account, BoostOrder boostOrder);
     void setStatus(BoostOrder boostOrder, Status newStatus);
     List<BoostOrder> getOrdersByAccount(Account account);

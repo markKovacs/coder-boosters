@@ -65,9 +65,24 @@ public class OrderController {
 
         // TODO: message could be added (successful or not)
 
-        response.redirect(Path.Web.CUSTOMER_ORDERS);
+        response.redirect(Path.Web.BOOSTER_ORDERS);
         return null;
     };
+
+    public Route handleCloseOrder = (request, response) -> {
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Long boostOrderId = requestUtil.getQueryParamBoostOrderId(request);
+
+        BoosterAccount boosterAccount = accountService.findBoosterById(accountId);
+        BoostOrder boostOrder = orderService.findBoostOrder(boostOrderId);
+
+        boolean successful = orderService.closeOrder(boosterAccount, boostOrder);
+
+
+        response.redirect(Path.Web.BOOSTER_ORDERS);
+        return null;
+    };
+
 
     public Route handleOrderCreation = (request, response) -> {
 

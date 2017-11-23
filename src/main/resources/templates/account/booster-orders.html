@@ -24,13 +24,14 @@
     <!-- TODO: make it booster-like (buttons, extra stuff) -->
     <!-- ORDERS LIST SECTION -->
     <div id="pricing-table" class="clear content"></div>
-    <div id="all-orders" class="clear">
+    <div id="all-orders" class="clear" style="display: none">
         <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
          '-order plan ' + #strings.toLowerCase(order.status)}">
             <h3><img
                     th:attr="src=${order.gameType.getIcon()}"
                     class="img-circle"></h3>
             <ul>
+                </li>
                 <li><b>[[${order.status}]]</b>
                 </li>
                 <li><b>[[${order.gameType.getName()}]]</b>
@@ -42,13 +43,19 @@
                 <th:block th:if="${order.status.toString()} eq 'AVAILABLE'">
                     <li><b>Account Name</b> N/A</li>
                     <li><b>Account Password</b> N/A</li>
-                    <button type="button" class="btn btn-success">Accept</button>
+                    <form th:action="@{~/accept-order}" method="POST">
+                        <input type="text" th:value="${order.id}" name="boostOrderId" hidden>
+                        <input type="submit" name="Accept" value="Accept" class="btn btn-success">
+                    </form>
                 </th:block>
                 <th:block th:if="${order.status.toString()} eq 'TAKEN'">
                     <!-- TODO: order does NOT have gameAccount yet! fix needed -->
-                    <li><b>Account Name</b> [[${order.gameAccount.accountName}]]</li>
-                    <li><b>Account Password</b> [[${order.gameAccount.accountPassword}]]</li>
-                    <button type="button" class="btn btn-danger">Close</button>
+                    <li><b>Account Name</b> [[${order.id}]]</li>
+                    <li><b>Account Password</b> [[${order.id}]]</li>
+                    <form th:action="@{~/close-order}" method="POST">
+                        <input type="text" th:value="${order.id}" name="boostOrderId" hidden>
+                        <input type="submit" name="Close" value="Close" class="btn btn-success">
+                    </form>
                 </th:block>
                 <th:block th:if="${order.status.toString()} eq 'DONE'">
                     <li><b>Account Name</b> N/A</li>

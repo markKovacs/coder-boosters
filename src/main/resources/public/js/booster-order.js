@@ -1,7 +1,15 @@
 function main() {
-    $("#all-orders").children().hide();
+    // $("#all-orders").children().hide();
+    toogleGame("lol");
+    sortStatusBy("available");
+
 
     function sortStatusBy(selected) {
+        $("#show-done").css("opacity", 0.4);
+        $("#show-taken").css("opacity", 0.4);
+        $("#show-available").css("opacity", 0.4);
+        $("#show-"+selected).css("opacity", 1);
+        console.log($("#show"+selected));
         $("#pricing-table").children().hide();
         $("#pricing-table").find("."+selected).show();
     }
