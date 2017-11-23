@@ -1,4 +1,4 @@
-package application.utils;
+package application.service;
 
 import application.Config;
 import org.thymeleaf.TemplateEngine;
@@ -11,11 +11,11 @@ import java.io.StringWriter;
 import java.util.Map;
 import java.util.Properties;
 
-public class Email {
+public class EmailService {
 
     private static final String PATH = "src/main/resources/templates/";
 
-    public static void send(String sendTo, String emailBody, String subject) {
+    public void send(String sendTo, String emailBody, String subject) {
 
         Properties props = new Properties();
         props.put("mail.smtp.host", Config.SMTP_HOST);
@@ -48,7 +48,7 @@ public class Email {
 
     }
 
-    public static String renderEmailTemplate(String template, Map<String, Object> model) {
+    public String renderEmailTemplate(String template, Map<String, Object> model) {
         TemplateEngine templateEngine = new TemplateEngine();
         FileTemplateResolver templateResolver = new FileTemplateResolver();
         templateResolver.setTemplateMode("HTML");

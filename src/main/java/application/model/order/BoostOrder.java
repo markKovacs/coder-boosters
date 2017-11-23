@@ -9,6 +9,10 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@NamedQueries({
+        @NamedQuery(name = "BoostOrder.getOrdersForBoosterAndAllAvailable",
+                query = "SELECT o FROM BoostOrder o WHERE o.id = :accountId OR o.id IS NULL")
+})
 @Entity
 @Table(name = "boost_order")
 @Inheritance(strategy = InheritanceType.JOINED)

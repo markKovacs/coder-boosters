@@ -6,8 +6,6 @@ import application.controller.OrderController;
 import application.utils.DataGenerator;
 import application.utils.Path;
 
-import javax.persistence.Persistence;
-
 import static spark.Spark.*;
 import static spark.debug.DebugScreen.enableDebugScreen;
 
@@ -28,9 +26,6 @@ public class Application {
     }
 
     public void start() {
-
-        // INIT ENTITY MANAGER FACTORY
-        App.EMFactory = Persistence.createEntityManagerFactory("jpaTestingPU");
 
         // INIT TEST DATA
         dataGenerator.initTestData();

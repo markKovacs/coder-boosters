@@ -7,16 +7,22 @@ import application.model.order.BoostOrder;
 import application.model.order.Status;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.TypedQuery;
 
 import java.util.List;
 
-import static application.App.EMFactory;
+public class OrderDaoJPA implements OrderDao {
 
-public class BoostOrderDaoJPA implements BoostOrderDao {
+    private EntityManagerFactory entityManagerFactory;
+
+    public OrderDaoJPA(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
+    }
 
     @Override
     public BoostOrder findBoostOrder(Long boostOrderId) {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         BoostOrder boostOrder = em.find(BoostOrder.class, boostOrderId);
 
@@ -27,7 +33,7 @@ public class BoostOrderDaoJPA implements BoostOrderDao {
     @Override
     public Long addBoostOrder(Account account, BoostOrder boostOrder) {
 
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
 
         Account mergedAccount = em.merge(account);
@@ -48,7 +54,7 @@ public class BoostOrderDaoJPA implements BoostOrderDao {
     @Override
     public void removeBoostOrder(Account account, BoostOrder boostOrder) {
 
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
 
         Account mergedAccount = em.merge(account);
@@ -70,7 +76,7 @@ public class BoostOrderDaoJPA implements BoostOrderDao {
         // MEMORY UPDATE
         boostOrder.setStatus(newStatus);
 
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
 
         BoostOrder mergedOrder = em.merge(boostOrder);
@@ -81,7 +87,7 @@ public class BoostOrderDaoJPA implements BoostOrderDao {
 
     @Override
     public List<BoostOrder> getOrdersByAccount(Account account) {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         Account mergedAccount = em.merge(account);
 
         List<BoostOrder> boostOrders;
@@ -92,10 +98,32 @@ public class BoostOrderDaoJPA implements BoostOrderDao {
         }
         em.close();
 
+        // CALCULATE TRANSIENT FIELD
         for (BoostOrder boostOrder : boostOrders) {
             boostOrder.calcTotal();
         }
 
         return boostOrders;
     }
+
+    @Override
+    public List<BoostOrder> getOrdersForBoosterAndAllAvailable(Account account) {
+
+        EntityManager em = entityManagerFactory.createEntityManager();
+
+        TypedQuery<BoostOrder> result = em.createNamedQuery("BoostOrder.getOrdersForBoosterAndAllAvailable", BoostOrder.class)
+                .setParameter("accountId", account.getId());
+
+        List<BoostOrder> orders = result.getResultList();
+
+        em.close();
+
+        // CALCULATE TRANSIENT FIELD
+        for (BoostOrder boostOrder : orders) {
+            boostOrder.calcTotal();
+        }
+
+        return orders;
+    }
+
 }
