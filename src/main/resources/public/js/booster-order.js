@@ -38,21 +38,26 @@ function main() {
 
     $("#show-lol").click(function () {
        toogleGame("lol");
+       sortStatusBy("available");
     });
 
     $("#show-csgo").click(function () {
         toogleGame("csgo");
+        sortStatusBy("available");
     });
 
     $("#show-fifa").click(function () {
         toogleGame("fifa");
+        sortStatusBy("available");
     });
 
     $("#show-wow").click(function () {
         toogleGame("wow");
+        sortStatusBy("available");
     });
     $("#show-ow").click(function () {
         toogleGame("ow");
+        sortStatusBy("available");
     });
 
 
