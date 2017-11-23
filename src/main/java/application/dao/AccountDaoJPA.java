@@ -124,12 +124,27 @@ public class AccountDaoJPA implements AccountDao {
 
     @Override
     public void changeBoostCoinByAmount(Account account, int amount) {
+
         EntityManager em = entityManagerFactory.createEntityManager();
 
         em.getTransaction().begin();
 
         Account mergedAccount = em.merge(account);
         mergedAccount.setBoostCoin(mergedAccount.getBoostCoin() + amount);
+
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @Override
+    public void transferBoostCoin(BoosterAccount boosterAccount, int totalPrice) {
+
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+
+        BoosterAccount mergedAccount = em.merge(boosterAccount);
+
+        mergedAccount.changeBoostCoin(totalPrice);
 
         em.getTransaction().commit();
         em.close();

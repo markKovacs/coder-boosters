@@ -150,4 +150,8 @@ public class AccountService {
         accountDao.changeBoostCoinByAmount(account, amount);
         return true;
     }
+
+    public void transferBoostCoin(BoosterAccount boosterAccount, int totalPrice) {
+        accountDao.transferBoostCoin(boosterAccount, totalPrice);
+    }
 }
