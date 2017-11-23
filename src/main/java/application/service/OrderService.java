@@ -58,7 +58,7 @@ public class OrderService {
 
             case "LOL":
                 if (!Arrays.asList(LeagueDivision.values())
-                        .contains(LeagueDivision.valueOf(inputData.get("currentRank")))) {
+                        .contains(LeagueDivision.safeValueOf(inputData.get("currentRank")))) {
                     errors.add("Selected league/division rank is invalid.");
                 }
 
@@ -68,7 +68,7 @@ public class OrderService {
                 }
 
                 if (!Arrays.asList(OrderType.values())
-                        .contains(OrderType.valueOf(inputData.get("orderType")))) {
+                        .contains(OrderType.safeValueOf(inputData.get("orderType")))) {
                     errors.add("Selected order type is invalid.");
                 }
 
