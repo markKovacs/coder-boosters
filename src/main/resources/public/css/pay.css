@@ -1,0 +1,371 @@
+.glyphicon {
+    margin-right: 5px;
+}
+
+.checkoutInput {
+    min-width: 40%;
+}
+
+.thumbnail {
+    margin-bottom: 20px;
+    padding: 0px;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    border-radius: 0px;
+}
+
+.thumbnail img {
+    margin-top: 10px;
+}
+
+.item.list-group-item {
+    float: none;
+    width: 100%;
+    background-color: #fff;
+    margin-bottom: 10px;
+}
+
+.item.list-group-item:nth-of-type(odd):hover {
+    background: #428bca;
+}
+
+.item.list-group-item .list-group-image {
+    margin-right: 10px;
+}
+
+.item.list-group-item .thumbnail {
+    margin-bottom: 0px;
+}
+
+.item.list-group-item .caption {
+    padding: 9px 9px 0px 9px;
+}
+
+.item.list-group-item:nth-of-type(odd) {
+    background: #eeeeee;
+}
+
+.item.list-group-item:before, .item.list-group-item:after {
+    display: table;
+    content: " ";
+}
+
+.item.list-group-item img {
+    float: left;
+}
+
+.item.list-group-item:after {
+    clear: both;
+}
+
+.list-group-item-text {
+    margin: 0 0 11px;
+}
+
+/* Custom styles
+*****************/
+html {
+    box-sizing: border-box;
+}
+
+h2 {
+    border-radius: 2px;
+    background-color: #eee;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+h4 {
+    font-size: 16px;
+}
+
+.jumbotron {
+    background-color: steelblue;
+    margin-bottom: 0;
+}
+
+.jumbotron h1 {
+    color: #fff;
+}
+
+.filter-title {
+    font-size: 16px;
+    color: #333;
+    padding: 10px;
+    border-radius: 2px;
+}
+
+.well, .well-sm {
+    font-size: 16px;
+    background-image: none;
+    background-color: #eee;
+    border: none;
+}
+
+.filter {
+    padding: 10px;
+    border-radius: 2px;
+    position: relative;
+    border: 1px solid white;
+}
+
+.selected {
+    background-color: #f5f5f5;
+    border: 1px solid lightsteelblue;
+}
+
+.filter:hover {
+    border: 1px solid lightsteelblue;
+
+    cursor: pointer;
+}
+
+.fa-times {
+    display: none;
+    font-size: 16px;
+}
+
+.filter:hover .fa-times {
+    display: inline;
+    color: #333;
+    padding: 6px;
+    position: absolute;
+    top: 6px;
+    right: 7px;
+    border-radius: 3px;
+}
+
+.filter:hover .fa-times:hover {
+    color: #fff;
+    background: lightcoral;
+}
+
+.equal {
+    display: -webkit-flex;
+    display: flex;
+    -webkit-flex-flow: row wrap;
+    flex-flow: row wrap;
+    -webkit-align-content: flex-end;
+    align-content: flex-end;
+}
+
+#cartButton {
+    height: 40px;
+}
+
+.nav-buttons {
+    padding: 20px 0;
+}
+
+.fa-shopping-basket {
+    font-size: 20px;
+}
+
+.footer {
+    background-color: lightsteelblue;
+    margin-top: 20px;
+    margin-bottom: 0;
+}
+
+label {
+    display: block;
+    padding-top: 5px;
+}
+
+input[type=text], input[type=email] {
+    height: 30px;
+    font-size: 16px;
+    width: 100%;
+    margin: 0 auto;
+    margin-bottom: 5px;
+    -webkit-appearance: none;
+    background: #fff;
+    border: 1px solid #d9d9d9;
+    border-top: 1px solid #c0c0c0;
+    border-radius: 2px;
+    padding: 0 8px;
+}
+
+.confirm-data {
+    text-align: center;
+}
+.confirm-data>div {
+    font-size: 16px;
+}
+
+/* Cart styles
+****************/
+.odd {
+    background-color: #f5f5f5;
+}
+
+.table > tbody > tr:hover {
+    background-color: #eee;
+}
+
+.table > tbody > tr > td, .table > tfoot > tr > td {
+    vertical-align: middle;
+}
+
+#empty-cart {
+    margin-bottom: 20px;
+}
+
+.fa-trash-o {
+    font-size: 20px;
+}
+
+@media screen and (max-width: 768px) {
+    table#cart tbody td .form-control {
+        width: 20%;
+        display: inline !important;
+    }
+
+    .actions .btn {
+        width: 36%;
+        margin: 1.5em 0;
+    }
+
+    .actions .btn-info {
+        float: left;
+    }
+
+    table#cart thead {
+        display: none;
+    }
+
+    table#cart tbody td {
+        display: block;
+        padding: .6rem;
+        min-width: 320px;
+        text-align: center;
+    }
+
+    table#cart tbody tr td:first-child {
+        color: #fff;
+        background: steelblue;
+    }
+
+    table#cart tbody td:before {
+        content: attr(data-th);
+        font-weight: bold;
+        display: inline-block;
+        width: 8rem;
+    }
+
+    table#cart tbody td:last-child:before {
+        width: 0;
+    }
+
+    table#cart tfoot td {
+        display: block;
+    }
+
+    table#cart tfoot td .btn {
+        display: block;
+    }
+
+}
+
+/* Responsive styles
+*********************/
+@media (max-width: 768px) {
+    .text-center-sm {
+        text-align: center;
+    }
+
+    .button-sm {
+        margin: 20px 0;
+    }
+}
+
+/* Payment form
+ ***************/
+.credit-card-box {
+    margin-top: 20px;
+}
+
+.credit-card-box .panel-title {
+    display: inline;
+    font-weight: bold;
+}
+.credit-card-box .form-control.error {
+    border-color: red;
+    outline: 0;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075),0 0 8px rgba(255,0,0,0.6);
+}
+.credit-card-box label.error {
+    font-weight: bold;
+    color: red;
+    padding: 2px 8px;
+    margin-top: 2px;
+}
+.credit-card-box .payment-errors {
+    font-weight: bold;
+    color: red;
+    padding: 2px 8px;
+    margin-top: 12px;
+}
+.credit-card-box label {
+    display: block;
+}
+
+.credit-card-box .display-tr {
+    display: table-row;
+}
+.credit-card-box .display-td {
+    display: table-cell;
+    vertical-align: middle;
+    width: 50%;
+}
+
+.credit-card-box .panel-heading img {
+    min-width: 180px;
+    border-style: solid;
+    border-width: 3px;
+    border-color: white;
+    box-shadow: 3px 3px 5px #D3D3D3;
+}
+
+.card-logos {
+    display: inline;
+    font-size: 2.5em;
+    color: #999;
+    margin: 0 auto;
+}
+
+.icon {
+    padding: 0 3px;
+    -webkit-transition: all 200ms ease;
+    transition: all 200ms ease;
+}
+
+.icon.active {
+    color: steelblue;
+    -ms-transform: scale(1.2, 1.2);
+    -webkit-transform: scale(1.2, 1.2);
+    transform: scale(1.2, 1.2);
+}
+
+/* Confirmation page
+ *********************/
+#payment-success > div > div {
+    font-size: 16px;
+    margin-top: 30px;
+}
+
+#payment-success > div > table {
+    margin-bottom: 0;
+}
+
+#payment-success > div > tfoot {
+    border: none;
+}
+
+#payment-success > div > div.row {
+    margin-top: 0;
+}
+
+
+
+
