@@ -89,8 +89,7 @@ public class AccountService {
                 }});
         String subject = "Welcome " + account.getAccountName() + " in the CöderBoosters community!";
 
-        // TODO: once SMTP properly set, this can be used
-        // emailService.send(to, body, subject);
+        emailService.send(to, body, subject);
     }
 
     public Long validateLoginCredentials(Map<String, String> loginInput) {

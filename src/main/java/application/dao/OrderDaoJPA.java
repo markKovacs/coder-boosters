@@ -117,6 +117,12 @@ public class OrderDaoJPA implements OrderDao {
         List<BoostOrder> orders = result.getResultList();
 
         em.close();
+
+        // CALCULATE TRANSIENT FIELD
+        for (BoostOrder boostOrder : orders) {
+            boostOrder.calcTotal();
+        }
+
         return orders;
     }
 

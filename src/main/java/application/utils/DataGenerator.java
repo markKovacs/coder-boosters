@@ -50,32 +50,32 @@ public class DataGenerator {
 
     public void modifyTestData() {
 
-        CustomerAccount customerAccount = accountDao.findCustomerById(1L);
-        BoosterAccount boosterAccount = accountDao.findBoosterById(3L);
+        CustomerAccount customerMark = accountDao.findCustomerById(1L);
+        BoosterAccount boosterBarna = accountDao.findBoosterById(3L);
 
         GameAccount gameAccount = new GameAccount("newplayer", "pass123", GameType.CSGO);
 
-        gameAccountDao.addGameAccount(customerAccount, gameAccount);
-        gameAccountDao.removeGameAccount(customerAccount, gameAccount);
+        gameAccountDao.addGameAccount(customerMark, gameAccount);
+        gameAccountDao.removeGameAccount(customerMark, gameAccount);
 
         GameAccount foundGameAcc = gameAccountDao.findGameAccount(1L);
-        gameAccountDao.removeGameAccount(customerAccount, foundGameAcc);
+        gameAccountDao.removeGameAccount(customerMark, foundGameAcc);
 
         BoostOrder newBoostOrder1 = new LoLBoostOrder(LeagueDivision.GOLD_V, 20, OrderType.GAMES_WON,
-                20, dataUtil.createDate(2020, 6, 5, 10));
-        orderDao.addBoostOrder(customerAccount, newBoostOrder1);
-        orderDao.addBoostOrder(boosterAccount, newBoostOrder1);
+                20, dataUtil.createDate(2020, 1, 2, 3));
+        orderDao.addBoostOrder(customerMark, newBoostOrder1);
+        orderDao.addBoostOrder(boosterBarna, newBoostOrder1);
 
         BoostOrder newBoostOrder2 = new LoLBoostOrder(LeagueDivision.CHALLENGER, 20, OrderType.GAMES_WON,
                 20, dataUtil.createDate(2030, 6, 5, 10));
-        Long anAddedId = orderDao.addBoostOrder(customerAccount, newBoostOrder2);
+        Long anAddedId = orderDao.addBoostOrder(customerMark, newBoostOrder2);
 
         BoostOrder newBoostOrder3 = new LoLBoostOrder(LeagueDivision.DIAMOND_I, 20, OrderType.GAMES_WON,
                 20, dataUtil.createDate(2040, 6, 5, 10));
-        Long lastAddedId = orderDao.addBoostOrder(customerAccount, newBoostOrder3);
+        Long lastAddedId = orderDao.addBoostOrder(customerMark, newBoostOrder3);
 
         BoostOrder foundBoostOrder = orderDao.findBoostOrder(lastAddedId);
-        orderDao.removeBoostOrder(customerAccount, foundBoostOrder);
+        orderDao.removeBoostOrder(customerMark, foundBoostOrder);
 
         BoostOrder anotherFoundBoostOrder = orderDao.findBoostOrder(anAddedId);
         orderDao.setStatus(anotherFoundBoostOrder, Status.DONE);

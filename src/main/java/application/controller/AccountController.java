@@ -57,7 +57,6 @@ public class AccountController {
         return viewUtil.render(request, model, Path.Template.CUSTOMER_PROFILE, account);
     };
 
-
     public Route handleRegistration = (request, response) -> {
 
         Map<String, String> inputData = requestUtil.collectRegistrationData(request);
@@ -88,7 +87,8 @@ public class AccountController {
         Account account = accountService.saveAccount(inputData, passwordHash);
 
         // SEND WELCOME EMAIL
-        accountService.sendWelcomeEmail(account);
+        // TODO: once SMTP properly set, this can be used
+        // accountService.sendWelcomeEmail(account);
 
         response.redirect(Path.Web.LOGIN);
         return null;

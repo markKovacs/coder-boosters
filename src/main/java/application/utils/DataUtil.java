@@ -7,7 +7,7 @@ public class DataUtil {
 
     public Date createDate(int y, int m, int d, int h) {
         Calendar cal = Calendar.getInstance();
-        cal.set(y, m, d, h, 0);
+        cal.set(y, m-1, d, h, 0);
         return cal.getTime();
     }
 
