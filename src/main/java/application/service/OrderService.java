@@ -129,8 +129,7 @@ public class OrderService {
                 return null;
         }
 
-        orderDao.addBoostOrder(account, boostOrder);
-        return boostOrder;
+        return orderDao.addBoostOrder(account, boostOrder);
     }
 
     public List<LeagueDivision> getLoLLeagueDivisions() {

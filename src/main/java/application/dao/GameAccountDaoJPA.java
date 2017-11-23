@@ -24,8 +24,7 @@ public class GameAccountDaoJPA implements GameAccountDao {
     }
 
     @Override
-    public Long addGameAccount(CustomerAccount account, GameAccount gameAccount) {
-
+    public GameAccount addGameAccount(CustomerAccount account, GameAccount gameAccount) {
 
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
@@ -36,13 +35,10 @@ public class GameAccountDaoJPA implements GameAccountDao {
         // ADD TO MEMORY
         mergedAccount.addGameAccountBiDir(mergedGameAccount);
 
-        // ADD TO DATABASE
-        //em.persist(mergedGameAccount);
-
         em.getTransaction().commit();
         em.close();
 
-        return mergedGameAccount.getId();
+        return mergedGameAccount;
     }
 
     @Override

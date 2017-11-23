@@ -20,8 +20,8 @@ public class GameAccountService {
         GameType gameType = GameType.valueOf(inputData.get("gameType"));
 
         GameAccount gameAccount = new GameAccount(accountName, password, gameType);
-        gameAccountDao.addGameAccount(account, gameAccount);
-        return gameAccount;
+
+        return gameAccountDao.addGameAccount(account, gameAccount);
     }
 
 }

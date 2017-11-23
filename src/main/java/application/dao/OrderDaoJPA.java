@@ -32,7 +32,7 @@ public class OrderDaoJPA implements OrderDao {
     }
 
     @Override
-    public Long addBoostOrder(Account account, BoostOrder boostOrder) {
+    public BoostOrder addBoostOrder(Account account, BoostOrder boostOrder) {
 
         EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
@@ -49,7 +49,7 @@ public class OrderDaoJPA implements OrderDao {
         em.getTransaction().commit();
         em.close();
 
-        return mergedOrder.getId();
+        return mergedOrder;
     }
 
     @Override
