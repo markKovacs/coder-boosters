@@ -3,6 +3,7 @@ package application;
 import application.controller.AccountController;
 import application.controller.IndexController;
 import application.controller.OrderController;
+import application.service.GameAccountService;
 import application.utils.DataGenerator;
 import application.utils.Path;
 

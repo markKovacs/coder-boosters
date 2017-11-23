@@ -68,21 +68,15 @@ public class DataGenerator {
 
         BoostOrder newBoostOrder2 = new LoLBoostOrder(LeagueDivision.CHALLENGER, 20, OrderType.GAMES_WON,
                 20, dataUtil.createDate(2030, 6, 5, 10));
-        Long anAddedId = orderDao.addBoostOrder(customerMark, newBoostOrder2);
+        BoostOrder boostOrder1 = orderDao.addBoostOrder(customerMark, newBoostOrder2);
 
         BoostOrder newBoostOrder3 = new LoLBoostOrder(LeagueDivision.DIAMOND_I, 20, OrderType.GAMES_WON,
                 20, dataUtil.createDate(2040, 6, 5, 10));
-        Long lastAddedId = orderDao.addBoostOrder(customerMark, newBoostOrder3);
+        BoostOrder boostOrder2 = orderDao.addBoostOrder(customerMark, newBoostOrder3);
 
-        BoostOrder foundBoostOrder = orderDao.findBoostOrder(lastAddedId);
-        orderDao.removeBoostOrder(customerMark, foundBoostOrder);
+        orderDao.removeBoostOrder(customerMark, boostOrder2);
 
-        BoostOrder anotherFoundBoostOrder = orderDao.findBoostOrder(anAddedId);
-        orderDao.setStatus(anotherFoundBoostOrder, Status.DONE);
-
-        System.out.println(anotherFoundBoostOrder.getStatus());
-        BoostOrder anotherFoundBoostOrder2 = orderDao.findBoostOrder(anAddedId);
-        System.out.println(anotherFoundBoostOrder2.getStatus());
+        orderDao.setStatus(boostOrder1, Status.DONE);
 
     }
 }

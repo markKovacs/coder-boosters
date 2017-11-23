@@ -3,6 +3,7 @@ package application.model.order;
 import application.model.GameType;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.model.account.GameAccount;
 
 import javax.persistence.*;
 import java.text.DateFormat;
@@ -52,10 +53,14 @@ public abstract class BoostOrder {
     @JoinColumn(name = "booster_id")
     BoosterAccount boosterAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "game_acc_id")
+    GameAccount gameAccount;
+
+
     // TODO: GameAccount need to be added to this entity.
 
     public abstract double calcBasePrice();
-
     public BoostOrder() {
     }
 
@@ -154,6 +159,14 @@ public abstract class BoostOrder {
 
     public void setBoosterAccount(BoosterAccount boosterAccount) {
         this.boosterAccount = boosterAccount;
+    }
+
+    public GameAccount getGameAccount() {
+        return gameAccount;
+    }
+
+    public void setGameAccount(GameAccount gameAccount) {
+        this.gameAccount = gameAccount;
     }
 
     public String deadlineString() {
