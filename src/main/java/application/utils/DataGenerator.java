@@ -24,10 +24,14 @@ public class DataGenerator {
 
     public void initTestData() {
 
-        // CREATE TEST DATA ENTITIES
         CustomerAccount customerMark = new CustomerAccount("mark", "mark@mark.hu", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
-        customerMark.addGameAccountBiDir(new GameAccount("proph", "pass", GameType.OW));
-        customerMark.addGameAccountBiDir(new GameAccount("elitekiller", "pass", GameType.WOW));
+        CustomerAccount customerAttila = new CustomerAccount("attila", "attila@attila.hu", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
+        BoosterAccount boosterBarna = new BoosterAccount("barna", "barna@elite.com", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
+
+/*
+        CustomerAccount customerMark = new CustomerAccount("mark", "mark@mark.hu", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
+        GameAccount marksLoLAccount = new GameAccount("proph", "pass", GameType.LOL);
+        customerMark.addGameAccountBiDir(marksLoLAccount);
 
         CustomerAccount customerAttila = new CustomerAccount("attila", "attila@attila.hu", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
         customerAttila.addGameAccountBiDir(new GameAccount("lol_king", "pass", GameType.LOL));
@@ -41,6 +45,7 @@ public class DataGenerator {
         customerMark.addBoostOrderBiDir(order2);
 
         BoosterAccount boosterBarna = new BoosterAccount("barna", "barna@elite.com", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
+*/
 
         accountDao.add(customerMark);
         accountDao.add(customerAttila);
@@ -48,35 +53,4 @@ public class DataGenerator {
 
     }
 
-    public void modifyTestData() {
-
-        CustomerAccount customerMark = accountDao.findCustomerById(1L);
-        BoosterAccount boosterBarna = accountDao.findBoosterById(3L);
-
-        GameAccount gameAccount = new GameAccount("newplayer", "pass123", GameType.CSGO);
-
-        gameAccountDao.addGameAccount(customerMark, gameAccount);
-        gameAccountDao.removeGameAccount(customerMark, gameAccount);
-
-        GameAccount foundGameAcc = gameAccountDao.findGameAccount(1L);
-        gameAccountDao.removeGameAccount(customerMark, foundGameAcc);
-
-        BoostOrder newBoostOrder1 = new LoLBoostOrder(LeagueDivision.GOLD_V, 20, OrderType.GAMES_WON,
-                20, dataUtil.createDate(2020, 1, 2, 3));
-        orderDao.addBoostOrder(customerMark, newBoostOrder1);
-        orderDao.addBoostOrder(boosterBarna, newBoostOrder1);
-
-        BoostOrder newBoostOrder2 = new LoLBoostOrder(LeagueDivision.CHALLENGER, 20, OrderType.GAMES_WON,
-                20, dataUtil.createDate(2030, 6, 5, 10));
-        BoostOrder boostOrder1 = orderDao.addBoostOrder(customerMark, newBoostOrder2);
-
-        BoostOrder newBoostOrder3 = new LoLBoostOrder(LeagueDivision.DIAMOND_I, 20, OrderType.GAMES_WON,
-                20, dataUtil.createDate(2040, 6, 5, 10));
-        BoostOrder boostOrder2 = orderDao.addBoostOrder(customerMark, newBoostOrder3);
-
-        orderDao.removeBoostOrder(customerMark, boostOrder2);
-
-        orderDao.setStatus(boostOrder1, Status.DONE);
-
-    }
 }

@@ -13,12 +13,11 @@ public interface AccountDao {
     CustomerAccount findCustomerById(Long accountId);
     BoosterAccount findBoosterById(Long accountId);
     Account findAccountByName(String accountName);
-
     Long add(Account account);
     List<String> update(Long accountId, Map<String, String> inputData);
-
     List<String> getAllAccountNames();
     List<String> getAllEmails();
-
     void changeBoostCoinByAmount(Account account, int amount);
+    void transferBoostCoin(BoosterAccount boosterAccount, int totalPrice);
+
 }

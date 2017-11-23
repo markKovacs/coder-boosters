@@ -18,10 +18,6 @@
         </h1>
     </section>
 
-    <div class="well well-sm">
-        <strong>Profile</strong>
-    </div>
-
     <div id="profile" class="row list-group">
 
         <div class="col-xs-12 col-lg-12">
@@ -54,8 +50,8 @@
                         </div>
                         <div class="form-group">
                             <label class="form-control-label" for="boostcoin">Boost Coin Balance:</label>
-                            <p class="form-control" id="boostcoin" name="boostcoin" th:text="${userData.boostCoin}">150</p>
-                            <a class="btn btn-default" role="button" href="/customer-paypal">Transfer via PayPal</a>
+                            <p class="form-control" id="boostcoin" name="boostcoin" th:text="${userData.boostCoin + 'Ƀ'}">150Ƀ</p>
+                            <a class="btn btn-default" role="button" href="/customer-paypal">Transfer</a>
                         </div>
 
                         <!-- TODO: PayPal section -->

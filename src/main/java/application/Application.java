@@ -3,7 +3,6 @@ package application;
 import application.controller.AccountController;
 import application.controller.IndexController;
 import application.controller.OrderController;
-import application.service.GameAccountService;
 import application.utils.DataGenerator;
 import application.utils.Path;
 
@@ -31,9 +30,6 @@ public class Application {
         // INIT TEST DATA
         dataGenerator.initTestData();
 
-        // TEST MODIFICATIONS
-        dataGenerator.modifyTestData();
-
         // SERVER SETTINGS
         exception(Exception.class, (e, req, res) -> e.printStackTrace());
         staticFileLocation("/public");
@@ -58,7 +54,6 @@ public class Application {
         post(Path.Web.CLOSE_ORDER, orderController.handleCloseOrder);
 
         get(Path.Web.CUSTOMER_PROFILE, accountController.serveCustomerProfilePage);
-        //post(Path.Web.CUSTOMER_PROFILE, accountController.handleCustomerProfileEditing);
 
         get(Path.Web.SELECT_GAME, orderController.serveSelectGamePage);
         get(Path.Web.ORDER_FORM, orderController.serveOrderForm);

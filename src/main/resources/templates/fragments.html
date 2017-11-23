@@ -1,9 +1,9 @@
 <div th:fragment="general-order-part" xmlns:th="http://www.w3.org/1999/xhtml">
     <input type="hidden" th:value="${game_type}" name="gameType" required/>
     Game account name:<br>
-    <input type="text" name="gameAccName" minlength="4" required><br>
+    <input type="text" name="gameAccName" minlength="4" class="short" required><br>
     Game account password:<br>
-    <input type="text" name="gameAccPassword" minlength="4" required><br>
+    <input type="text" name="gameAccPassword" minlength="4" class="short" required><br>
     Order type:<br>
     <input type="radio" name="orderType" value="GAMES_WON" checked="checked"/><p>Games won</p>
     <input type="radio" name="orderType" value="GAMES_PLAYED"/><p>Games played</p><br>

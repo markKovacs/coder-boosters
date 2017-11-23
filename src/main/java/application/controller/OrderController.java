@@ -78,18 +78,20 @@ public class OrderController {
 
         boolean successful = orderService.closeOrder(boosterAccount, boostOrder);
 
+        // TODO: message could be added (successful or not)
+
+        accountService.transferBoostCoin(boosterAccount, boostOrder.getTotalPrice());
 
         response.redirect(Path.Web.BOOSTER_ORDERS);
         return null;
     };
-
 
     public Route handleOrderCreation = (request, response) -> {
 
         Long accountId = requestUtil.getSessionAccountId(request);
         Map<String, String> inputData = requestUtil.collectNewOrderData(request);
 
-        CustomerAccount account = accountService.findCustomerById(accountId);
+        CustomerAccount customerAccount = accountService.findCustomerById(accountId);
         List<String> errorMessages = orderService.validateOrderData(inputData);
 
         // INVALID INPUT
@@ -97,23 +99,21 @@ public class OrderController {
             Map<String, Object> model = new HashMap<>();
             model.put("errors", errorMessages);
 
-            return viewUtil.render(request, model, Path.Template.ORDER_FORM, account);
+            return viewUtil.render(request, model, Path.Template.ORDER_FORM, customerAccount);
         }
 
         // SUCCESSFUL ORDER CREATION
         // TODO: first we should check if sufficient funds on customer account balance, then deduct, then create order
-        // TODO: GameAccount object to be created and persisted here, added to BoostOrder.
-        BoostOrder boostOrder = orderService.createOrder(account, inputData);
+        BoostOrder boostOrder = orderService.createOrder(customerAccount, inputData);
         if (boostOrder == null) {
             response.redirect(Path.Web.CUSTOMER_ORDERS);
             return null;
         }
 
-        GameAccount gameAccount = gameAccountService.create(inputData, account);
+        GameAccount gameAccount = gameAccountService.create(inputData, customerAccount);
         orderService.setGameAccount(boostOrder, gameAccount);
 
-        // TODO: unify USD - BoostCoin and int - double
-        boolean paid = accountService.decreaseBoostCoinAmount(account, (-1) * (int) boostOrder.getTotalPrice());
+        boolean paid = accountService.decreaseBoostCoinAmount(customerAccount, (-1) * boostOrder.getTotalPrice());
 
         response.redirect(Path.Web.CUSTOMER_ORDERS);
         return null;

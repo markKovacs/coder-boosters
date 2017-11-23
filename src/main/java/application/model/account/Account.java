@@ -74,4 +74,7 @@ public abstract class Account {
     public void setBoostCoin(int boostCoin) {
         this.boostCoin = boostCoin;
     }
+    public void changeBoostCoin(int amount) {
+        this.boostCoin += amount;
+    }
 }
