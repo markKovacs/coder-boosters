@@ -4,10 +4,7 @@ import application.controller.AccountController;
 import application.controller.IndexController;
 import application.controller.OrderController;
 import application.dao.*;
-import application.service.AccountService;
-import application.service.EmailService;
-import application.service.OrderService;
-import application.service.PasswordHashService;
+import application.service.*;
 import application.utils.*;
 
 import javax.persistence.EntityManagerFactory;
@@ -33,11 +30,13 @@ public class DIContainer {
         EmailService emailService = new EmailService();
         AccountService accountService = new AccountService(accountDaoJPA, passwordHashService, emailService);
         OrderService orderService = new OrderService(orderDaoJPA, dataUtil);
+        GameAccountService gameAccountService = new GameAccountService(gameAccountDaoJPA);
 
         // INIT CONTROLLERS
         IndexController indexController = new IndexController(viewUtil);
         AccountController accountController = new AccountController(accountService, viewUtil, requestUtil);
-        OrderController orderController = new OrderController(orderService, accountService, viewUtil, requestUtil);
+        OrderController orderController = new OrderController(orderService, accountService, gameAccountService,
+                viewUtil, requestUtil);
 
         // INIT DATA GENERATOR
         DataGenerator dataGenerator = new DataGenerator(accountDaoJPA, orderDaoJPA, gameAccountDaoJPA, dataUtil);

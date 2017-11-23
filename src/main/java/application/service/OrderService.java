@@ -1,9 +1,11 @@
 package application.service;
 
 import application.dao.OrderDao;
+import application.dao.OrderDaoJPA;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
 import application.model.order.LeagueDivision;
 import application.model.order.LoLBoostOrder;
@@ -134,5 +136,9 @@ public class OrderService {
     public List<LeagueDivision> getLoLLeagueDivisions() {
         // TODO: this could be stored in database and read divisions from there
         return Arrays.asList(LeagueDivision.values());
+    }
+
+    public void setGameAccount(BoostOrder boostOrder, GameAccount gameAccount) {
+        orderDao.setGameAccount(boostOrder, gameAccount);
     }
 }

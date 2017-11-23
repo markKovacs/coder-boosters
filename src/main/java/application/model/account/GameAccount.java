@@ -1,8 +1,11 @@
 package application.model.account;
 
 import application.model.GameType;
+import application.model.order.BoostOrder;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "game_account")
@@ -25,6 +28,13 @@ public class GameAccount {
     @JoinColumn(name = "customer_acc")
     private Account account;
 
+    @OneToMany(
+            mappedBy = "gameAccount",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    List<BoostOrder> boostOrderList = new ArrayList<>();
+
     public GameAccount() {
     }
 
@@ -32,6 +42,14 @@ public class GameAccount {
         this.accountName = accountName;
         this.password = password;
         this.gameType = gameType;
+    }
+
+    public List<BoostOrder> getBoostOrderList() {
+        return boostOrderList;
+    }
+
+    public void addBoostOrderList(BoostOrder boostOrder) {
+        boostOrderList.add(boostOrder);
     }
 
     public String getAccountName() {

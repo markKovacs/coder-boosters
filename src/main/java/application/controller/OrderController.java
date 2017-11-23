@@ -3,9 +3,11 @@ package application.controller;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
 import application.model.order.LeagueDivision;
 import application.service.AccountService;
+import application.service.GameAccountService;
 import application.service.OrderService;
 import application.utils.Path;
 import application.utils.RequestUtil;
@@ -20,14 +22,17 @@ public class OrderController {
 
     private OrderService orderService;
     private AccountService accountService;
+    private GameAccountService gameAccountService;
     private ViewUtil viewUtil;
     private RequestUtil requestUtil;
 
     public OrderController(OrderService orderService, AccountService accountService,
+                           GameAccountService gameAccountService,
                            ViewUtil viewUtil, RequestUtil requestUtil) {
 
         this.orderService = orderService;
         this.accountService = accountService;
+        this.gameAccountService = gameAccountService;
         this.viewUtil = viewUtil;
         this.requestUtil = requestUtil;
     }
@@ -88,6 +93,10 @@ public class OrderController {
             response.redirect(Path.Web.CUSTOMER_ORDERS);
             return null;
         }
+
+        GameAccount gameAccount = gameAccountService.create(inputData, account);
+        orderService.setGameAccount(boostOrder, gameAccount);
+
         // TODO: unify USD - BoostCoin and int - double
         boolean paid = accountService.decreaseBoostCoinAmount(account, (-1) * (int) boostOrder.getTotalPrice());
 

@@ -3,6 +3,7 @@ package application.dao;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
 import application.model.order.Status;
 
@@ -49,6 +50,26 @@ public class OrderDaoJPA implements OrderDao {
         em.close();
 
         return mergedOrder.getId();
+    }
+
+    @Override
+    public void setGameAccount(BoostOrder boostOrder, GameAccount gameAccount) {
+
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+
+
+
+        GameAccount mergedGameAccount = em.merge(gameAccount);
+        BoostOrder mergedOrder = em.merge(boostOrder);
+
+        mergedOrder.setGameAccount(mergedGameAccount);
+        mergedGameAccount.addBoostOrderList(mergedOrder);
+
+        //em.persist(mergedOrder);
+
+        em.getTransaction().commit();
+        em.close();
     }
 
     @Override
