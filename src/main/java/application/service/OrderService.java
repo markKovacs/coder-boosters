@@ -11,10 +11,7 @@ import application.model.order.OrderType;
 import application.utils.DataUtil;
 import application.utils.InputField;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class OrderService {
 
@@ -58,38 +55,47 @@ public class OrderService {
                         .contains(LeagueDivision.valueOf(inputData.get("currentRank")))) {
                     errors.add("Selected league/division rank is invalid.");
                 }
-                int numOfGames = Integer.parseInt(inputData.get("numberOfGames"));
+
+                int numOfGames = dataUtil.castStringToInt(inputData.get("numberOfGames"));
                 if (numOfGames < 1 || numOfGames > 10) {
                     errors.add("Number of games selected should be between 1-10.");
                 }
+
                 if (!Arrays.asList(OrderType.values())
                         .contains(OrderType.valueOf(inputData.get("orderType")))) {
                     errors.add("Selected order type is invalid.");
                 }
-                double bonusPercentage = Double.parseDouble(inputData.get("bonusPercentage"));
+
+                double bonusPercentage = dataUtil.castStringToDouble(inputData.get("bonusPercentage"));
                 if (bonusPercentage != 0.0 && bonusPercentage != 5.0 &&
                         bonusPercentage != 10.0 && bonusPercentage != 15.0) {
                     errors.add("Bonus percentage must be 0, 5, 10 or 15");
                 }
-                int year = Integer.parseInt(inputData.get("year"));
+
+                int year = dataUtil.castStringToInt(inputData.get("year"));
                 if (year > 2099 || year < 2017) {
                     errors.add("Year must be between 2017 and 2099");
                 }
-                int month = Integer.parseInt(inputData.get("month"));
+
+                int month = dataUtil.castStringToInt(inputData.get("month"));
                 if (month < 1 || month > 12) {
                     errors.add("Months must be between 1 and 12");
                 }
-                int day = Integer.parseInt(inputData.get("day"));
+
+                int day = dataUtil.castStringToInt(inputData.get("day"));
                 if (day < 1 || day > 31) {
                     errors.add("Days must be between 1 and 31");
                 }
-                int hour = Integer.parseInt(inputData.get("hour"));
+
+                int hour = dataUtil.castStringToInt(inputData.get("hour"));
                 if (hour < 0 || hour > 24) {
                     errors.add("Hours must be between 0 and 24");
                 }
+
                 if (!InputField.USERNAME.validate(inputData.get("gameAccName"))) {
                     errors.add("Game account name is invalid.");
                 }
+
                 if (!InputField.PASSWORD.validate(inputData.get("gameAccPassword"))) {
                     errors.add("Game account password is invalid.");
                 }
@@ -104,21 +110,19 @@ public class OrderService {
 
     public BoostOrder createOrder(CustomerAccount account, Map<String, String> inputData) {
 
-        // TODO: parseInt/Double methods could throw InputMismachException, handle this!
-
         BoostOrder boostOrder;
         switch (inputData.get("gameType")) {
             case "LOL":
                 boostOrder = new LoLBoostOrder(
                         LeagueDivision.valueOf(inputData.get("currentRank")),
-                        Integer.parseInt(inputData.get("numberOfGames")),
+                        dataUtil.castStringToInt(inputData.get("numberOfGames")),
                         OrderType.valueOf(inputData.get("orderType")),
-                        Double.parseDouble(inputData.get("bonusPercentage")),
+                        dataUtil.castStringToDouble(inputData.get("bonusPercentage")),
                         dataUtil.createDate(
-                                Integer.parseInt(inputData.get("year")),
-                                Integer.parseInt(inputData.get("month")),
-                                Integer.parseInt(inputData.get("day")),
-                                Integer.parseInt(inputData.get("hour"))
+                                dataUtil.castStringToInt(inputData.get("year")),
+                                dataUtil.castStringToInt(inputData.get("month")),
+                                dataUtil.castStringToInt(inputData.get("day")),
+                                dataUtil.castStringToInt(inputData.get("hour"))
                         )
                 );
                 break;
