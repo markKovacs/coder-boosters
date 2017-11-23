@@ -24,7 +24,6 @@ public class OrderService {
     }
 
     public List<BoostOrder> getOrdersForBoosterAndAllAvailable(Account account) {
-        // TODO: orders need to be added to model differently: where booster_id is null or current booster's id
         return orderDao.getOrdersForBoosterAndAllAvailable(account);
     }
 
@@ -42,6 +41,11 @@ public class OrderService {
         // TODO: if not: do not add and return false...
 
         orderDao.addBoostOrder(boosterAccount, boostOrder);
+        return true;
+    }
+
+    public boolean closeOrder(BoosterAccount boosterAccount, BoostOrder boostOrder) {
+        orderDao.closeBoostOrder(boosterAccount, boostOrder);
         return true;
     }
 

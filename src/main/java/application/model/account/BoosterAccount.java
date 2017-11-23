@@ -39,12 +39,15 @@ public class BoosterAccount extends Account {
         boostOrder.setStatus(Status.TAKEN);
     }
 
+
     @Override
     public void removeBoostOrderBiDir(BoostOrder boostOrder) {
         this.boostOrderList.remove(boostOrder);
         boostOrder.setBoosterAccount(null);
         boostOrder.setStatus(Status.AVAILABLE);
     }
+
+
 
     // GETTERS - SETTERS
     public List<BoostOrder> getBoostOrderList() {
