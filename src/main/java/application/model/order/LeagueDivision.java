@@ -27,5 +27,13 @@ public enum LeagueDivision {
     BRONZE_II,
     BRONZE_III,
     BRONZE_IV,
-    BRONZE_V
+    BRONZE_V;
+
+    public static LeagueDivision safeValueOf(String divisionString){
+        try{
+            return valueOf(divisionString);
+        } catch (IllegalArgumentException ie){
+            return null;
+        }
+    }
 }

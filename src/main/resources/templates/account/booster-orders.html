@@ -7,137 +7,71 @@
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <h1>
-            Profile
+            Booster Orders
         </h1>
     </section>
 
+    <!-- GAME FILTER SECTION -->
     <div class="row">
         <div class="col-sm-12" id="gamePicker">
             <img class="img-circle" id="show-lol" src="https://i1.wp.com/wiki-fx.net/wp-content/uploads/2013/05/League_Of_Legends_Logo1.png?fit=256%2C256">
             <img class="img-circle" id="show-csgo" src="https://versatileservers.com/wp-content/uploads/2017/08/csgo-icon-4.png">
             <img class="img-circle" id="show-fifa" src="http://www.godisageek.com/wp-content/uploads/EA_Sports_LOGO.png">
             <img class="img-circle" id="show-wow" src="https://vignette.wikia.nocookie.net/wow/images/7/77/World_of_warcraft-icon.png/revision/latest?cb=20110530143143&path-prefix=nl">
-            <img class="img-circle" id="show-overwatch" src="http://www.gamasutra.com/db_area/images/news/2017/Sep/306316/ow.jpg">
+            <img class="img-circle" id="show-ow" src="http://www.gamasutra.com/db_area/images/news/2017/Sep/306316/ow.jpg">
         </div>
 
         <div class="col-sm-12">
-            <button id="show-free" type="button" class="btn btn-danger">Free to take orders</button>
-            <button id="show-unfinished" type="button" class="btn btn-primary">On going orders</button>
-            <button id="show-finished" type="button" class="btn btn-success">Finished orders</button>
+            <button id="show-available" type="button" class="btn btn-danger">Available</button>
+            <button id="show-taken" type="button" class="btn btn-primary">Taken</button>
+            <button id="show-done" type="button" class="btn btn-success">Done</button>
         </div>
     </div>
 
+    <!-- ORDERS LIST SECTION -->
     <div id="pricing-table" class="clear content"></div>
-
-    <div id="asd" class="clear">
-        <div class="plan lol-order">
-            <button type="button" class="btn btn-primary unfinished">On going</button>
+    <div id="all-orders" class="clear" style="display: none">
+        <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
+         '-order plan ' + #strings.toLowerCase(order.status)}">
             <h3><img
-                    src="https://i1.wp.com/wiki-fx.net/wp-content/uploads/2013/05/League_Of_Legends_Logo1.png?fit=256%2C256"
+                    th:attr="src=${order.gameType.getIcon()}"
                     class="img-circle"></h3>
-            <a class="signup" href="">Accept</a>
             <ul>
-                <li><b><img class="name"
-                            src="http://image.noelshack.com/fichiers/2014/24/1402778259-league-of-legends-logo.png"></b>
                 </li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
-            </ul>
-        </div>
-
-        <div class="plan lol-order">
-            <button type="button" class="btn btn-success finished">Finished</button>
-            <h3><img
-                    src="https://i1.wp.com/wiki-fx.net/wp-content/uploads/2013/05/League_Of_Legends_Logo1.png?fit=256%2C256"
-                    class="img-circle"></h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b><img class="name"
-                            src="http://image.noelshack.com/fichiers/2014/24/1402778259-league-of-legends-logo.png"></b>
+                <li><b>[[${order.status}]]</b>
                 </li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
-            </ul>
-        </div>
-
-        <div class="plan lol-order">
-            <button type="button" class="btn btn-danger free">Free to take</button>
-            <h3><img
-                    src="https://i1.wp.com/wiki-fx.net/wp-content/uploads/2013/05/League_Of_Legends_Logo1.png?fit=256%2C256"
-                    class="img-circle"></h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b><img class="name"
-                            src="http://image.noelshack.com/fichiers/2014/24/1402778259-league-of-legends-logo.png"></b>
+                <li><b>[[${order.gameType.getName()}]]</b>
                 </li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
+                <li><b>Current Rank</b> [[${order.currentRank}]]</li>
+                <!--<li><b>Goal</b> Plat V</li>-->
+                <li><b>Price</b> [[${order.getTotalPrice()}]]Ƀ</li>
+                <li><b>DeadLine</b> [[${order.deadlineString()}]]</li>
+                <th:block th:if="${order.status.toString()} eq 'AVAILABLE'">
+                    <li><b>Account Name</b> N/A</li>
+                    <li><b>Account Password</b> N/A</li>
+                    <form th:action="@{~/accept-order}" method="POST">
+                        <input type="text" th:value="${order.id}" name="boostOrderId" hidden>
+                        <input type="submit" name="Accept" value="Accept" class="btn btn-success">
+                    </form>
+                </th:block>
+                <th:block th:if="${order.status.toString()} eq 'TAKEN'">
+                    <li><b>Account Name</b> [[${order.getGameAccountName()}]]</li>
+                    <li><b>Account Password</b> [[${order.getGameAccountPassword()}]]</li>
+                    <form th:action="@{~/close-order}" method="POST">
+                        <input type="text" th:value="${order.id}" name="boostOrderId" hidden>
+                        <input type="submit" name="Close" value="Close" class="btn btn-success">
+                    </form>
+                </th:block>
+                <th:block th:if="${order.status.toString()} eq 'DONE'">
+                    <li><b>Account Name</b> N/A</li>
+                    <li><b>Account Password</b> N/A</li>
+                    <button type="button" class="btn btn-primary">History</button>
+                </th:block>
             </ul>
         </div>
 
-        <div class="plan csgo-order">
-            <button type="button" class="btn btn-danger free">Free to take</button>
-            <h3><img src="https://versatileservers.com/wp-content/uploads/2017/08/csgo-icon-4.png" class="img-circle">
-            </h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b><img src="https://upload.wikimedia.org/wikipedia/en/3/33/Counter-Strike_Logo.png"
-                            class="name"></b></li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
-            </ul>
-        </div>
-
-        <div class="plan fifa-order">
-            <button type="button" class="btn btn-success finished">Finished</button>
-            <h3><img src="http://www.godisageek.com/wp-content/uploads/EA_Sports_LOGO.png" class="img-circle"></h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b><img src="http://downdetector.com/i/logo/Fifa-ea.png" class="name"></b></li>
-                <li><b>Divisio</b> Amature 2</li>
-                <li><b>Goal</b> Pro 2</li>
-                <li><b>Price</b> 50$</li>
-                <li><b>DeadLine</b> 05/12/2017</li>
-            </ul>
-        </div>
-        <div class="plan wow-order">
-            <button type="button" class="btn btn-primary unfinished">On going</button>
-            <h3><img
-                    src="https://vignette.wikia.nocookie.net/wow/images/7/77/World_of_warcraft-icon.png/revision/latest?cb=20110530143143&path-prefix=nl"
-                    class="img-circle"></h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b><img
-                        src="https://vignette.wikia.nocookie.net/wow/images/7/7d/WoWlogo.png/revision/latest?cb=20090316092304&path-prefix=hu"
-                        class="name"></b></li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
-            </ul>
-        </div>
-        <div class="plan overwatch-order">
-            <button type="button" class="btn btn-success finished">Finished</button>
-            <h3><img class="img-circle" src="http://www.gamasutra.com/db_area/images/news/2017/Sep/306316/ow.jpg"></h3>
-            <a class="signup" href="">Accept</a>
-            <ul>
-                <li><b><img src="https://us.battle.net/forums/static/images/game-logos/game-logo-overwatch.png"
-                            class="name"></b></li>
-                <li><b>Divisio</b> Gold V</li>
-                <li><b>Goal</b> Plat V</li>
-                <li><b>Price</b> 100$</li>
-                <li><b>DeadLine</b> 06/12/2017</li>
-            </ul>
-        </div>
     </div>
+
 </div>
 
 </html>

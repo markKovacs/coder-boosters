@@ -37,7 +37,6 @@ public abstract class Account {
         this.accountName = accountName;
         this.email = email;
         this.password = password;
-        this.boostCoin = 150;
     }
 
     // ABSTRACT METHODS
@@ -74,5 +73,8 @@ public abstract class Account {
     }
     public void setBoostCoin(int boostCoin) {
         this.boostCoin = boostCoin;
+    }
+    public void changeBoostCoin(int amount) {
+        this.boostCoin += amount;
     }
 }

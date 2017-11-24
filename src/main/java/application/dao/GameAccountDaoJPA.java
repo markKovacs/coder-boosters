@@ -3,13 +3,19 @@ package application.dao;
 import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
 import javax.persistence.EntityManager;
-import static application.App.EMFactory;
+import javax.persistence.EntityManagerFactory;
 
 public class GameAccountDaoJPA implements GameAccountDao {
 
+    private EntityManagerFactory entityManagerFactory;
+
+    public GameAccountDaoJPA(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
+    }
+
     @Override
     public GameAccount findGameAccount(Long gameAccountId) {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         GameAccount gameAccount = em.find(GameAccount.class, gameAccountId);
 
@@ -18,9 +24,9 @@ public class GameAccountDaoJPA implements GameAccountDao {
     }
 
     @Override
-    public Long addGameAccount(CustomerAccount account, GameAccount gameAccount) {
+    public GameAccount addGameAccount(CustomerAccount account, GameAccount gameAccount) {
 
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
 
         CustomerAccount mergedAccount = em.merge(account);
@@ -29,19 +35,16 @@ public class GameAccountDaoJPA implements GameAccountDao {
         // ADD TO MEMORY
         mergedAccount.addGameAccountBiDir(mergedGameAccount);
 
-        // ADD TO DATABASE
-        em.persist(mergedGameAccount);
-
         em.getTransaction().commit();
         em.close();
 
-        return mergedGameAccount.getId();
+        return mergedGameAccount;
     }
 
     @Override
     public void removeGameAccount(CustomerAccount account, GameAccount gameAccount) {
 
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
 
         CustomerAccount mergedAccount = em.merge(account);

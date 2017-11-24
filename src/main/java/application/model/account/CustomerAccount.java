@@ -12,7 +12,7 @@ import java.util.List;
                 query = "SELECT ca FROM CustomerAccount ca WHERE ca.id = :accountId")
 })
 @Entity
-@PrimaryKeyJoinColumn(referencedColumnName="id")
+@PrimaryKeyJoinColumn(referencedColumnName = "id")
 @DiscriminatorValue(value = "customer")
 @Table(name = "customer_account")
 public class CustomerAccount extends Account {
@@ -35,7 +35,9 @@ public class CustomerAccount extends Account {
     }
 
     public CustomerAccount(String accountName, String email, String password) {
+
         super(accountName, email, password);
+        this.setBoostCoin(150);
     }
 
     public void addGameAccountBiDir(GameAccount gameAccount) {

@@ -5,17 +5,22 @@ import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 
-import static application.App.EMFactory;
-
 public class AccountDaoJPA implements AccountDao {
+
+    private EntityManagerFactory entityManagerFactory;
+
+    public AccountDaoJPA(EntityManagerFactory entityManagerFactory) {
+        this.entityManagerFactory = entityManagerFactory;
+    }
 
     @Override
     public Long add(Account account) {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         em.getTransaction().begin();
 
@@ -29,7 +34,7 @@ public class AccountDaoJPA implements AccountDao {
 
     @Override
     public Account findAccountById(Long accountId) {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         TypedQuery<Account> result = em.createNamedQuery("Account.findAccountById", Account.class)
                 .setParameter("accountId", accountId);
@@ -45,7 +50,7 @@ public class AccountDaoJPA implements AccountDao {
 
     @Override
     public CustomerAccount findCustomerById(Long accountId) {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         TypedQuery<CustomerAccount> result = em.createNamedQuery("CustomerAccount.findCustomerById", CustomerAccount.class)
                 .setParameter("accountId", accountId);
@@ -61,7 +66,7 @@ public class AccountDaoJPA implements AccountDao {
 
     @Override
     public BoosterAccount findBoosterById(Long accountId) {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         TypedQuery<BoosterAccount> result = em.createNamedQuery("BoosterAccount.findBoosterById", BoosterAccount.class)
                 .setParameter("accountId", accountId);
@@ -77,7 +82,7 @@ public class AccountDaoJPA implements AccountDao {
 
     @Override
     public Account findAccountByName(String accountName) {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         TypedQuery<Account> result = em.createNamedQuery("Account.findAccountByAccountName", Account.class)
                 .setParameter("accountName", accountName);
@@ -97,7 +102,7 @@ public class AccountDaoJPA implements AccountDao {
 
     @Override
     public List<String> getAllAccountNames() {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         TypedQuery<String> result = em.createNamedQuery("Account.getAccountNames", String.class);
 
         List<String> accountNames = result.getResultList();
@@ -108,7 +113,7 @@ public class AccountDaoJPA implements AccountDao {
 
     @Override
     public List<String> getAllEmails() {
-        EntityManager em = EMFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         TypedQuery<String> result = em.createNamedQuery("Account.getEmails", String.class);
 
         List<String> emails = result.getResultList();
@@ -119,12 +124,27 @@ public class AccountDaoJPA implements AccountDao {
 
     @Override
     public void changeBoostCoinByAmount(Account account, int amount) {
-        EntityManager em = EMFactory.createEntityManager();
+
+        EntityManager em = entityManagerFactory.createEntityManager();
 
         em.getTransaction().begin();
 
         Account mergedAccount = em.merge(account);
         mergedAccount.setBoostCoin(mergedAccount.getBoostCoin() + amount);
+
+        em.getTransaction().commit();
+        em.close();
+    }
+
+    @Override
+    public void transferBoostCoin(BoosterAccount boosterAccount, int totalPrice) {
+
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+
+        BoosterAccount mergedAccount = em.merge(boosterAccount);
+
+        mergedAccount.changeBoostCoin(totalPrice);
 
         em.getTransaction().commit();
         em.close();

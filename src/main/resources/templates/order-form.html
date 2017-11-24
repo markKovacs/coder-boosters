@@ -4,14 +4,30 @@
 <head>
     <title>Order form</title>
 </head>
+
 <body>
+
 <div layout:fragment="content">
+
+    <h1>Boost Order Creation</h1>
+
+    <!-- ERRORS -->
+    <div th:if="${errors}" id="error-messages" >
+        <div th:each="error : ${errors}">
+            <span class="alert" th:text="${error}"></span>
+            <br>
+        </div>
+    </div>
+
+    <!-- ORDER FORM -->
     <form action="/create-order" method="POST">
+
+        <!-- GENERIC PART -->
         <div th:replace="fragments :: general-order-part"></div>
+
+        <!-- GAME SPECIFIC PART -->
         <th:block th:switch="${game_type}">
-            <div th:case="'WOW'">
-                <!-- print object is not active -->
-            </div>
+
             <div th:case="'LOL'">
                 <br>CurrentRank:<br>
                 <select name="currentRank">
@@ -20,18 +36,31 @@
                      th:value="${lg}"></option>
                 </select>
             </div>
+
+            <div th:case="'WOW'">
+                <!-- TODO: when WOW game is implemented -->
+            </div>
+
             <div th:case="'OW'">
-                <!-- print object is new and active -->
+                <!-- TODO: when OW game is implemented -->
             </div>
+
             <div th:case="'FIFA'">
-                <!-- print object is new and active -->
+                <!-- TODO: when FIFA game is implemented -->
             </div>
+
             <div th:case="'CSGO'">
-                <!-- print object is new and active -->
+                <!-- TODO: when CSGO game is implemented -->
             </div>
+
         </th:block>
-        <button type="submit">Submit</button>
+
+        <!-- CANCEL/SUBMIT BUTTONS -->
+        <a th:href="@{~/customer-orders}"><input class="btn btn-default" type="button" value="Cancel"></a>
+        <button class="btn btn-success" type="submit">Submit</button>
+
     </form>
+
 </div>
 </body>
 </html>

@@ -3,12 +3,19 @@ package application.model.order;
 import application.model.GameType;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.model.account.GameAccount;
 
 import javax.persistence.*;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+@NamedQueries({
+        @NamedQuery(name = "BoostOrder.getOrdersForBoosterAndAllAvailable",
+                query = "SELECT o FROM BoostOrder o WHERE o.boosterAccount = :account OR o.boosterAccount IS NULL"),
+        @NamedQuery(name ="BoostOrder.getBoosterOrderById",
+                query = "SELECT o from BoostOrder o WHERE o.id = :boostOrderId")
+})
 @Entity
 @Table(name = "boost_order")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -29,10 +36,10 @@ public abstract class BoostOrder {
     @Enumerated(value = EnumType.STRING)
     OrderType orderType;
 
-    double basePrice;
+    int basePrice;
     double bonusPercentage;
     @Transient
-    double totalPrice; // will be calculated in constructor but not stored in DB
+    int totalPrice; // will be calculated in constructor but not stored in DB
 
     @Temporal(TemporalType.TIMESTAMP)
     Date deadLine;
@@ -45,10 +52,14 @@ public abstract class BoostOrder {
     @JoinColumn(name = "booster_id")
     BoosterAccount boosterAccount;
 
+    @ManyToOne
+    @JoinColumn(name = "game_acc_id")
+    GameAccount gameAccount;
+
+
     // TODO: GameAccount need to be added to this entity.
 
-    public abstract double calcBasePrice();
-
+    public abstract int calcBasePrice();
     public BoostOrder() {
     }
 
@@ -101,11 +112,11 @@ public abstract class BoostOrder {
         this.orderType = orderType;
     }
 
-    public double getBasePrice() {
+    public int getBasePrice() {
         return basePrice;
     }
 
-    public void setBasePrice(double basePrice) {
+    public void setBasePrice(int basePrice) {
         this.basePrice = basePrice;
     }
 
@@ -117,11 +128,11 @@ public abstract class BoostOrder {
         this.bonusPercentage = bonusPercentage;
     }
 
-    public double getTotalPrice() {
+    public int getTotalPrice() {
         return totalPrice;
     }
 
-    public void setTotalPrice(double totalPrice) {
+    public void setTotalPrice(int totalPrice) {
         this.totalPrice = totalPrice;
     }
 
@@ -149,14 +160,47 @@ public abstract class BoostOrder {
         this.boosterAccount = boosterAccount;
     }
 
+    public GameAccount getGameAccount() {
+        return gameAccount;
+    }
+
+    public void setGameAccount(GameAccount gameAccount) {
+        this.gameAccount = gameAccount;
+    }
+
+    public String getGameAccountName() {
+        if (this.gameAccount == null) return null;
+        return this.gameAccount.getAccountName();
+    }
+
+    public String getGameAccountPassword() {
+        if (this.gameAccount == null) return null;
+        return this.gameAccount.getPassword();
+    }
+
     public String deadlineString() {
         DateFormat df = new SimpleDateFormat("MM/dd/yyyy HH:mm");
         return df.format(deadLine);
     }
 
     public void calcTotal() {
-        this.totalPrice = this.basePrice * (bonusPercentage/100.0 + 1.0);
+        this.totalPrice = (int)((double)this.basePrice * (bonusPercentage/100.0 + 1.0));
     }
 
-
+    @Override
+    public String toString() {
+        return "BoostOrder{" +
+                "id=" + id +
+                ", gameType=" + gameType +
+                ", status=" + status +
+                ", numberOfGames=" + numberOfGames +
+                ", orderType=" + orderType +
+                ", basePrice=" + basePrice +
+                ", bonusPercentage=" + bonusPercentage +
+                ", totalPrice=" + totalPrice +
+                ", deadLine=" + deadLine +
+                ", customerAccount=" + customerAccount +
+                ", boosterAccount=" + boosterAccount +
+                '}';
+    }
 }

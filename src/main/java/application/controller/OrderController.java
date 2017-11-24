@@ -1,193 +1,146 @@
 package application.controller;
 
-import application.dao.DaoFactory;
-import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
 import application.model.order.LeagueDivision;
-import application.model.order.LoLBoostOrder;
-import application.model.order.OrderType;
-import application.utils.*;
-import spark.Request;
+import application.service.AccountService;
+import application.service.GameAccountService;
+import application.service.OrderService;
+import application.utils.Path;
+import application.utils.RequestUtil;
+import application.utils.ViewUtil;
 import spark.Route;
 
-import java.util.*;
-
-import static spark.Spark.halt;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OrderController {
 
-    public static Route serveOrderListPage = (request, response) -> {
+    private OrderService orderService;
+    private AccountService accountService;
+    private GameAccountService gameAccountService;
+    private ViewUtil viewUtil;
+    private RequestUtil requestUtil;
 
-        Long accountId = RequestUtil.getSessionAccountId(request);
-        Account account = DaoFactory.getAccountDao().findAccountById(accountId);
+    public OrderController(OrderService orderService, AccountService accountService,
+                           GameAccountService gameAccountService,
+                           ViewUtil viewUtil, RequestUtil requestUtil) {
+
+        this.orderService = orderService;
+        this.accountService = accountService;
+        this.gameAccountService = gameAccountService;
+        this.viewUtil = viewUtil;
+        this.requestUtil = requestUtil;
+    }
+
+    public Route serveOrderListPage = (request, response) -> {
+
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Account account = accountService.findAccountById(accountId);
 
         Map<String, Object> model = new HashMap<>();
 
-        // TODO: Path.Template.CUSTOMER_ORDERS & BOOSTER_ORDERS could be merged and th:if...
         if (account instanceof BoosterAccount) {
-            // TODO: orders need to be added to model differently: where booster_id is null or current booster's id
-            return ViewUtil.render(request, model, Path.Template.BOOSTER_ORDERS);
-        }
-        model.put("orders", DaoFactory.getBoostOrderDao().getOrdersByAccount(account));
-        return ViewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS);
-    };
-    public static Route serverOrderDemo = (request, response) -> {
-        Map<String, Object> model = new HashMap<>();
-
-        // TODO: Path.Template.CUSTOMER_ORDERS & BOOSTER_ORDERS could be merged and th:if...
-
-        return ViewUtil.render(request, model, Path.Template.BOOSTER_DEMO);
-    };
-
-    public static Route handleAcceptOrder = (request, response) -> {
-
-        Long accountId = RequestUtil.getSessionAccountId(request);
-        BoosterAccount boosterAccount = DaoFactory.getAccountDao().findBoosterById(accountId);
-
-        if (boosterAccount == null) {
-            response.redirect(Path.Web.INDEX);
-            halt(401);
+            model.put("orders", orderService.getOrdersForBoosterAndAllAvailable(account));
+            return viewUtil.render(request, model, Path.Template.BOOSTER_ORDERS, account);
         }
 
-        Long boostOrderId = Long.parseLong(request.params("boostOrderId"));
-        BoostOrder boostOrder = DaoFactory.getBoostOrderDao().findBoostOrder(boostOrderId);
-        DaoFactory.getBoostOrderDao().addBoostOrder(boosterAccount, boostOrder);
+        model.put("orders", orderService.getOrdersByAccount(account));
+        return viewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS, account);
+    };
 
-        // TODO: success message could be added.
+    public Route handleAcceptOrder = (request, response) -> {
 
-        response.redirect(Path.Web.CUSTOMER_ORDERS);
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Long boostOrderId = requestUtil.getQueryParamBoostOrderId(request);
+
+        BoosterAccount boosterAccount = accountService.findBoosterById(accountId);
+        BoostOrder boostOrder = orderService.findBoostOrder(boostOrderId);
+
+        boolean successful = orderService.acceptOrder(boosterAccount, boostOrder);
+
+        // TODO: message could be added (successful or not)
+
+        response.redirect(Path.Web.BOOSTER_ORDERS);
         return null;
     };
 
-    public static Route handleOrderCreation = (request, response) -> {
+    public Route handleCloseOrder = (request, response) -> {
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Long boostOrderId = requestUtil.getQueryParamBoostOrderId(request);
 
-        Long accountId = RequestUtil.getSessionAccountId(request);
-        CustomerAccount account = DaoFactory.getAccountDao().findCustomerById(accountId);
+        BoosterAccount boosterAccount = accountService.findBoosterById(accountId);
+        BoostOrder boostOrder = orderService.findBoostOrder(boostOrderId);
 
-        List<String> errorMessages = validateOrderData(request);
+        boolean successful = orderService.closeOrder(boosterAccount, boostOrder);
 
+        // TODO: message could be added (successful or not)
+
+        accountService.transferBoostCoin(boosterAccount, boostOrder.getTotalPrice());
+
+        response.redirect(Path.Web.BOOSTER_ORDERS);
+        return null;
+    };
+
+    public Route handleOrderCreation = (request, response) -> {
+
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Map<String, String> inputData = requestUtil.collectNewOrderData(request);
+
+        CustomerAccount customerAccount = accountService.findCustomerById(accountId);
+        List<String> errorMessages = orderService.validateOrderData(inputData);
+
+        // INVALID INPUT
         if (errorMessages.size() > 0) {
             Map<String, Object> model = new HashMap<>();
             model.put("errors", errorMessages);
 
-            return ViewUtil.render(request, model, Path.Template.ORDER_FORM);
+            return viewUtil.render(request, model, Path.Template.ORDER_FORM, customerAccount);
         }
 
-        BoostOrder boostOrder = null;
-        switch (request.queryParams("gameType")) {
-            case "LOL":
-                boostOrder = new LoLBoostOrder(
-                        LeagueDivision.valueOf(request.queryParams("currentRank")),
-                        Integer.parseInt(request.queryParams("numberOfGames")),
-                        OrderType.valueOf(request.queryParams("orderType")),
-                        Double.parseDouble(request.queryParams("bonusPercentage")),
-                        DataUtil.createDate(
-                                Integer.parseInt(request.queryParams("year")),
-                                Integer.parseInt(request.queryParams("month")),
-                                Integer.parseInt(request.queryParams("day")),
-                                Integer.parseInt(request.queryParams("hour"))
-                        )
-                );
-                break;
+        // SUCCESSFUL ORDER CREATION
+        // TODO: first we should check if sufficient funds on customer account balance, then deduct, then create order
+        BoostOrder boostOrder = orderService.createOrder(customerAccount, inputData);
+        if (boostOrder == null) {
+            response.redirect(Path.Web.CUSTOMER_ORDERS);
+            return null;
         }
 
-        // TODO: GameAccount object to be created and persisted here, added to BoostOrder.
-        DaoFactory.getBoostOrderDao().addBoostOrder(account, boostOrder);
-        // TODO: unifiy USD - BoostCoin and int - double
-        DaoFactory.getAccountDao().changeBoostCoinByAmount(account, (-1) * (int) boostOrder.getTotalPrice());
+        GameAccount gameAccount = gameAccountService.create(inputData, customerAccount);
+        orderService.setGameAccount(boostOrder, gameAccount);
+
+        boolean paid = accountService.decreaseBoostCoinAmount(customerAccount, (-1) * boostOrder.getTotalPrice());
 
         response.redirect(Path.Web.CUSTOMER_ORDERS);
         return null;
     };
 
-    public static Route serveCustomerOrders = (request, response) -> {
+    public Route serveSelectGamePage = (request, response) -> {
 
+        Long accountId = requestUtil.getSessionAccountId(request);
+        Account account = accountService.findAccountById(accountId);
         Map<String, Object> model = new HashMap<>();
 
-        return ViewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS);
+        return viewUtil.render(request, model, Path.Template.SELECT_GAME, account);
     };
 
-    public static Route serveBoosterOrders = (request, response) -> {
+    public Route serveOrderForm = (request, response) -> {
 
-        Map<String, Object> model = new HashMap<>();
+        Long accountId = requestUtil.getSessionAccountId(request);
+        String gameTypeString = requestUtil.getQueryParamGameType(request);
 
-        return ViewUtil.render(request, model, Path.Template.BOOSTER_ORDERS);
-    };
-
-    public static Route serveSelectGamePage = (request, response) -> {
-
-        Map<String, Object> model = new HashMap<>();
-
-        return ViewUtil.render(request, model, Path.Template.SELECT_GAME);
-    };
-  
-    public static Route serveOrderForm = (request, response) -> {
-
-        String gameTypeString = request.queryParams("game_type");
-        List<LeagueDivision> leagueDivisions = Arrays.asList(LeagueDivision.values());
+        Account account = accountService.findAccountById(accountId);
+        List<LeagueDivision> leagueDivisions = orderService.getLoLLeagueDivisions();
 
         Map<String, Object> model = new HashMap<>();
         model.put("game_type", gameTypeString);
         model.put("league_divisions", leagueDivisions);
 
-        return ViewUtil.render(request, model, Path.Template.ORDER_FORM);
+        return viewUtil.render(request, model, Path.Template.ORDER_FORM, account);
     };
-    
-    private static List<String> validateOrderData(Request request) {
-        List<String> errors = new ArrayList<>();
-
-        switch (request.queryParams("gameType")) {
-
-            case "LOL":
-                if (!Arrays.asList(LeagueDivision.values())
-                        .contains(LeagueDivision.valueOf(request.queryParams("currentRank")))) {
-                    errors.add("Selected league/division rank is invalid.");
-                }
-                int numOfGames = Integer.parseInt(request.queryParams("numberOfGames"));
-                if (numOfGames < 1 || numOfGames > 10) {
-                    errors.add("Number of games selected should be between 1-10.");
-                }
-                if (!Arrays.asList(OrderType.values())
-                        .contains(OrderType.valueOf(request.queryParams("orderType")))) {
-                    errors.add("Selected order type is invalid.");
-                }
-                double bonusPercentage = Double.parseDouble(request.queryParams("bonusPercentage"));
-                if (bonusPercentage != 0.0 && bonusPercentage != 5.0 &&
-                        bonusPercentage != 10.0 && bonusPercentage != 15.0) {
-                    errors.add("Bonus percentage must be 0, 5, 10 or 15");
-                }
-                int year = Integer.parseInt(request.queryParams("year"));
-                if (year > 2099 || year < 2017) {
-                    errors.add("Year must be between 2017 and 2099");
-                }
-                int month = Integer.parseInt(request.queryParams("month"));
-                if (month < 1 || month > 12) {
-                    errors.add("Months must be between 1 and 12");
-                }
-                int day = Integer.parseInt(request.queryParams("month"));
-                if (day < 1 || day > 31) {
-                    errors.add("Days must be between 1 and 31");
-                }
-                int hour = Integer.parseInt(request.queryParams("hour"));
-                if (hour < 0 || hour > 24) {
-                    errors.add("Hours must be between 0 and 24");
-                }
-                if (!InputField.USERNAME.validate(request.queryParams("gameAccName"))) {
-                    errors.add("Game account name is invalid.");
-                }
-                if (!InputField.PASSWORD.validate(request.queryParams("gameAccPassword"))) {
-                    errors.add("Game account password is invalid.");
-                }
-                break;
-
-            default:
-                errors.add("Wrong game type.");
-        }
-
-        return errors;
-    }
 
 }
