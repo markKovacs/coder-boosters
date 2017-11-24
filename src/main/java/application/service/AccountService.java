@@ -113,7 +113,7 @@ public class AccountService {
             return -1L;
         }
 
-        return validPassword ? account.getId() : -1;
+        return validPassword ? account.getId() : -1L;
     }
 
     public List<String> validateCustomerProfileEditInfo(Map<String, String> inputData) {
