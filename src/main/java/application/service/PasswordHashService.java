@@ -14,6 +14,7 @@ public class PasswordHashService {
         public InvalidHashException(String message) {
             super(message);
         }
+
         public InvalidHashException(String message, Throwable source) {
             super(message, source);
         }
@@ -24,6 +25,7 @@ public class PasswordHashService {
         public CannotPerformOperationException(String message) {
             super(message);
         }
+
         public CannotPerformOperationException(String message, Throwable source) {
             super(message, source);
         }
@@ -55,14 +57,12 @@ public class PasswordHashService {
     }
 
     private static String createHash(String password)
-            throws CannotPerformOperationException
-    {
+            throws CannotPerformOperationException {
         return createHash(password.toCharArray());
     }
 
     private static String createHash(char[] password)
-            throws CannotPerformOperationException
-    {
+            throws CannotPerformOperationException {
         // Generate a random salt
         SecureRandom random = new SecureRandom();
         byte[] salt = new byte[SALT_BYTE_SIZE];
@@ -84,14 +84,12 @@ public class PasswordHashService {
     }
 
     public boolean verifyPassword(String password, String correctHash)
-            throws CannotPerformOperationException, InvalidHashException
-    {
+            throws CannotPerformOperationException, InvalidHashException {
         return verifyPassword(password.toCharArray(), correctHash);
     }
 
     private static boolean verifyPassword(char[] password, String correctHash)
-            throws CannotPerformOperationException, InvalidHashException
-    {
+            throws CannotPerformOperationException, InvalidHashException {
         // Decode the hash into its parameters
         String[] params = correctHash.split(":");
         if (params.length != HASH_SECTIONS) {
@@ -169,17 +167,15 @@ public class PasswordHashService {
         return slowEquals(hash, testHash);
     }
 
-    private static boolean slowEquals(byte[] a, byte[] b)
-    {
+    private static boolean slowEquals(byte[] a, byte[] b) {
         int diff = a.length ^ b.length;
-        for(int i = 0; i < a.length && i < b.length; i++)
+        for (int i = 0; i < a.length && i < b.length; i++)
             diff |= a[i] ^ b[i];
         return diff == 0;
     }
 
     private static byte[] pbkdf2(char[] password, byte[] salt, int iterations, int bytes)
-            throws CannotPerformOperationException
-    {
+            throws CannotPerformOperationException {
         try {
             PBEKeySpec spec = new PBEKeySpec(password, salt, iterations, bytes * 8);
             SecretKeyFactory skf = SecretKeyFactory.getInstance(PBKDF2_ALGORITHM);
@@ -198,13 +194,11 @@ public class PasswordHashService {
     }
 
     private static byte[] fromBase64(String hex)
-            throws IllegalArgumentException
-    {
+            throws IllegalArgumentException {
         return DatatypeConverter.parseBase64Binary(hex);
     }
 
-    private static String toBase64(byte[] array)
-    {
+    private static String toBase64(byte[] array) {
         return DatatypeConverter.printBase64Binary(array);
     }
 

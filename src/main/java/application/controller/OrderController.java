@@ -44,6 +44,7 @@ public class OrderController {
 
         Map<String, Object> model = new HashMap<>();
 
+        // TODO: start using accountType instead of instanceof
         if (account instanceof BoosterAccount) {
             model.put("orders", orderService.getOrdersForBoosterAndAllAvailable(account));
             return viewUtil.render(request, model, Path.Template.BOOSTER_ORDERS, account);
@@ -53,7 +54,7 @@ public class OrderController {
         return viewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS, account);
     };
 
-    public Route handleAcceptOrder = (request, response) -> {
+    public Route handleTakeOrder = (request, response) -> {
 
         Long accountId = requestUtil.getSessionAccountId(request);
         Long boostOrderId = requestUtil.getQueryParamBoostOrderId(request);
@@ -61,7 +62,7 @@ public class OrderController {
         BoosterAccount boosterAccount = accountService.findBoosterById(accountId);
         BoostOrder boostOrder = orderService.findBoostOrder(boostOrderId);
 
-        boolean successful = orderService.acceptOrder(boosterAccount, boostOrder);
+        boolean successful = orderService.takeOrder(boosterAccount, boostOrder);
 
         // TODO: message could be added (successful or not)
 
@@ -113,7 +114,7 @@ public class OrderController {
         GameAccount gameAccount = gameAccountService.create(inputData, customerAccount);
         orderService.setGameAccount(boostOrder, gameAccount);
 
-        boolean paid = accountService.decreaseBoostCoinAmount(customerAccount, (-1) * boostOrder.getTotalPrice());
+        boolean paid = accountService.decreaseBoostCoinAmount(customerAccount, boostOrder.getTotalPrice());
 
         response.redirect(Path.Web.CUSTOMER_ORDERS);
         return null;

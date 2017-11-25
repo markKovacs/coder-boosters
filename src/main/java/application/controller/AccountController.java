@@ -4,10 +4,14 @@ import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
 import application.service.AccountService;
-import application.utils.*;
+import application.utils.Path;
+import application.utils.RequestUtil;
+import application.utils.ViewUtil;
 import spark.Route;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AccountController {
 
@@ -102,7 +106,7 @@ public class AccountController {
         // INVALID LOGIN CREDENTIALS
         if (accountId == -1) {
             Map<String, Object> model = new HashMap<>();
-            model.put("errors", new ArrayList<>(Collections.singletonList("Invalid credentials.")));
+            model.put("errors", accountService.getInvalidLoginCredsErrorMessage());
 
             return viewUtil.render(request, model, Path.Template.LOGIN, null);
         }
@@ -111,6 +115,7 @@ public class AccountController {
         requestUtil.createSessionForAccount(request, accountId);
         Account account = accountService.findAccountById(accountId);
 
+        // TODO: change from instanceof and use an accountType instance variable
         if (account instanceof BoosterAccount) {
             response.redirect(Path.Web.BOOSTER_ORDERS);
         } else {
@@ -129,7 +134,7 @@ public class AccountController {
 
     public Route handleCustomerProfileEditing = (request, response) -> {
 
-        // TODO: NOT READY YET
+        // TODO: not implemented yet, for later use
 
         Long accountId = requestUtil.getSessionAccountId(request);
         Map<String, String> inputData = requestUtil.collectEditData(request);

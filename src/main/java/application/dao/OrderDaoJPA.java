@@ -25,7 +25,7 @@ public class OrderDaoJPA implements OrderDao {
         EntityManager em = entityManagerFactory.createEntityManager();
 
         BoostOrder boostOrder = em.find(BoostOrder.class, boostOrderId);
-        boostOrder.calcTotal();
+        /*boostOrder.calcTotal();*/
 
         em.close();
         return boostOrder;
@@ -132,9 +132,9 @@ public class OrderDaoJPA implements OrderDao {
         em.close();
 
         // CALCULATE TRANSIENT FIELD
-        for (BoostOrder boostOrder : boostOrders) {
+        /*for (BoostOrder boostOrder : boostOrders) {
             boostOrder.calcTotal();
-        }
+        }*/
 
         return boostOrders;
     }
@@ -152,9 +152,9 @@ public class OrderDaoJPA implements OrderDao {
         em.close();
 
         // CALCULATE TRANSIENT FIELD
-        for (BoostOrder boostOrder : orders) {
+        /*for (BoostOrder boostOrder : orders) {
             boostOrder.calcTotal();
-        }
+        }*/
 
         return orders;
     }

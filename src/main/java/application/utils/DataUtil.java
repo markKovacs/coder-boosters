@@ -13,6 +13,7 @@ public class DataUtil {
     }
 
     public int castStringToInt(String numberAsString) {
+        // TODO: int/long.. etc. should be Wrapper Type (Integer) so we can rather return with null and not a valid number (-1)
         int number;
         try {
             number = Integer.parseInt(numberAsString);
@@ -23,6 +24,7 @@ public class DataUtil {
     }
 
     public double castStringToDouble(String numberAsString) {
+        // TODO: see above...
         double number;
         try {
             number = Double.parseDouble(numberAsString);
@@ -33,6 +35,7 @@ public class DataUtil {
     }
 
     public long castStringToLong(String numberAsString) {
+        // TODO: see above...
         long number;
         try {
             number = Long.parseLong(numberAsString);

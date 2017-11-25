@@ -12,18 +12,18 @@ import java.util.List;
                 query = "SELECT ba FROM BoosterAccount ba WHERE ba.id = :accountId")
 })
 @Entity
-@PrimaryKeyJoinColumn(referencedColumnName="id")
+@PrimaryKeyJoinColumn(referencedColumnName = "id")
 @DiscriminatorValue(value = "booster")
 @Table(name = "booster_account")
 public class BoosterAccount extends Account {
 
-    // TODO: MANY TO MANY, GAMETYPE NEED TO BE ENTITY AND PERSIST THEM
+    // TODO: ManyToMany connection could be added here, describing what games a booster is playing
     //Set<GameType> playedGames = new HashSet<>();
 
-    int honorPoints;
+    private int honorPoints;
 
     @OneToMany(mappedBy = "boosterAccount")
-    List<BoostOrder> boostOrderList = new ArrayList<>();
+    private List<BoostOrder> boostOrderList = new ArrayList<>();
 
     // CONSTRUCTORS
     public BoosterAccount() {}
@@ -40,15 +40,12 @@ public class BoosterAccount extends Account {
         boostOrder.setStatus(Status.TAKEN);
     }
 
-
     @Override
     public void removeBoostOrderBiDir(BoostOrder boostOrder) {
         this.boostOrderList.remove(boostOrder);
         boostOrder.setBoosterAccount(null);
         boostOrder.setStatus(Status.AVAILABLE);
     }
-
-
 
     // GETTERS - SETTERS
     public List<BoostOrder> getBoostOrderList() {
