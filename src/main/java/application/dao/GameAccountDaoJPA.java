@@ -2,6 +2,7 @@ package application.dao;
 
 import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 

@@ -30,9 +30,10 @@ public abstract class Account {
 
     private int boostCoin;
 
-    public Account() {
-    }
+    // TODO: accountType field should be added and used instead of instanceof operator all throughout the app
 
+    // CONSTRUCTORS
+    public Account() {}
     public Account(String accountName, String email, String password) {
         this.accountName = accountName;
         this.email = email;

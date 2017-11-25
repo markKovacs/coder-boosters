@@ -74,7 +74,7 @@ public class RequestUtil {
         }
     }
 
-    public Map<String,String> collectNewOrderData(Request request) {
+    public Map<String, String> collectNewOrderData(Request request) {
 
         Map<String, String> orderData = new HashMap<>();
 

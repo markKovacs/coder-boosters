@@ -1,7 +1,6 @@
 package application.service;
 
 import application.dao.OrderDao;
-import application.dao.OrderDaoJPA;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
@@ -13,7 +12,10 @@ import application.model.order.OrderType;
 import application.utils.DataUtil;
 import application.utils.InputField;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
 
 public class OrderService {
 
@@ -37,9 +39,9 @@ public class OrderService {
         return orderDao.findBoostOrder(boostOrderId);
     }
 
-    public boolean acceptOrder(BoosterAccount boosterAccount, BoostOrder boostOrder) {
+    public boolean takeOrder(BoosterAccount boosterAccount, BoostOrder boostOrder) {
 
-        // TODO: logic could be used to see if boosterAccount is eligible to accept boostOrder
+        // TODO: logic could be used to see if boosterAccount is eligible to accept boostOrder (honorPoints)
         // TODO: if not: do not add and return false...
 
         orderDao.addBoostOrder(boosterAccount, boostOrder);
@@ -116,6 +118,8 @@ public class OrderService {
 
     public BoostOrder createOrder(CustomerAccount account, Map<String, String> inputData) {
 
+        // TODO: upon adding new games, this method should be extended
+
         BoostOrder boostOrder;
         switch (inputData.get("gameType")) {
             case "LOL":
@@ -141,11 +145,12 @@ public class OrderService {
     }
 
     public List<LeagueDivision> getLoLLeagueDivisions() {
-        // TODO: this could be stored in database and read divisions from there
+        // TODO: this could be stored in database and read league divisions from there
         return Arrays.asList(LeagueDivision.values());
     }
 
     public void setGameAccount(BoostOrder boostOrder, GameAccount gameAccount) {
         orderDao.setGameAccount(boostOrder, gameAccount);
     }
+
 }

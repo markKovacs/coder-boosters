@@ -6,7 +6,8 @@ import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
 
 import javax.mail.*;
-import javax.mail.internet.*;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
 import java.io.StringWriter;
 import java.util.Map;
 import java.util.Properties;
@@ -28,7 +29,7 @@ public class EmailService {
         Session session = Session.getDefaultInstance(props,
                 new javax.mail.Authenticator() {
                     protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(Config.SMTP_USER,Config.SMTP_PASS);
+                        return new PasswordAuthentication(Config.SMTP_USER, Config.SMTP_PASS);
                     }
                 });
 

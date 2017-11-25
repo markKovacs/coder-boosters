@@ -1,13 +1,10 @@
 package application.utils;
 
 import application.dao.AccountDao;
-import application.dao.OrderDao;
 import application.dao.GameAccountDao;
-import application.model.GameType;
+import application.dao.OrderDao;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
-import application.model.account.GameAccount;
-import application.model.order.*;
 
 public class DataGenerator {
     private AccountDao accountDao;

@@ -107,7 +107,7 @@ public class AccountDaoJPA implements AccountDao {
 
         List<String> accountNames = result.getResultList();
         em.close();
-        
+
         return accountNames;
     }
 

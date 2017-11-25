@@ -147,11 +147,15 @@ public class AccountService {
 
         // TODO: put logic here if customer does not have enough money, return false and cancel process
 
-        accountDao.changeBoostCoinByAmount(account, amount);
+        accountDao.changeBoostCoinByAmount(account, (-1) * amount);
         return true;
     }
 
     public void transferBoostCoin(BoosterAccount boosterAccount, int totalPrice) {
         accountDao.transferBoostCoin(boosterAccount, totalPrice);
+    }
+
+    public List<String> getInvalidLoginCredsErrorMessage() {
+        return new ArrayList<>(Collections.singletonList("Invalid credentials."));
     }
 }

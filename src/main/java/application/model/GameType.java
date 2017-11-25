@@ -18,8 +18,8 @@ public enum GameType {
     public String getName() {
         return name;
     }
-
     public String getIcon() {
         return "/pictures/game-picture/" + icon;
     }
+
 }

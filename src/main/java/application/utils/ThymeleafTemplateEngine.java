@@ -107,8 +107,9 @@ public class ThymeleafTemplateEngine extends TemplateEngine {
      * Process the specified template (usually the template name).
      * Output will be written into a String that will be returned from calling this method,
      * once template processing has finished.
+     *
      * @param modelAndView model and view
-     * @param locale A Locale object represents a specific geographical, political, or cultural region
+     * @param locale       A Locale object represents a specific geographical, political, or cultural region
      * @return processed template
      */
     public String render(ModelAndView modelAndView, Locale locale) {

@@ -33,62 +33,53 @@ public class GameAccount {
             cascade = CascadeType.ALL,
             orphanRemoval = true
     )
-    List<BoostOrder> boostOrderList = new ArrayList<>();
+    private List<BoostOrder> boostOrderList = new ArrayList<>();
 
-    public GameAccount() {
-    }
-
+    // CONSTRUCTORS
+    public GameAccount() {}
     public GameAccount(String accountName, String password, GameType gameType) {
         this.accountName = accountName;
         this.password = password;
         this.gameType = gameType;
     }
 
-    public List<BoostOrder> getBoostOrderList() {
-        return boostOrderList;
-    }
-
     public void addBoostOrderList(BoostOrder boostOrder) {
         boostOrderList.add(boostOrder);
     }
 
+    // GETTERS AND SETTERS
+    public List<BoostOrder> getBoostOrderList() {
+        return boostOrderList;
+    }
     public String getAccountName() {
         return accountName;
     }
-
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
-
     public String getPassword() {
         return password;
     }
-
     public void setPassword(String password) {
         this.password = password;
     }
-
     public GameType getGameType() {
         return gameType;
     }
-
     public void setGameType(GameType gameType) {
         this.gameType = gameType;
     }
-
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
     public Account getAccount() {
         return account;
     }
-
     public void setAccount(Account account) {
         this.account = account;
     }
+
 }

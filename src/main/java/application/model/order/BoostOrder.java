@@ -13,7 +13,7 @@ import java.util.Date;
 @NamedQueries({
         @NamedQuery(name = "BoostOrder.getOrdersForBoosterAndAllAvailable",
                 query = "SELECT o FROM BoostOrder o WHERE o.boosterAccount = :account OR o.boosterAccount IS NULL"),
-        @NamedQuery(name ="BoostOrder.getBoosterOrderById",
+        @NamedQuery(name = "BoostOrder.getBoosterOrderById",
                 query = "SELECT o from BoostOrder o WHERE o.id = :boostOrderId")
 })
 @Entity
@@ -26,27 +26,26 @@ public abstract class BoostOrder {
     Long id;
 
     @Enumerated(value = EnumType.STRING)
-    GameType gameType;
+    private GameType gameType;
 
     @Enumerated(value = EnumType.STRING)
-    Status status;
+    private Status status;
 
-    int numberOfGames;
+    private int numberOfGames;
 
     @Enumerated(value = EnumType.STRING)
-    OrderType orderType;
+    private OrderType orderType;
 
     int basePrice;
-    double bonusPercentage;
-    @Transient
-    int totalPrice; // will be calculated in constructor but not stored in DB
+
+    private double bonusPercentage;
 
     @Temporal(TemporalType.TIMESTAMP)
-    Date deadLine;
+    private Date deadLine;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
-    CustomerAccount customerAccount;
+    private CustomerAccount customerAccount;
 
     @ManyToOne
     @JoinColumn(name = "booster_id")
@@ -54,12 +53,18 @@ public abstract class BoostOrder {
 
     @ManyToOne
     @JoinColumn(name = "game_acc_id")
-    GameAccount gameAccount;
+    private GameAccount gameAccount;
 
+    @Transient
+    private int totalPrice;
 
-    // TODO: GameAccount need to be added to this entity.
+    @PostLoad
+    public void calcTotal() {
+        this.totalPrice = (int) ((double) this.basePrice * (bonusPercentage / 100.0 + 1.0));
+    }
 
     public abstract int calcBasePrice();
+
     public BoostOrder() {
     }
 
@@ -183,10 +188,6 @@ public abstract class BoostOrder {
         return df.format(deadLine);
     }
 
-    public void calcTotal() {
-        this.totalPrice = (int)((double)this.basePrice * (bonusPercentage/100.0 + 1.0));
-    }
-
     @Override
     public String toString() {
         return "BoostOrder{" +
@@ -203,4 +204,5 @@ public abstract class BoostOrder {
                 ", boosterAccount=" + boosterAccount +
                 '}';
     }
+
 }

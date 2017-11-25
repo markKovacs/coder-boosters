@@ -1,6 +1,5 @@
 package application.utils;
 
-import application.dao.AccountDao;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
@@ -13,9 +12,7 @@ public class ViewUtil {
 
     public String render(Request request, Map<String, Object> model, String view, Account account) {
 
-//        AccountDao accDao = DaoFactory.getAccountDao();
-//        Long currentAccId = RequestUtil.getSessionAccountId(request);
-//        Account account = accDao.findAccountById(currentAccId);
+        // TODO: instanceof is expensive, Account should have an accountType field and use that instead
 
         String accountType = null;
         if (account instanceof CustomerAccount) {
