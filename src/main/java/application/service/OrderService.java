@@ -11,12 +11,14 @@ import application.model.order.LoLBoostOrder;
 import application.model.order.OrderType;
 import application.utils.DataUtil;
 import application.utils.InputField;
+import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+@Service
 public class OrderService {
 
     private OrderDao orderDao;
