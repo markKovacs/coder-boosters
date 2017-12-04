@@ -5,7 +5,6 @@ import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
-
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;

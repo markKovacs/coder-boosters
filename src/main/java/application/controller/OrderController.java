@@ -12,17 +12,16 @@ import application.service.OrderService;
 import application.utils.Path;
 import application.utils.RequestUtil;
 import application.utils.SessionData;
-import application.utils.ViewUtil;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import spark.Route;
-
+import org.springframework.stereotype.Controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Controller
 public class OrderController {
 
     private SessionData sessionData;
