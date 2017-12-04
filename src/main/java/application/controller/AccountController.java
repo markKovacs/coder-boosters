@@ -6,7 +6,12 @@ import application.model.account.CustomerAccount;
 import application.service.AccountService;
 import application.utils.Path;
 import application.utils.RequestUtil;
+import application.utils.SessionData;
 import application.utils.ViewUtil;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import spark.Route;
 
 import java.util.HashMap;
@@ -15,14 +20,20 @@ import java.util.Map;
 
 public class AccountController {
 
-    private ViewUtil viewUtil;
+    private SessionData sessionData;
     private RequestUtil requestUtil;
     private AccountService accountService;
 
-    public AccountController(AccountService accountService, ViewUtil viewUtil, RequestUtil requestUtil) {
-        this.accountService = accountService;
-        this.viewUtil = viewUtil;
+    public AccountController(SessionData sessionData, RequestUtil requestUtil, AccountService accountService) {
+        this.sessionData = sessionData;
         this.requestUtil = requestUtil;
+        this.accountService = accountService;
+    }
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        Account account = sessionData.getAccount();
+        requestUtil.addCommonAttributes(model, account);
     }
 
     public Route serveRegistrationPage = (request, response) -> {
@@ -178,5 +189,15 @@ public class AccountController {
         response.redirect(Path.Web.CUSTOMER_PROFILE);
         return null;
     };
+
+    @PostMapping(Path.Web.CUSTOMER_PAYPAL)
+    public String handleCustomerPayPal(@RequestParam Map<String, String> form) {
+
+        Account customerAccount = sessionData.getAccount();
+        int amount = requestUtil.getQueryParamAmount(form);
+        accountService.increaseBoostCoinAmount(customerAccount, amount);
+
+        return "redirect:" + Path.Web.CUSTOMER_PROFILE;
+    }
 
 }
