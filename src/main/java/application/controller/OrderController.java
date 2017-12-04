@@ -12,12 +12,14 @@ import application.service.OrderService;
 import application.utils.Path;
 import application.utils.RequestUtil;
 import application.utils.ViewUtil;
+import org.springframework.stereotype.Controller;
 import spark.Route;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Controller
 public class OrderController {
 
     private OrderService orderService;

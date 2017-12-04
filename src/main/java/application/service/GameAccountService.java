@@ -4,9 +4,10 @@ import application.dao.GameAccountDao;
 import application.model.GameType;
 import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
+import org.springframework.stereotype.Service;
 
 import java.util.Map;
-
+@Service
 public class GameAccountService {
 
     private GameAccountDao gameAccountDao;

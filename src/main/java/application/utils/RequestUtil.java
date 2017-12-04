@@ -1,11 +1,13 @@
 package application.utils;
 
+import org.springframework.stereotype.Service;
 import spark.Request;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
 import java.util.Map;
 
+@Service
 public class RequestUtil {
 
     public Long getSessionAccountId(Request request) {

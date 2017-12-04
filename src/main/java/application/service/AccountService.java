@@ -5,9 +5,10 @@ import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
 import application.utils.InputField;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
-
+@Service
 public class AccountService {
 
     private AccountDao accountDao;

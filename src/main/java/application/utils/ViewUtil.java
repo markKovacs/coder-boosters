@@ -3,11 +3,12 @@ package application.utils;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import org.springframework.stereotype.Service;
 import spark.ModelAndView;
 import spark.Request;
 
 import java.util.Map;
-
+@Service
 public class ViewUtil {
 
     public String render(Request request, Map<String, Object> model, String view, Account account) {
