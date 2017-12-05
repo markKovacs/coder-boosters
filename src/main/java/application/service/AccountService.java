@@ -4,6 +4,7 @@ import application.dao.AccountDao;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.repository.AccountRepository;
 import application.utils.InputField;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +13,14 @@ import java.util.*;
 @Service
 public class AccountService {
 
-    private AccountDao accountDao;
     private PasswordHashService passwordHashService;
     private EmailService emailService;
+    private AccountRepository accountRepository;
 
-    public AccountService(AccountDao accountDao, PasswordHashService passwordHashService, EmailService emailService) {
-        this.accountDao = accountDao;
+    public AccountService(PasswordHashService passwordHashService, EmailService emailService, AccountRepository accountRepository) {
         this.passwordHashService = passwordHashService;
         this.emailService = emailService;
+        this.accountRepository = accountRepository;
     }
 
     public Account findAccountById(Long accountId) {
@@ -94,14 +95,14 @@ public class AccountService {
         emailService.send(to, body, subject);
     }
 
-    public Long validateLoginCredentials(Map<String, String> loginInput) {
+    public Account validateLoginCredentials(Map<String, String> loginInput) {
 
         String accountName = loginInput.get("username");
         String password = loginInput.get("password");
-        Account account = accountDao.findAccountByName(accountName);
+        Account account = accountRepository.findAccountByAccountName(accountName);
 
         if (account == null) {
-            return -1L;
+            return null;
         }
         String hash = account.getPassword();
 
@@ -110,12 +111,12 @@ public class AccountService {
             validPassword = passwordHashService.verifyPassword(password, hash);
         } catch (PasswordHashService.CannotPerformOperationException e) {
             System.out.println("Cannot perform operation.");
-            return -1L;
+            return null;
         } catch (PasswordHashService.InvalidHashException e) {
-            return -1L;
+            return null;
         }
 
-        return validPassword ? account.getId() : -1L;
+        return validPassword ? account : null;
     }
 
     public List<String> validateCustomerProfileEditInfo(Map<String, String> inputData) {
