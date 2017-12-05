@@ -7,12 +7,17 @@ import application.service.AccountService;
 import application.utils.Path;
 import application.utils.RequestUtil;
 import application.utils.ViewUtil;
+import org.springframework.stereotype.Controller;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import spark.Route;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Controller
 public class AccountController {
 
     private ViewUtil viewUtil;
@@ -25,7 +30,8 @@ public class AccountController {
         this.requestUtil = requestUtil;
     }
 
-    public Route serveRegistrationPage = (request, response) -> {
+    @GetMapping(value = "/register")
+    public String serveRegistrationPage(){
 
         Long accountId = requestUtil.getSessionAccountId(request);
         Account account = accountService.findAccountById(accountId);
@@ -36,7 +42,8 @@ public class AccountController {
         return viewUtil.render(request, model, Path.Template.REGISTER, account);
     };
 
-    public Route serveLoginPage = (request, response) -> {
+    @GetMapping(value = "/login")
+    public String serveLoginPage(){
 
         Long accountId = requestUtil.getSessionAccountId(request);
         Account account = accountService.findAccountById(accountId);
@@ -46,7 +53,8 @@ public class AccountController {
         return viewUtil.render(request, model, Path.Template.LOGIN, account);
     };
 
-    public Route serveCustomerProfilePage = (request, response) -> {
+    @GetMapping(value = "/customer-profile")
+    public String serveCustomerProfilePage(){
 
         Long accountId = requestUtil.getSessionAccountId(request);
         boolean isProfileEdited = requestUtil.isProfileEdited(request);
@@ -61,7 +69,8 @@ public class AccountController {
         return viewUtil.render(request, model, Path.Template.CUSTOMER_PROFILE, account);
     };
 
-    public Route handleRegistration = (request, response) -> {
+    @PostMapping(value = "/register")
+    public String handleRegistration(){
 
         Map<String, String> inputData = requestUtil.collectRegistrationData(request);
         List<String> errorMessages = accountService.validateRegistrationInput(inputData);
