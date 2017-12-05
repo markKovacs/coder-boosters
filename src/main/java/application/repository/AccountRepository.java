@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface AccountRepository extends JpaRepository<Account, Long> {
     Account findAccountById(Long id);
-    Account findAccountByAccountName(String accountName);
+    Account findByAccountName(String accountName);
 
     List<String> getAccountNames();
     List<String> getEmails();

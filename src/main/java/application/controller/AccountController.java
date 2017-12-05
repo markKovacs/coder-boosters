@@ -38,20 +38,21 @@ public class AccountController {
         requestUtil.addCommonAttributes(model, account);
     }
 
-    @GetMapping(value = Path.Template.REGISTER)
-    public String serveRegistrationPage(){
+    @GetMapping(value = Path.Web.REGISTER)
+    public String serveRegistrationPage(Model model){
+        model.addAttribute("userData", requestUtil.collectRegistrationData(new HashMap<>()));
 
         return Path.Template.REGISTER;
-    };
+    }
 
-    @GetMapping(value = Path.Template.LOGIN)
+    @GetMapping(value = Path.Web.LOGIN)
     public String serveLoginPage(){
 
         return Path.Template.LOGIN;
-    };
+    }
 
-    @GetMapping(value = Path.Template.CUSTOMER_PROFILE)
-    public String serveCustomerProfilePage(Model model, @RequestParam String edited){
+    @GetMapping(value = Path.Web.CUSTOMER_PROFILE)
+    public String serveCustomerProfilePage(Model model, @RequestParam(name = "edited", required = false) String edited){
 
         Account account = sessionData.getAccount();
         boolean isProfileEdited = requestUtil.isProfileEdited(edited);
@@ -62,10 +63,10 @@ public class AccountController {
         model.addAttribute("userData", account);
         model.addAttribute("success", successMessage);
 
-        return Path.Template.BOOSTER_PROFILE;
-    };
+        return Path.Template.CUSTOMER_PROFILE;
+    }
 
-    @PostMapping(value = Path.Template.REGISTER)
+    @PostMapping(value = Path.Web.REGISTER)
     public String handleRegistration(Model model, @RequestParam Map<String, String> formData){
 
         //Map<String, String> inputData = requestUtil.collectRegistrationData(request);
@@ -96,9 +97,8 @@ public class AccountController {
         // TODO: once SMTP properly set, this can be used
         // accountService.sendWelcomeEmail(account);
 
-        return "redirect:" + Path.Template.LOGIN;
-    };
-
+        return "redirect:" + Path.Web.LOGIN;
+    }
 
     @PostMapping(Path.Web.LOGIN)
     public String handleLogin(@RequestParam Map<String, String> form, Model model) {
@@ -128,8 +128,7 @@ public class AccountController {
 
         sessionData.clear();
         return "redirect:" + Path.Web.INDEX;
-    };
-
+    }
 
     @PostMapping(Path.Web.CUSTOMER_PROFILE)
     public String handleCustomerProfileEditing(@RequestParam Map<String, String> form, Model model) {
@@ -143,7 +142,6 @@ public class AccountController {
 
         // INVALID INPUT
         if (errorMessages.size() > 0) {
-//            Map<String, Object> model = new HashMap<>();
             model.addAttribute("errors", errorMessages);
             model.addAttribute("userData", inputData);
 
@@ -151,21 +149,16 @@ public class AccountController {
         }
 
         accountService.update(account.getId(), inputData);
-
         return "redirect:" + Path.Web.CUSTOMER_PROFILE_EDIT_SUCCESS;
-    };
-
+    }
 
     @GetMapping(Path.Web.CUSTOMER_PAYPAL)
     public String serveCustomerPayPal() {
 
         Account account = sessionData.getAccount();
 
-//        Map<String, Object> model = new HashMap<>();
-
         return Path.Template.CUSTOMER_PAYPAL;
-    };
-
+    }
 
     @PostMapping(Path.Web.CUSTOMER_PAYPAL)
     public String handleCustomerPayPal(@RequestParam Map<String, String> form) {

@@ -59,7 +59,7 @@ public class OrderController {
         }
 
         model.addAttribute("orders", orderService.getOrdersByAccount(account));
-        return "redirect:" + Path.Template.CUSTOMER_ORDERS;
+        return Path.Template.CUSTOMER_ORDERS;
     }
 
     @PostMapping(Path.Web.ACCEPT_ORDER)
@@ -93,7 +93,7 @@ public class OrderController {
         return "redirect:" + Path.Template.BOOSTER_ORDERS;
     }
 
-    @GetMapping(Path.Web.CUSTOMER_ORDERS)
+    @PostMapping(Path.Web.CREATE_ORDER)
     public String handleOrderCreation(@RequestParam Map<String, String> form) {
 
         Account account = sessionData.getAccount();

@@ -3,11 +3,14 @@
 This is a starter template page. Use this page to start your new project from
 scratch. This page gets rid of all links and provides the needed markup only.
 -->
-<html layout:decorate="~{account/layout-head}" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorator="account/layout-head">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 <head>
-    <title layout:title-pattern="$CONTENT_TITLE - $LAYOUT_TITLE">CöderBoosters</title>
+    <title layout:title-pattern="$CONTENT_TITLE">My website2</title>
 </head>
 
 <!--
@@ -38,19 +41,24 @@ desired effect
         <!-- Main Header -->
         <header class="main-header">
 
-
+            <a href=""></a>
             <!-- Logo -->
             <th:block th:if="${loggedInAs} eq 'customer'">
                 <a href="/customer-orders" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><b>CB</b></span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><b>CöderBoosters</b></span>
+                </a>
             </th:block>
             <th:block th:if="${loggedInAs} eq 'booster'">
                 <a href="/booster-orders" class="logo">
+                    <!-- mini logo for sidebar mini 50x50 pixels -->
+                    <span class="logo-mini"><b>CB</b></span>
+                    <!-- logo for regular state and mobile devices -->
+                    <span class="logo-lg"><b>CöderBoosters</b></span>
+                </a>
             </th:block>
-      <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>CB</b></span>
-      <!-- logo for regular state and mobile devices -->
-      <span class="logo-lg"><b>CöderBoosters</b></span>
-    </a>
 
     <!-- Header Navbar -->
     <nav class="navbar navbar-static-top" role="navigation">
@@ -224,6 +232,10 @@ desired effect
                     </ul>
                 </div>
             </nav>
+          </li>
+        </ul>
+      </div>
+    </nav>
         </header>
         <!-- Left side column. contains the logo and sidebar -->
         <!-- /.sidebar -->
@@ -326,4 +338,5 @@ desired effect
          Both of these plugins are recommended to enhance the
          user experience. -->
     </body>
+</div>
 </html>

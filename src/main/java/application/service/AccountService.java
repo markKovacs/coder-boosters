@@ -16,9 +16,13 @@ public class AccountService {
     private PasswordHashService passwordHashService;
     private EmailService emailService;
 
-    public AccountService(AccountRepository accountRepository) {
+    public AccountService(AccountRepository accountRepository,
+                          PasswordHashService passwordHashService,
+                          EmailService emailService) {
 
         this.accountRepository = accountRepository;
+        this.passwordHashService = passwordHashService;
+        this.emailService = emailService;
     }
 
     public List<String> getSuccessMessageOnEdit(boolean isProfileEdited) {
@@ -89,7 +93,7 @@ public class AccountService {
 
         String accountName = loginInput.get("username");
         String password = loginInput.get("password");
-        Account account = accountRepository.findAccountByAccountName(accountName);
+        Account account = accountRepository.findByAccountName(accountName);
 
         if (account == null) {
             return null;
@@ -146,8 +150,8 @@ public class AccountService {
         accountRepository.save(boosterAccount);
     }
 
-
     public List<String> getInvalidLoginCredsErrorMessage() {
         return new ArrayList<>(Collections.singletonList("Invalid credentials."));
     }
+
 }
