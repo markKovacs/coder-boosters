@@ -1,14 +1,10 @@
 package application.service;
 
-import application.dao.OrderDao;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
-import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
-import application.model.order.BoostOrder;
-import application.model.order.LeagueDivision;
-import application.model.order.LoLBoostOrder;
-import application.model.order.OrderType;
+import application.model.order.*;
+import application.repository.BoostOrderRepository;
 import application.utils.DataUtil;
 import application.utils.InputField;
 import org.springframework.stereotype.Service;
@@ -21,24 +17,28 @@ import java.util.Map;
 @Service
 public class OrderService {
 
-    private OrderDao orderDao;
+    private BoostOrderRepository orderRepository;
     private DataUtil dataUtil;
 
-    public OrderService(OrderDao orderDao, DataUtil dataUtil) {
-        this.orderDao = orderDao;
+    public OrderService(BoostOrderRepository orderRepository, DataUtil dataUtil) {
+        this.orderRepository = orderRepository;
         this.dataUtil = dataUtil;
     }
 
     public List<BoostOrder> getOrdersForBoosterAndAllAvailable(Account account) {
-        return orderDao.getOrdersForBoosterAndAllAvailable(account);
+        return orderRepository.getOrdersForBoosterAndAllAvailable(account);
     }
 
     public List<BoostOrder> getOrdersByAccount(Account account) {
-        return orderDao.getOrdersByAccount(account);
+
+        if (account instanceof BoosterAccount) {
+            return orderRepository.findByBoosterAccount(account);
+        }
+        return orderRepository.findByCustomerAccount(account);
     }
 
     public BoostOrder findBoostOrder(Long boostOrderId) {
-        return orderDao.findBoostOrder(boostOrderId);
+        return orderRepository.findById(boostOrderId);
     }
 
     public boolean takeOrder(Account boosterAccount, BoostOrder boostOrder) {
@@ -46,12 +46,16 @@ public class OrderService {
         // TODO: logic could be used to see if boosterAccount is eligible to accept boostOrder (honorPoints)
         // TODO: if not: do not add and return false...
 
-        orderDao.addBoostOrder(boosterAccount, boostOrder);
+        boosterAccount.addBoostOrderBiDir(boostOrder);
+        orderRepository.save(boostOrder);
+        // TODO: 12/5/17 Do I need to save account??? VERIFY!
+
         return true;
     }
 
-    public boolean closeOrder(Account boosterAccount, BoostOrder boostOrder) {
-        orderDao.closeBoostOrder(boosterAccount, boostOrder);
+    public boolean closeOrder(BoostOrder boostOrder) {
+        boostOrder.setStatus(Status.DONE);
+        orderRepository.save(boostOrder);
         return true;
     }
 
@@ -143,7 +147,8 @@ public class OrderService {
                 return null;
         }
 
-        return orderDao.addBoostOrder(account, boostOrder);
+        account.addBoostOrderBiDir(boostOrder);
+        return orderRepository.save(boostOrder);
     }
 
     public List<LeagueDivision> getLoLLeagueDivisions() {
@@ -152,7 +157,13 @@ public class OrderService {
     }
 
     public void setGameAccount(BoostOrder boostOrder, GameAccount gameAccount) {
-        orderDao.setGameAccount(boostOrder, gameAccount);
+
+        boostOrder.setGameAccount(gameAccount);
+        gameAccount.addBoostOrderList(boostOrder);
+
+        orderRepository.save(boostOrder);
+        // TODO: 12/5/17 DO WE NEED TO SAVE THIS?
+        //gameAccountRepository.save(gameAccount);
     }
 
 }

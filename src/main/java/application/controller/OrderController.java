@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
@@ -61,7 +62,7 @@ public class OrderController {
         return "redirect:" + Path.Template.CUSTOMER_ORDERS;
     }
 
-    @GetMapping(Path.Web.BOOSTER_ORDERS)
+    @PostMapping(Path.Web.ACCEPT_ORDER)
     public String handleTakeOrder(@RequestParam Map<String, String> form) {
 
         Long boostOrderId = requestUtil.getQueryParamBoostOrderId(form);
@@ -76,14 +77,14 @@ public class OrderController {
         return "redirect:" + Path.Template.BOOSTER_ORDERS;
     }
 
-    @GetMapping(Path.Web.BOOSTER_ORDERS)
+    @PostMapping(Path.Web.CLOSE_ORDER)
     public String handleCloseOrder(@RequestParam Map<String, String> form) {
         Account account = sessionData.getAccount();
         Long boostOrderId = requestUtil.getQueryParamBoostOrderId(form);
 
         BoostOrder boostOrder = orderService.findBoostOrder(boostOrderId);
 
-        boolean successful = orderService.closeOrder(account, boostOrder);
+        boolean successful = orderService.closeOrder(boostOrder);
 
         // TODO: message could be added (successful or not)
 
