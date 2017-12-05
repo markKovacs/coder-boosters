@@ -13,18 +13,12 @@ import java.util.*;
 public class AccountService {
 
     private AccountRepository accountRepository;
+    private PasswordHashService passwordHashService;
+    private EmailService emailService;
 
     public AccountService(AccountRepository accountRepository) {
 
         this.accountRepository = accountRepository;
-    }
-
-    public Account findAccountById(Long accountId) {
-        return accountRepository.findAccountById(accountId);
-    }
-
-    public CustomerAccount findCustomerById(Long accountId) {
-        return accountDao.findCustomerById(accountId);
     }
 
     public List<String> getSuccessMessageOnEdit(boolean isProfileEdited) {
@@ -127,7 +121,6 @@ public class AccountService {
     }
 
     public void update(Long accountId, Map<String, String> inputData) {
-        accountDao.update(accountId, inputData);
     }
 
     public boolean increaseBoostCoinAmount(Account account, int amount) {
@@ -136,10 +129,6 @@ public class AccountService {
 
         accountDao.changeBoostCoinByAmount(account, amount);
         return true;
-    }
-
-    public BoosterAccount findBoosterById(Long accountId) {
-        return accountDao.findBoosterById(accountId);
     }
 
     public boolean decreaseBoostCoinAmount(Account account, int amount) {
