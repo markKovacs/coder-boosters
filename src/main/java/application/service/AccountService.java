@@ -13,6 +13,11 @@ import java.util.*;
 @Service
 public class AccountService {
 
+<<<<<<< HEAD
+    private AccountRepository accountRepository;
+
+    public AccountService(AccountRepository accountRepository) {
+=======
     private PasswordHashService passwordHashService;
     private EmailService emailService;
     private AccountRepository accountRepository;
@@ -20,6 +25,7 @@ public class AccountService {
     public AccountService(PasswordHashService passwordHashService, EmailService emailService, AccountRepository accountRepository) {
         this.passwordHashService = passwordHashService;
         this.emailService = emailService;
+>>>>>>> dd0a83e323f1cbd9396fb1a9786f4e4433a768c9
         this.accountRepository = accountRepository;
     }
 
@@ -79,7 +85,7 @@ public class AccountService {
             account = new CustomerAccount(inputData.get("username"), inputData.get("email"), passwordHash);
         }
 
-        accountDao.add(account);
+        accountRepository.save(account);
         return account;
     }
 

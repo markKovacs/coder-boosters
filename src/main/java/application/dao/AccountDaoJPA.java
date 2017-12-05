@@ -10,6 +10,7 @@ import javax.persistence.TypedQuery;
 import java.util.List;
 import java.util.Map;
 
+
 public class AccountDaoJPA implements AccountDao {
 
     private EntityManagerFactory entityManagerFactory;
