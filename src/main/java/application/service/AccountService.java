@@ -31,12 +31,12 @@ public class AccountService {
 
         if (!InputField.USERNAME.validate(regInput.get("username"))) {
             errorMessages.add("Username field is wrong.");
-        } else if (accountDao.getAllAccountNames().contains(regInput.get("username"))) {
+        } else if (accountRepository.getAccountNames().contains(regInput.get("username"))) {
             errorMessages.add("Username is already taken.");
         }
         if (!InputField.EMAIL.validate(regInput.get("email"))) {
             errorMessages.add("E-mail field is wrong.");
-        } else if (accountDao.getAllEmails().contains(regInput.get("email"))) {
+        } else if (accountRepository.getEmails().contains(regInput.get("email"))) {
             errorMessages.add("E-mail field is already registered.");
         }
         if (!regInput.get("password1").equals(regInput.get("password2"))) {
