@@ -10,6 +10,7 @@ import application.utils.SessionData;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,24 +38,23 @@ public class AccountController {
         requestUtil.addCommonAttributes(model, account);
     }
 
-    @GetMapping(value = "/register")
+    @GetMapping(value = Path.Template.REGISTER)
     public String serveRegistrationPage(){
 
         return Path.Template.REGISTER;
     };
 
-    @GetMapping(value = "/login")
+    @GetMapping(value = Path.Template.LOGIN)
     public String serveLoginPage(){
 
         return Path.Template.LOGIN;
     };
 
-    @GetMapping(value = "/customer-profile")
+    @GetMapping(value = Path.Template.CUSTOMER_PROFILE)
     public String serveCustomerProfilePage(Model model, @RequestParam String edited){
 
         Account account = sessionData.getAccount();
         boolean isProfileEdited = requestUtil.isProfileEdited(edited);
-
 
         List<String> successMessage = accountService.getSuccessMessageOnEdit(isProfileEdited);
 
@@ -65,7 +65,7 @@ public class AccountController {
         return Path.Template.BOOSTER_PROFILE;
     };
 
-    @PostMapping(value = "/register")
+    @PostMapping(value = Path.Template.REGISTER)
     public String handleRegistration(Model model, @RequestParam Map<String, String> formData){
 
         //Map<String, String> inputData = requestUtil.collectRegistrationData(request);
@@ -99,86 +99,73 @@ public class AccountController {
         return "redirect:" + Path.Template.LOGIN;
     };
 
-    public Route handleLogin = (request, response) -> {
 
-        Map<String, String> inputData = requestUtil.collectLoginData(request);
-        Long accountId = accountService.validateLoginCredentials(inputData);
+    @PostMapping(Path.Web.LOGIN)
+    public String handleLogin(@RequestParam Map<String, String> form, Model model) {
+
+        Map<String, String> inputData = requestUtil.collectLoginData(form);
+        Account account = accountService.validateLoginCredentials(inputData);
 
         // INVALID LOGIN CREDENTIALS
-        if (accountId == -1) {
-            Map<String, Object> model = new HashMap<>();
-            model.put("errors", accountService.getInvalidLoginCredsErrorMessage());
+        if (account == null) {
+            model.addAttribute("errors", accountService.getInvalidLoginCredsErrorMessage());
 
-            return viewUtil.render(request, model, Path.Template.LOGIN, null);
+            return Path.Template.LOGIN;
         }
 
         // SUCCESSFUL LOGIN - ADD TO SESSION AND REDIRECT ACCORDINGLY
-        requestUtil.createSessionForAccount(request, accountId);
-        Account account = accountService.findAccountById(accountId);
+        sessionData.setAccount(account);
 
         // TODO: change from instanceof and use an accountType instance variable
         if (account instanceof BoosterAccount) {
-            response.redirect(Path.Web.BOOSTER_ORDERS);
-        } else {
-            response.redirect(Path.Web.CUSTOMER_ORDERS);
+            return "redirect:" + Path.Web.BOOSTER_ORDERS;
         }
-        return null;
+        return "redirect:" + Path.Web.CUSTOMER_ORDERS;
+    }
+
+    @GetMapping(Path.Web.LOGOUT)
+    public String handleLogout() {
+
+        sessionData.clear();
+        return "redirect:" + Path.Web.INDEX;
     };
 
-    public Route handleLogout = (request, response) -> {
 
-        requestUtil.removeAccountFromSession(request);
-        response.redirect(Path.Web.INDEX);
-
-        return null;
-    };
-
-    public Route handleCustomerProfileEditing = (request, response) -> {
+    @PostMapping(Path.Web.CUSTOMER_PROFILE)
+    public String handleCustomerProfileEditing(@RequestParam Map<String, String> form, Model model) {
 
         // TODO: not implemented yet, for later use
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Map<String, String> inputData = requestUtil.collectEditData(request);
+        Map<String, String> inputData = requestUtil.collectEditData(form);
 
         List<String> errorMessages = accountService.validateCustomerProfileEditInfo(inputData);
-        Account account = accountService.findAccountById(accountId);
+        Account account = sessionData.getAccount();
 
         // INVALID INPUT
         if (errorMessages.size() > 0) {
-            Map<String, Object> model = new HashMap<>();
-            model.put("errors", errorMessages);
-            model.put("userData", inputData);
+//            Map<String, Object> model = new HashMap<>();
+            model.addAttribute("errors", errorMessages);
+            model.addAttribute("userData", inputData);
 
-            return viewUtil.render(request, model, Path.Template.CUSTOMER_PROFILE, account);
+            return Path.Template.CUSTOMER_PROFILE;
         }
 
-        accountService.update(accountId, inputData);
+        accountService.update(account.getId(), inputData);
 
-        response.redirect(Path.Web.CUSTOMER_PROFILE_EDIT_SUCCESS);
-        return null;
+        return "redirect:" + Path.Web.CUSTOMER_PROFILE_EDIT_SUCCESS;
     };
 
-    public Route serveCustomerPayPal = (request, response) -> {
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Account account = accountService.findAccountById(accountId);
+    @GetMapping(Path.Web.CUSTOMER_PAYPAL)
+    public String serveCustomerPayPal() {
 
-        Map<String, Object> model = new HashMap<>();
+        Account account = sessionData.getAccount();
 
-        return viewUtil.render(request, model, Path.Template.CUSTOMER_PAYPAL, account);
+//        Map<String, Object> model = new HashMap<>();
+
+        return Path.Template.CUSTOMER_PAYPAL;
     };
 
-    public Route handleCustomerPayPal = (request, response) -> {
-
-        Long accountId = requestUtil.getSessionAccountId(request);
-        int amount = requestUtil.getQueryParamAmount(request);
-
-        CustomerAccount customerAccount = accountService.findCustomerById(accountId);
-        accountService.increaseBoostCoinAmount(customerAccount, amount);
-
-        response.redirect(Path.Web.CUSTOMER_PROFILE);
-        return null;
-    };
 
     @PostMapping(Path.Web.CUSTOMER_PAYPAL)
     public String handleCustomerPayPal(@RequestParam Map<String, String> form) {
