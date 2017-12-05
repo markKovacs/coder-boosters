@@ -41,7 +41,7 @@ public class OrderService {
         return orderDao.findBoostOrder(boostOrderId);
     }
 
-    public boolean takeOrder(BoosterAccount boosterAccount, BoostOrder boostOrder) {
+    public boolean takeOrder(Account boosterAccount, BoostOrder boostOrder) {
 
         // TODO: logic could be used to see if boosterAccount is eligible to accept boostOrder (honorPoints)
         // TODO: if not: do not add and return false...
@@ -50,7 +50,7 @@ public class OrderService {
         return true;
     }
 
-    public boolean closeOrder(BoosterAccount boosterAccount, BoostOrder boostOrder) {
+    public boolean closeOrder(Account boosterAccount, BoostOrder boostOrder) {
         orderDao.closeBoostOrder(boosterAccount, boostOrder);
         return true;
     }
@@ -118,23 +118,23 @@ public class OrderService {
         return errors;
     }
 
-    public BoostOrder createOrder(CustomerAccount account, Map<String, String> inputData) {
+    public BoostOrder createOrder(Account account, Map<String, String> form) {
 
         // TODO: upon adding new games, this method should be extended
 
         BoostOrder boostOrder;
-        switch (inputData.get("gameType")) {
+        switch (form.get("gameType")) {
             case "LOL":
                 boostOrder = new LoLBoostOrder(
-                        LeagueDivision.valueOf(inputData.get("currentRank")),
-                        dataUtil.castStringToInt(inputData.get("numberOfGames")),
-                        OrderType.valueOf(inputData.get("orderType")),
-                        dataUtil.castStringToDouble(inputData.get("bonusPercentage")),
+                        LeagueDivision.valueOf(form.get("currentRank")),
+                        dataUtil.castStringToInt(form.get("numberOfGames")),
+                        OrderType.valueOf(form.get("orderType")),
+                        dataUtil.castStringToDouble(form.get("bonusPercentage")),
                         dataUtil.createDate(
-                                dataUtil.castStringToInt(inputData.get("year")),
-                                dataUtil.castStringToInt(inputData.get("month")),
-                                dataUtil.castStringToInt(inputData.get("day")),
-                                dataUtil.castStringToInt(inputData.get("hour"))
+                                dataUtil.castStringToInt(form.get("year")),
+                                dataUtil.castStringToInt(form.get("month")),
+                                dataUtil.castStringToInt(form.get("day")),
+                                dataUtil.castStringToInt(form.get("hour"))
                         )
                 );
                 break;

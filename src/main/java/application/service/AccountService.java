@@ -24,7 +24,7 @@ public class AccountService {
     }
 
     public Account findAccountById(Long accountId) {
-        return accountDao.findAccountById(accountId);
+        return accountRepository.findAccountById(accountId);
     }
 
     public CustomerAccount findCustomerById(Long accountId) {
@@ -146,17 +146,20 @@ public class AccountService {
         return accountDao.findBoosterById(accountId);
     }
 
-    public boolean decreaseBoostCoinAmount(CustomerAccount account, int amount) {
+    public boolean decreaseBoostCoinAmount(Account account, int amount) {
 
         // TODO: put logic here if customer does not have enough money, return false and cancel process
 
-        accountDao.changeBoostCoinByAmount(account, (-1) * amount);
+        account.setBoostCoin(account.getBoostCoin() + (-1) * amount);
+        accountRepository.save(account);
         return true;
     }
 
-    public void transferBoostCoin(BoosterAccount boosterAccount, int totalPrice) {
-        accountDao.transferBoostCoin(boosterAccount, totalPrice);
+    public void transferBoostCoin(Account boosterAccount, int totalPrice) {
+        boosterAccount.changeBoostCoin(totalPrice);
+        accountRepository.save(boosterAccount);
     }
+
 
     public List<String> getInvalidLoginCredsErrorMessage() {
         return new ArrayList<>(Collections.singletonList("Invalid credentials."));

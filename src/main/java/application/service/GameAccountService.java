@@ -2,6 +2,7 @@ package application.service;
 
 import application.dao.GameAccountDao;
 import application.model.GameType;
+import application.model.account.Account;
 import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ public class GameAccountService {
         this.gameAccountDao = gameAccountDao;
     }
 
-    public GameAccount create(Map<String, String> inputData, CustomerAccount account) {
+    public GameAccount create(Map<String, String> inputData, Account account) {
         String accountName = inputData.get("gameAccName");
         String password = inputData.get("gameAccPassword");
         GameType gameType = GameType.valueOf(inputData.get("gameType"));

@@ -2,7 +2,6 @@ package application.controller;
 
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
-import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
 import application.model.order.LeagueDivision;
@@ -12,11 +11,12 @@ import application.service.OrderService;
 import application.utils.Path;
 import application.utils.RequestUtil;
 import application.utils.SessionData;
+import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.stereotype.Controller;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -58,83 +58,74 @@ public class OrderController {
         }
 
         model.addAttribute("orders", orderService.getOrdersByAccount(account));
-        return Path.Template.CUSTOMER_ORDERS;
+        return "redirect:" + Path.Template.CUSTOMER_ORDERS;
     }
 
-    public Route handleTakeOrder = (request, response) -> {
+    @GetMapping(Path.Web.BOOSTER_ORDERS)
+    public String handleTakeOrder(@RequestParam Map<String, String> form) {
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Long boostOrderId = requestUtil.getQueryParamBoostOrderId(request);
+        Long boostOrderId = requestUtil.getQueryParamBoostOrderId(form);
+        Account account = sessionData.getAccount();
 
-        BoosterAccount boosterAccount = accountService.findBoosterById(accountId);
         BoostOrder boostOrder = orderService.findBoostOrder(boostOrderId);
 
-        boolean successful = orderService.takeOrder(boosterAccount, boostOrder);
+        boolean successful = orderService.takeOrder(account, boostOrder);
 
         // TODO: message could be added (successful or not)
 
-        response.redirect(Path.Web.BOOSTER_ORDERS);
-        return null;
-    };
+        return "redirect:" + Path.Template.BOOSTER_ORDERS;
+    }
 
-    public Route handleCloseOrder = (request, response) -> {
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Long boostOrderId = requestUtil.getQueryParamBoostOrderId(request);
+    @GetMapping(Path.Web.BOOSTER_ORDERS)
+    public String handleCloseOrder(@RequestParam Map<String, String> form) {
+        Account account = sessionData.getAccount();
+        Long boostOrderId = requestUtil.getQueryParamBoostOrderId(form);
 
-        BoosterAccount boosterAccount = accountService.findBoosterById(accountId);
         BoostOrder boostOrder = orderService.findBoostOrder(boostOrderId);
 
-        boolean successful = orderService.closeOrder(boosterAccount, boostOrder);
+        boolean successful = orderService.closeOrder(account, boostOrder);
 
         // TODO: message could be added (successful or not)
 
-        accountService.transferBoostCoin(boosterAccount, boostOrder.getTotalPrice());
+        accountService.transferBoostCoin(account, boostOrder.getTotalPrice());
 
-        response.redirect(Path.Web.BOOSTER_ORDERS);
-        return null;
-    };
+        return "redirect:" + Path.Template.BOOSTER_ORDERS;
+    }
 
-    public Route handleOrderCreation = (request, response) -> {
+    @GetMapping(Path.Web.CUSTOMER_ORDERS)
+    public String handleOrderCreation(@RequestParam Map<String, String> form) {
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Map<String, String> inputData = requestUtil.collectNewOrderData(request);
-
-        CustomerAccount customerAccount = accountService.findCustomerById(accountId);
-        List<String> errorMessages = orderService.validateOrderData(inputData);
+        Account account = sessionData.getAccount();
+        List<String> errorMessages = orderService.validateOrderData(form);
 
         // INVALID INPUT
         if (errorMessages.size() > 0) {
             Map<String, Object> model = new HashMap<>();
             model.put("errors", errorMessages);
 
-            return viewUtil.render(request, model, Path.Template.ORDER_FORM, customerAccount);
+            return Path.Template.ORDER_FORM;
         }
 
         // SUCCESSFUL ORDER CREATION
         // TODO: first we should check if sufficient funds on customer account balance, then deduct, then create order
-        BoostOrder boostOrder = orderService.createOrder(customerAccount, inputData);
+        BoostOrder boostOrder = orderService.createOrder(account, form);
         if (boostOrder == null) {
-            response.redirect(Path.Web.CUSTOMER_ORDERS);
-            return null;
+            return "redirect:" + Path.Web.CUSTOMER_ORDERS;
         }
 
-        GameAccount gameAccount = gameAccountService.create(inputData, customerAccount);
+        GameAccount gameAccount = gameAccountService.create(form, account);
         orderService.setGameAccount(boostOrder, gameAccount);
 
-        boolean paid = accountService.decreaseBoostCoinAmount(customerAccount, boostOrder.getTotalPrice());
+        boolean paid = accountService.decreaseBoostCoinAmount(account, boostOrder.getTotalPrice());
 
-        response.redirect(Path.Web.CUSTOMER_ORDERS);
-        return null;
-    };
+        return "redirect:" + Path.Web.CUSTOMER_ORDERS;
+    }
 
-    public Route serveSelectGamePage = (request, response) -> {
+    @GetMapping(Path.Web.SELECT_GAME)
+    public String serveSelectGamePage() {
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Account account = accountService.findAccountById(accountId);
-        Map<String, Object> model = new HashMap<>();
-
-        return viewUtil.render(request, model, Path.Template.SELECT_GAME, account);
-    };
+        return Path.Template.SELECT_GAME;
+    }
 
     @GetMapping(Path.Web.ORDER_FORM)
     public String serveOrderForm(Model model, @RequestParam Map<String, String> form) {
