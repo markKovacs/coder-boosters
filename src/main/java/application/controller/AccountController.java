@@ -40,78 +40,63 @@ public class AccountController {
     @GetMapping(value = "/register")
     public String serveRegistrationPage(){
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Account account = accountService.findAccountById(accountId);
-
-        Map<String, Object> model = new HashMap<>();
-        model.put("userData", new HashMap<>());
-
-        return viewUtil.render(request, model, Path.Template.REGISTER, account);
+        return Path.Template.REGISTER;
     };
 
     @GetMapping(value = "/login")
     public String serveLoginPage(){
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Account account = accountService.findAccountById(accountId);
-
-        Map<String, Object> model = new HashMap<>();
-
-        return viewUtil.render(request, model, Path.Template.LOGIN, account);
+        return Path.Template.LOGIN;
     };
 
     @GetMapping(value = "/customer-profile")
-    public String serveCustomerProfilePage(){
+    public String serveCustomerProfilePage(Model model, @RequestParam String edited){
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        boolean isProfileEdited = requestUtil.isProfileEdited(request);
+        Account account = sessionData.getAccount();
+        boolean isProfileEdited = requestUtil.isProfileEdited(edited);
 
-        CustomerAccount account = accountService.findCustomerById(accountId);
+
         List<String> successMessage = accountService.getSuccessMessageOnEdit(isProfileEdited);
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("userData", account);
-        model.put("success", successMessage);
+        // TODO account datas need to be cleared
+        model.addAttribute("userData", account);
+        model.addAttribute("success", successMessage);
 
-        return viewUtil.render(request, model, Path.Template.CUSTOMER_PROFILE, account);
+        return Path.Template.BOOSTER_PROFILE;
     };
 
     @PostMapping(value = "/register")
-    public String handleRegistration(){
+    public String handleRegistration(Model model, @RequestParam Map<String, String> formData){
 
-        Map<String, String> inputData = requestUtil.collectRegistrationData(request);
-        List<String> errorMessages = accountService.validateRegistrationInput(inputData);
+        //Map<String, String> inputData = requestUtil.collectRegistrationData(request);
+        List<String> errorMessages = accountService.validateRegistrationInput(formData);
 
-        Map<String, Object> model;
 
         // IN CASE OF INVALID INPUT, RE-RENDER REGISTRATION PAGE
         if (errorMessages.size() > 0) {
-            model = new HashMap<>();
-            model.put("errors", errorMessages);
-            model.put("userData", inputData);
+            model.addAttribute("errors", errorMessages);
+            model.addAttribute("userData", formData);
 
-            return viewUtil.render(request, model, Path.Template.REGISTER, null);
+            return Path.Template.REGISTER;
         }
 
         // CREATE HASHED PASSWORD AND HANDLE IF ERROR OCCURRED
-        String passwordHash = accountService.createHashedPassword(inputData.get("password1"));
+        String passwordHash = accountService.createHashedPassword(formData.get("password1"));
         if (passwordHash == null) {
-            model = new HashMap<>();
-            model.put("errors", accountService.getHashingErrorMessage());
-            model.put("userData", inputData);
+            model.addAttribute("errors", accountService.getHashingErrorMessage());
+            model.addAttribute("userData", formData);
 
-            return viewUtil.render(request, model, Path.Template.REGISTER, null);
+            return Path.Template.REGISTER;
         }
 
         // SAVE ACCOUNT TO DATABASE
-        Account account = accountService.saveAccount(inputData, passwordHash);
+        Account account = accountService.saveAccount(formData, passwordHash);
 
         // SEND WELCOME EMAIL
         // TODO: once SMTP properly set, this can be used
         // accountService.sendWelcomeEmail(account);
-
-        response.redirect(Path.Web.LOGIN);
-        return null;
+        
+        return "redirect:" + Path.Template.LOGIN;
     };
 
     public Route handleLogin = (request, response) -> {

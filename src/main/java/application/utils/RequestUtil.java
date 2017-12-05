@@ -16,9 +16,9 @@ public class RequestUtil {
 //        return request.session().attribute("account_id");
 //    }
 
-//    public boolean isProfileEdited(Request request) {
-//        return request.queryParams("edited") != null;
-//    }
+    public boolean isProfileEdited(String edited) {
+        return edited != null;
+    }
 
     public void addCommonAttributes(Model model, Account account) {
         String accountType = null;

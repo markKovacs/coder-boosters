@@ -4,6 +4,7 @@ import application.dao.AccountDao;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.repository.AccountRepository;
 import application.utils.InputField;
 import org.springframework.stereotype.Service;
 
@@ -12,14 +13,10 @@ import java.util.*;
 @Service
 public class AccountService {
 
-    private AccountDao accountDao;
-    private PasswordHashService passwordHashService;
-    private EmailService emailService;
+    private AccountRepository accountRepository;
 
-    public AccountService(AccountDao accountDao, PasswordHashService passwordHashService, EmailService emailService) {
-        this.accountDao = accountDao;
-        this.passwordHashService = passwordHashService;
-        this.emailService = emailService;
+    public AccountService(AccountRepository accountRepository) {
+        this.accountRepository = accountRepository;
     }
 
     public Account findAccountById(Long accountId) {
@@ -78,7 +75,7 @@ public class AccountService {
             account = new CustomerAccount(inputData.get("username"), inputData.get("email"), passwordHash);
         }
 
-        accountDao.add(account);
+        accountRepository.save(account);
         return account;
     }
 
