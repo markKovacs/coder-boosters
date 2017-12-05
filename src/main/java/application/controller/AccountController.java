@@ -6,12 +6,13 @@ import application.model.account.CustomerAccount;
 import application.service.AccountService;
 import application.utils.Path;
 import application.utils.RequestUtil;
-import application.utils.ViewUtil;
+import application.utils.SessionData;
 import org.springframework.stereotype.Controller;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import spark.Route;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,14 +21,20 @@ import java.util.Map;
 @Controller
 public class AccountController {
 
-    private ViewUtil viewUtil;
+    private SessionData sessionData;
     private RequestUtil requestUtil;
     private AccountService accountService;
 
-    public AccountController(AccountService accountService, ViewUtil viewUtil, RequestUtil requestUtil) {
-        this.accountService = accountService;
-        this.viewUtil = viewUtil;
+    public AccountController(SessionData sessionData, RequestUtil requestUtil, AccountService accountService) {
+        this.sessionData = sessionData;
         this.requestUtil = requestUtil;
+        this.accountService = accountService;
+    }
+
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        Account account = sessionData.getAccount();
+        requestUtil.addCommonAttributes(model, account);
     }
 
     @GetMapping(value = "/register")
@@ -187,5 +194,15 @@ public class AccountController {
         response.redirect(Path.Web.CUSTOMER_PROFILE);
         return null;
     };
+
+    @PostMapping(Path.Web.CUSTOMER_PAYPAL)
+    public String handleCustomerPayPal(@RequestParam Map<String, String> form) {
+
+        Account customerAccount = sessionData.getAccount();
+        int amount = requestUtil.getQueryParamAmount(form);
+        accountService.increaseBoostCoinAmount(customerAccount, amount);
+
+        return "redirect:" + Path.Web.CUSTOMER_PROFILE;
+    }
 
 }

@@ -1,31 +1,22 @@
 package application.controller;
 
 import application.utils.Path;
-import application.utils.ViewUtil;
-import spark.Route;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.HashMap;
-import java.util.Map;
-
+@Controller
 public class IndexController {
 
-    private ViewUtil viewUtil;
+    @GetMapping(Path.Web.INDEX)
+    public String serveIndexPage() {
 
-    public IndexController(ViewUtil viewUtil) {
-        this.viewUtil = viewUtil;
+        return Path.Template.INDEX;
     }
 
-    public Route serveIndexPage = (request, response) -> {
+    @GetMapping(Path.Web.BOOSTERS)
+    public String serveBoostersPage() {
 
-        Map<String, Object> model = new HashMap<>();
-
-        return viewUtil.render(request, model, Path.Template.INDEX, null);
-    };
-
-    public Route serverBoostersPage = (request, response) -> {
-
-        Map<String, Object> model = new HashMap<>();
-        return viewUtil.render(request, model, Path.Template.BOOSTERS, null);
-    };
+        return Path.Template.BOOSTERS;
+    }
 
 }

@@ -11,48 +11,55 @@ import application.service.GameAccountService;
 import application.service.OrderService;
 import application.utils.Path;
 import application.utils.RequestUtil;
-import application.utils.ViewUtil;
-import spark.Route;
-
+import application.utils.SessionData;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.stereotype.Controller;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Controller
 public class OrderController {
 
+    private SessionData sessionData;
     private OrderService orderService;
     private AccountService accountService;
     private GameAccountService gameAccountService;
-    private ViewUtil viewUtil;
     private RequestUtil requestUtil;
 
     public OrderController(OrderService orderService, AccountService accountService,
                            GameAccountService gameAccountService,
-                           ViewUtil viewUtil, RequestUtil requestUtil) {
+                           SessionData sessionData, RequestUtil requestUtil) {
 
         this.orderService = orderService;
         this.accountService = accountService;
         this.gameAccountService = gameAccountService;
-        this.viewUtil = viewUtil;
+        this.sessionData = sessionData;
         this.requestUtil = requestUtil;
     }
 
-    public Route serveOrderListPage = (request, response) -> {
+    @ModelAttribute
+    public void addAttributes(Model model) {
+        Account account = sessionData.getAccount();
+        requestUtil.addCommonAttributes(model, account);
+    }
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Account account = accountService.findAccountById(accountId);
-
-        Map<String, Object> model = new HashMap<>();
+    @GetMapping({Path.Web.BOOSTER_ORDERS, Path.Web.CUSTOMER_ORDERS})
+    public String serveOrderListPage(Model model) {
+        Account account = sessionData.getAccount();
 
         // TODO: start using accountType instead of instanceof
         if (account instanceof BoosterAccount) {
-            model.put("orders", orderService.getOrdersForBoosterAndAllAvailable(account));
-            return viewUtil.render(request, model, Path.Template.BOOSTER_ORDERS, account);
+            model.addAttribute("orders", orderService.getOrdersForBoosterAndAllAvailable(account));
+            return Path.Template.BOOSTER_ORDERS;
         }
 
-        model.put("orders", orderService.getOrdersByAccount(account));
-        return viewUtil.render(request, model, Path.Template.CUSTOMER_ORDERS, account);
-    };
+        model.addAttribute("orders", orderService.getOrdersByAccount(account));
+        return Path.Template.CUSTOMER_ORDERS;
+    }
 
     public Route handleTakeOrder = (request, response) -> {
 
@@ -129,19 +136,16 @@ public class OrderController {
         return viewUtil.render(request, model, Path.Template.SELECT_GAME, account);
     };
 
-    public Route serveOrderForm = (request, response) -> {
+    @GetMapping(Path.Web.ORDER_FORM)
+    public String serveOrderForm(Model model, @RequestParam Map<String, String> form) {
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        String gameTypeString = requestUtil.getQueryParamGameType(request);
-
-        Account account = accountService.findAccountById(accountId);
+        String gameTypeString = requestUtil.getQueryParamGameType(form);
         List<LeagueDivision> leagueDivisions = orderService.getLoLLeagueDivisions();
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("game_type", gameTypeString);
-        model.put("league_divisions", leagueDivisions);
+        model.addAttribute("game_type", gameTypeString);
+        model.addAttribute("league_divisions", leagueDivisions);
 
-        return viewUtil.render(request, model, Path.Template.ORDER_FORM, account);
-    };
+        return Path.Template.ORDER_FORM;
+    }
 
 }
