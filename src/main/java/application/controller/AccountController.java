@@ -95,7 +95,7 @@ public class AccountController {
         // SEND WELCOME EMAIL
         // TODO: once SMTP properly set, this can be used
         // accountService.sendWelcomeEmail(account);
-        
+
         return "redirect:" + Path.Template.LOGIN;
     };
 
