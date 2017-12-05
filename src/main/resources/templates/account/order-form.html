@@ -27,7 +27,7 @@
     <form action="/create-order" method="POST">
 
         <!-- GENERIC PART -->
-        <div th:replace="fragments :: general-order-part"></div>
+        <div th:replace="fragments/fragments :: general-order-part"></div>
 
         <!-- GAME SPECIFIC PART -->
         <th:block th:switch="${game_type}">
