@@ -127,7 +127,8 @@ public class AccountService {
 
         if (amount < 0) return false;
 
-        accountDao.changeBoostCoinByAmount(account, amount);
+        account.setBoostCoin(account.getBoostCoin() + amount);
+        accountRepository.save(account);
         return true;
     }
 
