@@ -1,6 +1,5 @@
 package application.service;
 
-import application.dao.AccountDao;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
@@ -13,19 +12,10 @@ import java.util.*;
 @Service
 public class AccountService {
 
-<<<<<<< HEAD
     private AccountRepository accountRepository;
 
     public AccountService(AccountRepository accountRepository) {
-=======
-    private PasswordHashService passwordHashService;
-    private EmailService emailService;
-    private AccountRepository accountRepository;
 
-    public AccountService(PasswordHashService passwordHashService, EmailService emailService, AccountRepository accountRepository) {
-        this.passwordHashService = passwordHashService;
-        this.emailService = emailService;
->>>>>>> dd0a83e323f1cbd9396fb1a9786f4e4433a768c9
         this.accountRepository = accountRepository;
     }
 
