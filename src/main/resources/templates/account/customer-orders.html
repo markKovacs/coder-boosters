@@ -39,7 +39,7 @@
 
     <!-- ORDERS LIST SECTION -->
     <div id="pricing-table" class="clear content"></div>
-    <div id="all-orders" class="clear">
+    <div th:if="${orders != null}" id="all-orders" class="clear">
         <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
          '-order plan ' + #strings.toLowerCase(order.status)}">
             <h3><img

@@ -34,7 +34,12 @@ public class AccountController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
+
         Account account = sessionData.getAccount();
+        if (account != null) {
+            sessionData.setAccount(accountService.refresh(account));
+        }
+
         requestUtil.addCommonAttributes(model, account);
     }
 

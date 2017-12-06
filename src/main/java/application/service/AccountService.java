@@ -154,4 +154,11 @@ public class AccountService {
         return new ArrayList<>(Collections.singletonList("Invalid credentials."));
     }
 
+    public Account refresh(Account account) {
+        return accountRepository.save(account);
+    }
+
+    public Account getAccountById(Long accountId) {
+        return accountRepository.findById(accountId);
+    }
 }

@@ -12,6 +12,7 @@ import application.utils.Path;
 import application.utils.RequestUtil;
 import application.utils.SessionData;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -44,7 +45,10 @@ public class OrderController {
 
     @ModelAttribute
     public void addAttributes(Model model) {
+
         Account account = sessionData.getAccount();
+        sessionData.setAccount(accountService.refresh(account));
+
         requestUtil.addCommonAttributes(model, account);
     }
 
@@ -74,7 +78,7 @@ public class OrderController {
 
         // TODO: message could be added (successful or not)
 
-        return "redirect:" + Path.Template.BOOSTER_ORDERS;
+        return "redirect:" + Path.Web.BOOSTER_ORDERS;
     }
 
     @PostMapping(Path.Web.CLOSE_ORDER)
@@ -90,7 +94,7 @@ public class OrderController {
 
         accountService.transferBoostCoin(account, boostOrder.getTotalPrice());
 
-        return "redirect:" + Path.Template.BOOSTER_ORDERS;
+        return "redirect:" + Path.Web.BOOSTER_ORDERS;
     }
 
     @PostMapping(Path.Web.CREATE_ORDER)

@@ -4,10 +4,12 @@ import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
 import application.model.order.*;
+import application.repository.AccountRepository;
 import application.repository.BoostOrderRepository;
 import application.utils.DataUtil;
 import application.utils.InputField;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,16 +19,18 @@ import java.util.Map;
 @Service
 public class OrderService {
 
+    private AccountRepository accountRepository;
     private BoostOrderRepository orderRepository;
     private DataUtil dataUtil;
 
-    public OrderService(BoostOrderRepository orderRepository, DataUtil dataUtil) {
+    public OrderService(AccountRepository accountRepository, BoostOrderRepository orderRepository, DataUtil dataUtil) {
+        this.accountRepository = accountRepository;
         this.orderRepository = orderRepository;
         this.dataUtil = dataUtil;
     }
 
     public List<BoostOrder> getOrdersForBoosterAndAllAvailable(Account account) {
-        return orderRepository.getOrdersForBoosterAndAllAvailable(account);
+        return orderRepository.findBoostOrdersByBoosterAccountOrBoosterAccountIsNull(account);
     }
 
     public List<BoostOrder> getOrdersByAccount(Account account) {
@@ -147,6 +151,7 @@ public class OrderService {
                 return null;
         }
 
+        //account = accountRepository.save(account);
         account.addBoostOrderBiDir(boostOrder);
         return orderRepository.save(boostOrder);
     }

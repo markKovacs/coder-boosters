@@ -9,6 +9,7 @@ import java.util.List;
 public interface BoostOrderRepository extends JpaRepository<BoostOrder, Long> {
 
     List<BoostOrder> getOrdersForBoosterAndAllAvailable(Account account);
+    List<BoostOrder> findBoostOrdersByBoosterAccountOrBoosterAccountIsNull(Account account);
 
     List<BoostOrder> findByBoosterAccount(Account account);
 
