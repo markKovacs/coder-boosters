@@ -47,7 +47,9 @@ public class OrderController {
     public void addAttributes(Model model) {
 
         Account account = sessionData.getAccount();
-        sessionData.setAccount(accountService.refresh(account));
+        if (account != null) {
+            sessionData.setAccount(accountService.refresh(account));
+        }
 
         requestUtil.addCommonAttributes(model, account);
     }
