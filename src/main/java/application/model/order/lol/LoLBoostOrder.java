@@ -34,8 +34,14 @@ public class LoLBoostOrder extends BoostOrder {
 
     @Override
     public int calcBasePrice() {
-        // TODO: implement algorithm for calculating LoL basePrice based on given form input
-        int calcedPrice = 100;
+
+        int calcedPrice = 0;
+        double numOfGamesMultiplied = this.getCurrentRank().getMultiplier() * (double) this.getNumberOfGames();
+
+        switch (this.getOrderType()) {
+            case GAMES_WON: calcedPrice = ((int) (8.0 * numOfGamesMultiplied)); break;
+            case GAMES_PLAYED: calcedPrice = ((int) (4.0 * numOfGamesMultiplied)); break;
+        }
 
         return calcedPrice;
     }

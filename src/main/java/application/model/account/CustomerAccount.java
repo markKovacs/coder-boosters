@@ -34,7 +34,7 @@ public class CustomerAccount extends Account {
     public CustomerAccount() {}
     public CustomerAccount(String accountName, String email, String password) {
         super(accountName, email, password);
-        this.setBoostCoin(150);
+        this.setBoostCoin(1000);
     }
 
     public void addGameAccountBiDir(GameAccount gameAccount) {

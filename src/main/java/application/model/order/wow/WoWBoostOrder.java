@@ -35,8 +35,8 @@ public class WoWBoostOrder extends BoostOrder {
         double numOfGamesMultiplied = this.getCurrentBracket().getMultiplier() * (double) this.getNumberOfGames();
 
         switch (this.getOrderType()) {
-            case GAMES_WON: calcedPrice = ((int) (5.0 * numOfGamesMultiplied)); break;
-            case GAMES_PLAYED: calcedPrice = ((int) (10.0 * numOfGamesMultiplied)); break;
+            case GAMES_WON: calcedPrice = ((int) (10.0 * numOfGamesMultiplied)); break;
+            case GAMES_PLAYED: calcedPrice = ((int) (5.0 * numOfGamesMultiplied)); break;
         }
 
         return calcedPrice;
