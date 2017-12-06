@@ -40,15 +40,12 @@
                     th:attr="src=${order.gameType.getIcon()}"
                     class="img-circle"></h3>
             <ul>
-                </li>
-                <li><b>[[${order.status}]]</b>
-                </li>
-                <li><b>[[${order.gameType.getName()}]]</b>
-                </li>
-                <li><b>Current Rank</b> [[${order.currentRank}]]</li>
+                <li><b th:text="${order.status}"></b></li>
+                <li><b th:text="${order.gameType.getName()}"></b></li>
+                <li><b>Current Rank </b><span th:text="${order.currentRank}"></span></li>
                 <!--<li><b>Goal</b> Plat V</li>-->
-                <li><b>Price</b> [[${order.getTotalPrice()}]]Ƀ</li>
-                <li><b>DeadLine</b> [[${order.deadlineString()}]]</li>
+                <li><b>Price </b><span th:text="${order.getTotalPrice() + 'Ƀ'}"></span></li>
+                <li><b>DeadLine </b><span th:text="${order.deadlineString()}"></span></li>
                 <th:block th:if="${order.status.toString()} eq 'AVAILABLE'">
                     <li><b>Account Name</b> N/A</li>
                     <li><b>Account Password</b> N/A</li>
@@ -58,8 +55,8 @@
                     </form>
                 </th:block>
                 <th:block th:if="${order.status.toString()} eq 'TAKEN'">
-                    <li><b>Account Name</b> [[${order.getGameAccountName()}]]</li>
-                    <li><b>Account Password</b> [[${order.getGameAccountPassword()}]]</li>
+                    <li><b>Account Name </b><span th:text="${order.getGameAccountName()}"></span></li>
+                    <li><b>Account Password </b><span th:text="${order.getGameAccountPassword()}"></span></li>
                     <form th:action="@{~/close-order}" method="POST">
                         <input type="text" th:value="${order.id}" name="boostOrderId" hidden>
                         <input type="submit" name="Close" value="Close" class="btn btn-success">

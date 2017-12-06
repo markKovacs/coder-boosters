@@ -147,13 +147,11 @@ desired effect
                                     <ul class="nav navbar-nav">
                                         <li class="dropdown user user-menu">
                                             <th:block th:if="${loggedInAs} eq 'customer'">
-                                                <a href="/customer-paypal"
-                                                   th:text="${'Current Boost Coin: ' +  balance}">
+                                                <a href="/customer-paypal" th:text="${'Current Boost Coin: ' +  balance}">
                                                 </a>
                                             </th:block>
                                             <th:block th:if="${loggedInAs} eq 'booster'">
-                                                <a href="#">
-                                                    Current Boost Coin: [[${balance}]]Ƀ
+                                                <a href="#" th:text="${'Current Boost Coin: ' +  balance}">
                                                 </a>
                                             </th:block>
                                         </li>
