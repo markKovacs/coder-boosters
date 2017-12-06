@@ -23,15 +23,21 @@ public class WoWBoostOrder extends BoostOrder {
                          OrderType orderType, double bonusPercentage, Date deadLine) {
 
         super(GameType.WOW, numberOfGames, orderType, bonusPercentage, deadLine);
+        this.currentBracket = currentBracket;
         super.setBasePrice(calcBasePrice());
         super.calcTotal();
-        this.currentBracket = currentBracket;
     }
 
     @Override
     public int calcBasePrice() {
-        // TODO: implement algorithm for calculating WoW basePrice based on given form input
-        int calcedPrice = 100;
+
+        int calcedPrice = 0;
+        double numOfGamesMultiplied = this.getCurrentBracket().getMultiplier() * (double) this.getNumberOfGames();
+
+        switch (this.getOrderType()) {
+            case GAMES_WON: calcedPrice = ((int) (5.0 * numOfGamesMultiplied)); break;
+            case GAMES_PLAYED: calcedPrice = ((int) (10.0 * numOfGamesMultiplied)); break;
+        }
 
         return calcedPrice;
     }

@@ -6,14 +6,36 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 <head>
-    <title>Order form</title>
+    <title>Order Form</title>
 </head>
 
 <body>
 
 <div layout:fragment="content">
 
-    <h1>Boost Order Creation</h1>
+    <th:block th:switch="${game_type.toString()}">
+
+        <th:block th:case="'LOL'">
+            <h1>LoL Boost Order Creation</h1>
+        </th:block>
+
+        <th:block th:case="'WOW'">
+            <h1>WoW Boost Order Creation</h1>
+        </th:block>
+
+        <th:block th:case="'OW'">
+            <h1>OW Boost Order Creation</h1>
+        </th:block>
+
+        <th:block th:case="'FIFA'">
+            <h1>FIFA Boost Order Creation</h1>
+        </th:block>
+
+        <th:block th:case="'CSGO'">
+            <h1>CSGO Boost Order Creation</h1>
+        </th:block>
+
+    </th:block>
 
     <!-- ERRORS -->
     <div th:if="${errors}" id="error-messages" >

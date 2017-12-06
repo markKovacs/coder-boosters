@@ -27,9 +27,9 @@ public class LoLBoostOrder extends BoostOrder {
                          OrderType orderType, double bonusPercentage, Date deadLine) {
 
         super(GameType.LOL, numberOfGames, orderType, bonusPercentage, deadLine);
+        this.currentRank = currentRank;
         super.setBasePrice(calcBasePrice());
         super.calcTotal();
-        this.currentRank = currentRank;
     }
 
     @Override
