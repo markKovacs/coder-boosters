@@ -1,20 +1,21 @@
 package application.service;
 
+import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
 import application.model.order.*;
+import application.model.order.lol.LeagueDivision;
+import application.model.order.lol.LoLBoostOrder;
+import application.model.order.wow.WoWArenaBracket;
+import application.model.order.wow.WoWBoostOrder;
 import application.repository.AccountRepository;
 import application.repository.BoostOrderRepository;
 import application.utils.DataUtil;
 import application.utils.InputField;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @Service
 public class OrderService {
@@ -52,7 +53,6 @@ public class OrderService {
 
         boosterAccount.addBoostOrderBiDir(boostOrder);
         orderRepository.save(boostOrder);
-        // TODO: 12/5/17 Do I need to save account??? VERIFY!
 
         return true;
     }
@@ -66,61 +66,69 @@ public class OrderService {
     public List<String> validateOrderData(Map<String, String> inputData) {
         List<String> errors = new ArrayList<>();
 
-        switch (inputData.get("gameType")) {
+        int numOfGames = dataUtil.castStringToInt(inputData.get("numberOfGames"));
+        if (numOfGames < 1 || numOfGames > 10) {
+            errors.add("Number of games selected should be between 1-10.");
+        }
 
-            case "LOL":
+        if (!Arrays.asList(OrderType.values())
+                .contains(OrderType.safeValueOf(inputData.get("orderType")))) {
+            errors.add("Selected order type is invalid.");
+        }
+
+        double bonusPercentage = dataUtil.castStringToDouble(inputData.get("bonusPercentage"));
+        if (bonusPercentage != 0.0 && bonusPercentage != 5.0 &&
+                bonusPercentage != 10.0 && bonusPercentage != 15.0) {
+            errors.add("Bonus percentage must be 0, 5, 10 or 15");
+        }
+
+        int year = dataUtil.castStringToInt(inputData.get("year"));
+        if (year > 2099 || year < 2017) {
+            errors.add("Year must be between 2017 and 2099");
+        }
+
+        int month = dataUtil.castStringToInt(inputData.get("month"));
+        if (month < 1 || month > 12) {
+            errors.add("Months must be between 1 and 12");
+        }
+
+        int day = dataUtil.castStringToInt(inputData.get("day"));
+        if (day < 1 || day > 31) {
+            errors.add("Days must be between 1 and 31");
+        }
+
+        int hour = dataUtil.castStringToInt(inputData.get("hour"));
+        if (hour < 0 || hour > 24) {
+            errors.add("Hours must be between 0 and 24");
+        }
+
+        if (!InputField.USERNAME.validate(inputData.get("gameAccName"))) {
+            errors.add("Game account name is invalid.");
+        }
+
+        if (!InputField.PASSWORD.validate(inputData.get("gameAccPassword"))) {
+            errors.add("Game account password is invalid.");
+        }
+
+        // TODO: upon adding new games, this method should be extended
+
+        switch (GameType.valueOf(inputData.get("gameType"))) {
+            case LOL:
                 if (!Arrays.asList(LeagueDivision.values())
                         .contains(LeagueDivision.safeValueOf(inputData.get("currentRank")))) {
                     errors.add("Selected league/division rank is invalid.");
                 }
+                break;
 
-                int numOfGames = dataUtil.castStringToInt(inputData.get("numberOfGames"));
-                if (numOfGames < 1 || numOfGames > 10) {
-                    errors.add("Number of games selected should be between 1-10.");
-                }
-
-                if (!Arrays.asList(OrderType.values())
-                        .contains(OrderType.safeValueOf(inputData.get("orderType")))) {
-                    errors.add("Selected order type is invalid.");
-                }
-
-                double bonusPercentage = dataUtil.castStringToDouble(inputData.get("bonusPercentage"));
-                if (bonusPercentage != 0.0 && bonusPercentage != 5.0 &&
-                        bonusPercentage != 10.0 && bonusPercentage != 15.0) {
-                    errors.add("Bonus percentage must be 0, 5, 10 or 15");
-                }
-
-                int year = dataUtil.castStringToInt(inputData.get("year"));
-                if (year > 2099 || year < 2017) {
-                    errors.add("Year must be between 2017 and 2099");
-                }
-
-                int month = dataUtil.castStringToInt(inputData.get("month"));
-                if (month < 1 || month > 12) {
-                    errors.add("Months must be between 1 and 12");
-                }
-
-                int day = dataUtil.castStringToInt(inputData.get("day"));
-                if (day < 1 || day > 31) {
-                    errors.add("Days must be between 1 and 31");
-                }
-
-                int hour = dataUtil.castStringToInt(inputData.get("hour"));
-                if (hour < 0 || hour > 24) {
-                    errors.add("Hours must be between 0 and 24");
-                }
-
-                if (!InputField.USERNAME.validate(inputData.get("gameAccName"))) {
-                    errors.add("Game account name is invalid.");
-                }
-
-                if (!InputField.PASSWORD.validate(inputData.get("gameAccPassword"))) {
-                    errors.add("Game account password is invalid.");
+            case WOW:
+                if (!Arrays.asList(WoWArenaBracket.values())
+                        .contains(WoWArenaBracket.safeValueOf(inputData.get("currentBracket")))) {
+                    errors.add("Selected arena bracket is invalid.");
                 }
                 break;
 
             default:
-                errors.add("Wrong game type.");
+                return Collections.singletonList("Wrong game type.");
         }
 
         return errors;
@@ -147,17 +155,30 @@ public class OrderService {
                 );
                 break;
 
+            case "WOW":
+                boostOrder = new WoWBoostOrder(
+                        WoWArenaBracket.valueOf(form.get("currentBracket")),
+                        dataUtil.castStringToInt(form.get("numberOfGames")),
+                        OrderType.valueOf(form.get("orderType")),
+                        dataUtil.castStringToDouble(form.get("bonusPercentage")),
+                        dataUtil.createDate(
+                                dataUtil.castStringToInt(form.get("year")),
+                                dataUtil.castStringToInt(form.get("month")),
+                                dataUtil.castStringToInt(form.get("day")),
+                                dataUtil.castStringToInt(form.get("hour"))
+                        )
+                );
+                break;
+
             default:
                 return null;
         }
 
-        //account = accountRepository.save(account);
         account.addBoostOrderBiDir(boostOrder);
         return orderRepository.save(boostOrder);
     }
 
     public List<LeagueDivision> getLoLLeagueDivisions() {
-        // TODO: this could be stored in database and read league divisions from there
         return Arrays.asList(LeagueDivision.values());
     }
 
@@ -167,8 +188,9 @@ public class OrderService {
         gameAccount.addBoostOrderList(boostOrder);
 
         orderRepository.save(boostOrder);
-        // TODO: 12/5/17 DO WE NEED TO SAVE THIS?
-        //gameAccountRepository.save(gameAccount);
     }
 
+    public List<WoWArenaBracket> getWoWArenaBrackets() {
+        return Arrays.asList(WoWArenaBracket.values());
+    }
 }

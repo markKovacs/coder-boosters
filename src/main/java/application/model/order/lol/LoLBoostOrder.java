@@ -1,6 +1,8 @@
-package application.model.order;
+package application.model.order.lol;
 
 import application.model.GameType;
+import application.model.order.BoostOrder;
+import application.model.order.OrderType;
 
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -25,7 +27,7 @@ public class LoLBoostOrder extends BoostOrder {
                          OrderType orderType, double bonusPercentage, Date deadLine) {
 
         super(GameType.LOL, numberOfGames, orderType, bonusPercentage, deadLine);
-        super.basePrice = calcBasePrice();
+        super.setBasePrice(calcBasePrice());
         super.calcTotal();
         this.currentRank = currentRank;
     }

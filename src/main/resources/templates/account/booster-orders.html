@@ -37,13 +37,36 @@
         <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
          '-order plan ' + #strings.toLowerCase(order.status)}">
             <h3><img
-                    th:attr="src=${order.gameType.getIcon()}"
+                    th:attr="src=${order.gameType.icon}"
                     class="img-circle"></h3>
             <ul>
                 <li><b th:text="${order.status}"></b></li>
                 <li><b th:text="${order.gameType.getName()}"></b></li>
-                <li><b>Current Rank </b><span th:text="${order.currentRank}"></span></li>
-                <!--<li><b>Goal</b> Plat V</li>-->
+
+                <th:block th:switch="${order.gameType.toString()}">
+
+                    <th:block th:case="'LOL'">
+                        <li><b>Current Rank </b><span th:text="${order.currentRank}"></span></li>
+                    </th:block>
+
+                    <th:block th:case="'WOW'">
+                        <li><b>Current Bracket </b><span th:text="${order.currentBracket}"></span></li>
+                    </th:block>
+
+                    <th:block th:case="'OW'">
+                        <!-- TODO: when OW game is implemented -->
+                    </th:block>
+
+                    <th:block th:case="'FIFA'">
+                        <!-- TODO: when FIFA game is implemented -->
+                    </th:block>
+
+                    <th:block th:case="'CSGO'">
+                        <!-- TODO: when CSGO game is implemented -->
+                    </th:block>
+
+                </th:block>
+
                 <li><b>Price </b><span th:text="${order.getTotalPrice() + 'Ƀ'}"></span></li>
                 <li><b>DeadLine </b><span th:text="${order.deadlineString()}"></span></li>
                 <th:block th:if="${order.status.toString()} eq 'AVAILABLE'">

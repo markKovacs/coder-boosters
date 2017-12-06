@@ -1,4 +1,4 @@
-package application.model.order;
+package application.model.order.lol;
 
 public enum LeagueDivision {
     CHALLENGER,
