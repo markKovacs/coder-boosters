@@ -13,7 +13,7 @@ public interface BoostOrderRepository extends JpaRepository<BoostOrder, Long> {
 
     List<BoostOrder> findByBoosterAccount(Account account);
 
-    List<BoostOrder> findByCustomerAccount(Account account);
+    List<BoostOrder> findBoostOrdersByCustomerAccount(Account account);
 
     BoostOrder findById(Long boostOrderId);
 

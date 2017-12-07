@@ -9,6 +9,8 @@ import application.model.order.OrderType;
 import application.model.order.Status;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.lol.LoLBoostOrder;
+import application.model.order.ow.OWBoostOrder;
+import application.model.order.ow.OWDivision;
 import application.model.order.rocketleague.RocketLeague;
 import application.model.order.rocketleague.RocketLeagueOrder;
 import application.model.order.wow.WoWArenaBracket;
@@ -43,7 +45,7 @@ public class OrderService {
         if (account instanceof BoosterAccount) {
             return orderRepository.findByBoosterAccount(account);
         }
-        return orderRepository.findByCustomerAccount(account);
+        return orderRepository.findBoostOrdersByCustomerAccount(account);
     }
 
     public BoostOrder findBoostOrder(Long boostOrderId) {
@@ -137,6 +139,13 @@ public class OrderService {
                 }
                 break;
 
+            case OW:
+                if (!Arrays.asList(OWDivision.values())
+                        .contains(OWDivision.safeValueOf(inputData.get("currentRank")))) {
+                    errors.add("Selected league is invalid.");
+                }
+                break;
+
             default:
                 return Collections.singletonList("Wrong game type.");
         }
@@ -194,6 +203,21 @@ public class OrderService {
                 );
                 break;
 
+            case "OW":
+                boostOrder = new OWBoostOrder(
+                        OWDivision.valueOf(form.get("currentRank")),
+                        dataUtil.castStringToInt(form.get("numberOfGames")),
+                        OrderType.valueOf(form.get("orderType")),
+                        dataUtil.castStringToDouble(form.get("bonusPercentage")),
+                        dataUtil.createDate(
+                                dataUtil.castStringToInt(form.get("year")),
+                                dataUtil.castStringToInt(form.get("month")),
+                                dataUtil.castStringToInt(form.get("day")),
+                                dataUtil.castStringToInt(form.get("hour"))
+                        )
+                );
+                break;
+
             default:
                 return null;
         }
@@ -216,8 +240,9 @@ public class OrderService {
     public List<WoWArenaBracket> getWoWArenaBrackets() {
         return Arrays.asList(WoWArenaBracket.values());
     }
-
-
+    public List<OWDivision> getOWDivisions() {
+        return Arrays.asList(OWDivision.values());
+    }
     public List<RocketLeague> getRocketLeagueDivison() {
         return Arrays.asList(RocketLeague.values());
     }
