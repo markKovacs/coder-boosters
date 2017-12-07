@@ -2,13 +2,11 @@ package application.controller;
 
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
-import application.model.account.CustomerAccount;
 import application.service.AccountService;
 import application.utils.Path;
 import application.utils.RequestUtil;
 import application.utils.SessionData;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;

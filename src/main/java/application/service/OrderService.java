@@ -2,7 +2,6 @@ package application.service;
 
 import application.model.GameType;
 import application.model.account.Account;
-import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
 import application.model.order.CSGO.CSGOBoostOrder;
@@ -43,10 +42,6 @@ public class OrderService {
     }
 
     public List<BoostOrder> getOrdersByAccount(Account account) {
-
-        if (account instanceof BoosterAccount) {
-            return orderRepository.findByBoosterAccount(account);
-        }
         return orderRepository.findBoostOrdersByCustomerAccount(account);
     }
 
@@ -196,6 +191,7 @@ public class OrderService {
                         )
                 );
                 break;
+
             case "RL":
                 boostOrder = new RocketLeagueOrder(
                         RocketLeague.valueOf(form.get("currentRank")),

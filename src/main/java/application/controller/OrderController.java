@@ -3,6 +3,7 @@ package application.controller;
 import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
+import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
 import application.model.order.CSGO.CSGODivision;
@@ -58,18 +59,18 @@ public class OrderController {
         requestUtil.addCommonAttributes(model, account);
     }
 
-    @GetMapping({Path.Web.BOOSTER_ORDERS, Path.Web.CUSTOMER_ORDERS})
+    @GetMapping({Path.Web.CUSTOMER_ORDERS, Path.Web.BOOSTER_ORDERS})
     public String serveOrderListPage(Model model) {
         Account account = sessionData.getAccount();
 
         // TODO: start using accountType instead of instanceof
-        if (account instanceof BoosterAccount) {
-            model.addAttribute("orders", orderService.getOrdersForBoosterAndAllAvailable(account));
-            return Path.Template.BOOSTER_ORDERS;
+        if (account instanceof CustomerAccount) {
+            model.addAttribute("orders", orderService.getOrdersByAccount(account));
+            return Path.Template.CUSTOMER_ORDERS;
         }
 
-        model.addAttribute("orders", orderService.getOrdersByAccount(account));
-        return Path.Template.CUSTOMER_ORDERS;
+        model.addAttribute("orders", orderService.getOrdersForBoosterAndAllAvailable(account));
+        return Path.Template.BOOSTER_ORDERS;
     }
 
     @PostMapping(Path.Web.ACCEPT_ORDER)
@@ -104,15 +105,15 @@ public class OrderController {
     }
 
     @PostMapping(Path.Web.CREATE_ORDER)
-    public String handleOrderCreation(@RequestParam Map<String, String> form) {
+    public String handleOrderCreation(Model model, @RequestParam Map<String, String> form) {
 
         Account account = sessionData.getAccount();
         List<String> errorMessages = orderService.validateOrderData(form);
 
         // INVALID INPUT
         if (errorMessages.size() > 0) {
-            Map<String, Object> model = new HashMap<>();
-            model.put("errors", errorMessages);
+            model.addAttribute("errors", errorMessages);
+            model.addAttribute("game_type", form.get("gameType"));
 
             return Path.Template.ORDER_FORM;
         }
