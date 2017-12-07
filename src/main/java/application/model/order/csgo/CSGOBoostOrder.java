@@ -1,4 +1,4 @@
-package application.model.order.CSGO;
+package application.model.order.csgo;
 
 import application.model.GameType;
 import application.model.order.BoostOrder;
