@@ -1,4 +1,4 @@
-package application.model.order.CSGO;
+package application.model.order.csgo;
 
 public enum CSGODivision{
 

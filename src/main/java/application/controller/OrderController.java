@@ -2,11 +2,10 @@ package application.controller;
 
 import application.model.GameType;
 import application.model.account.Account;
-import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
-import application.model.order.CSGO.CSGODivision;
+import application.model.order.csgo.CSGODivision;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.ow.OWDivision;
 import application.model.order.rocketleague.RocketLeague;
@@ -24,7 +23,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -159,11 +157,11 @@ public class OrderController {
                 List<OWDivision> owDivisions = orderService.getOWDivisions();
                 model.addAttribute("ow_divisions", owDivisions);
             case RL:
-                List<RocketLeague> rocketLeagues= orderService.getRocketLeagueDivisons();
+                List<RocketLeague> rocketLeagues= orderService.getRocketLeagueDivisions();
                 model.addAttribute("rocket_league", rocketLeagues);
                 break;
             case CSGO:
-                List<CSGODivision> CSGOBoostOrders = orderService.getCSGOLeagueDivisons();
+                List<CSGODivision> CSGOBoostOrders = orderService.getCSGOLeagueDivisions();
                 model.addAttribute("csgo_divisions", CSGOBoostOrders);
                 break;
         }

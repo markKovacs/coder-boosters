@@ -4,8 +4,8 @@ import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
-import application.model.order.CSGO.CSGOBoostOrder;
-import application.model.order.CSGO.CSGODivision;
+import application.model.order.csgo.CSGOBoostOrder;
+import application.model.order.csgo.CSGODivision;
 import application.model.order.OrderType;
 import application.model.order.Status;
 import application.model.order.lol.LeagueDivision;
@@ -113,8 +113,6 @@ public class OrderService {
             errors.add("Game account password is invalid.");
         }
 
-        // TODO: upon adding new games, this method should be extended
-
         switch (GameType.valueOf(inputData.get("gameType"))) {
             case LOL:
                 if (!Arrays.asList(LeagueDivision.values())
@@ -157,8 +155,6 @@ public class OrderService {
     }
 
     public BoostOrder createOrder(Account account, Map<String, String> form) {
-
-        // TODO: upon adding new games, this method should be extended
 
         BoostOrder boostOrder;
         switch (form.get("gameType")) {
@@ -264,11 +260,11 @@ public class OrderService {
     public List<OWDivision> getOWDivisions() {
         return Arrays.asList(OWDivision.values());
     }
-    public List<RocketLeague> getRocketLeagueDivisons() {
+    public List<RocketLeague> getRocketLeagueDivisions() {
         return Arrays.asList(RocketLeague.values());
     }
 
-    public List<CSGODivision> getCSGOLeagueDivisons() {
+    public List<CSGODivision> getCSGOLeagueDivisions() {
         return Arrays.asList(CSGODivision.values());
     }
 
