@@ -23,11 +23,11 @@
     <!-- GAME FILTER SECTION -->
     <div class="row">
         <div class="col-sm-12" id="gamePicker">
-            <img class="img-circle" id="show-lol" src="https://i1.wp.com/wiki-fx.net/wp-content/uploads/2013/05/League_Of_Legends_Logo1.png?fit=256%2C256">
-            <img class="img-circle" id="show-csgo" src="https://versatileservers.com/wp-content/uploads/2017/08/csgo-icon-4.png">
-            <img class="img-circle" id="show-fifa" src="http://www.godisageek.com/wp-content/uploads/EA_Sports_LOGO.png">
-            <img class="img-circle" id="show-wow" src="https://vignette.wikia.nocookie.net/wow/images/7/77/World_of_warcraft-icon.png/revision/latest?cb=20110530143143&path-prefix=nl">
-            <img class="img-circle" id="show-ow" src="http://www.gamasutra.com/db_area/images/news/2017/Sep/306316/ow.jpg">
+            <img class="img-circle" id="show-lol"  src="/pictures/game-picture/lol.png">
+            <img class="img-circle" id="show-csgo" src="/pictures/game-picture/csgo.png">
+            <img class="img-circle" id="show-rl" src="/pictures/game-picture/rl.png">
+            <img class="img-circle" id="show-wow" src="/pictures/game-picture/wow.png">
+            <img class="img-circle" id="show-ow" src="/pictures/game-picture/ow.png">
         </div>
 
         <div class="col-sm-12">
@@ -63,8 +63,8 @@
                         <!-- TODO: when OW game is implemented -->
                     </th:block>
 
-                    <th:block th:case="'FIFA'">
-                        <!-- TODO: when FIFA game is implemented -->
+                    <th:block th:case="'RL'">
+                        <li><b>Current Rank </b><span th:text="${order.currentRank}"></span></li>
                     </th:block>
 
                     <th:block th:case="'CSGO'">

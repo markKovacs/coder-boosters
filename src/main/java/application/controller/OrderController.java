@@ -7,6 +7,7 @@ import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.ow.OWDivision;
+import application.model.order.rocketleague.RocketLeague;
 import application.model.order.wow.WoWArenaBracket;
 import application.service.AccountService;
 import application.service.GameAccountService;
@@ -142,6 +143,7 @@ public class OrderController {
 
         String gameTypeString = requestUtil.getQueryParamGameType(form);
 
+
         model.addAttribute("game_type", gameTypeString);
 
         switch (GameType.valueOf(gameTypeString)) {
@@ -156,6 +158,9 @@ public class OrderController {
             case OW:
                 List<OWDivision> owDivisions = orderService.getOWDivisions();
                 model.addAttribute("ow_divisions", owDivisions);
+            case RL:
+                List<RocketLeague> rocketLeagues= orderService.getRocketLeagueDivison();
+                model.addAttribute("rocket_league", rocketLeagues);
                 break;
         }
 

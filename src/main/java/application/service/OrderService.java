@@ -4,11 +4,15 @@ import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
-import application.model.order.*;
+import application.model.order.BoostOrder;
+import application.model.order.OrderType;
+import application.model.order.Status;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.lol.LoLBoostOrder;
 import application.model.order.ow.OWBoostOrder;
 import application.model.order.ow.OWDivision;
+import application.model.order.rocketleague.RocketLeague;
+import application.model.order.rocketleague.RocketLeagueOrder;
 import application.model.order.wow.WoWArenaBracket;
 import application.model.order.wow.WoWBoostOrder;
 import application.repository.AccountRepository;
@@ -128,6 +132,12 @@ public class OrderService {
                     errors.add("Selected arena bracket is invalid.");
                 }
                 break;
+            case RL:
+                if (!Arrays.asList(RocketLeague.values())
+                        .contains(RocketLeague.safeValueOf(inputData.get("currentRank")))) {
+                    errors.add("Selected league is invalid.");
+                }
+                break;
 
             case OW:
                 if (!Arrays.asList(OWDivision.values())
@@ -178,6 +188,20 @@ public class OrderService {
                         )
                 );
                 break;
+            case "RL":
+                boostOrder = new RocketLeagueOrder(
+                        RocketLeague.valueOf(form.get("currentRank")),
+                        dataUtil.castStringToInt(form.get("numberOfGames")),
+                        OrderType.valueOf(form.get("orderType")),
+                        dataUtil.castStringToDouble(form.get("bonusPercentage")),
+                        dataUtil.createDate(
+                                dataUtil.castStringToInt(form.get("year")),
+                                dataUtil.castStringToInt(form.get("month")),
+                                dataUtil.castStringToInt(form.get("day")),
+                                dataUtil.castStringToInt(form.get("hour"))
+                        )
+                );
+                break;
 
             case "OW":
                 boostOrder = new OWBoostOrder(
@@ -197,7 +221,6 @@ public class OrderService {
             default:
                 return null;
         }
-
         account.addBoostOrderBiDir(boostOrder);
         return orderRepository.save(boostOrder);
     }
@@ -219,5 +242,8 @@ public class OrderService {
     }
     public List<OWDivision> getOWDivisions() {
         return Arrays.asList(OWDivision.values());
+    }
+    public List<RocketLeague> getRocketLeagueDivison() {
+        return Arrays.asList(RocketLeague.values());
     }
 }
