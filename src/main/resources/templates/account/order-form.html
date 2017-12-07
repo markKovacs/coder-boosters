@@ -12,20 +12,13 @@
 <body>
 
 <div layout:fragment="content" th:class="${game_type.toLowerCase() + '-new-order'}">
-    <!-- ERRORS -->
-    <div th:if="${errors}" id="error-messages">
-        <div th:each="error : ${errors}">
-            <span class="alert" th:text="${error}"></span>
-            <br>
-        </div>
-    </div>
 
     <!-- ORDER FORM -->
     <form action="/create-order" method="POST">
 
-
         <div id="pricing-create-order-table" class="clear content">
             <div class="plan">
+
                 <h3>
                     <img class="img-circle" id="show-lol"
                          th:src="${'/pictures/game-picture/' +  game_type.toLowerCase() + '.png'}">
@@ -57,9 +50,19 @@
 
                         </th:block>
 
-
                     </li>
+
+                    <!-- ERRORS -->
+                    <div th:if="${errors}" id="error-messages">
+                        <li th:each="error : ${errors}">
+                            <span class="alert" th:text="${error}"></span>
+                            <br>
+                        </li>
+                    </div>
+
                     <li>
+                        <input type="hidden" th:value="${game_type}" name="game_type" required/>
+
                         <input type="radio" name="orderType" value="GAMES_WON" checked="checked"/>
                         Games won
                         <input type="radio" name="orderType" value="GAMES_PLAYED"/>
@@ -114,6 +117,7 @@
                             <div th:case="'CSGO'">
                                 <div th:replace="fragments/fragments :: csgo-specific-form"></div>
 
+                            </div>
                         </th:block>
 
                     </li>

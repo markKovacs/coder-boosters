@@ -133,28 +133,6 @@ public class AccountController {
         return "redirect:" + Path.Web.INDEX;
     }
 
-    @PostMapping(Path.Web.CUSTOMER_PROFILE)
-    public String handleCustomerProfileEditing(@RequestParam Map<String, String> form, Model model) {
-
-        // TODO: not implemented yet, for later use
-
-        Map<String, String> inputData = requestUtil.collectEditData(form);
-
-        List<String> errorMessages = accountService.validateCustomerProfileEditInfo(inputData);
-        Account account = sessionData.getAccount();
-
-        // INVALID INPUT
-        if (errorMessages.size() > 0) {
-            model.addAttribute("errors", errorMessages);
-            model.addAttribute("userData", inputData);
-
-            return Path.Template.CUSTOMER_PROFILE;
-        }
-
-        accountService.update(account.getId(), inputData);
-        return "redirect:" + Path.Web.CUSTOMER_PROFILE_EDIT_SUCCESS;
-    }
-
     @GetMapping(Path.Web.CUSTOMER_PAYPAL)
     public String serveCustomerPayPal() {
 
