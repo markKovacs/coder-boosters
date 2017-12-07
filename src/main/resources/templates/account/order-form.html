@@ -13,7 +13,7 @@
 
 <div layout:fragment="content">
 
-    <th:block th:switch="${game_type.toString()}">
+    <th:block th:switch="${game_type}">
 
         <th:block th:case="'LOL'">
             <h1>LoL Boost Order Creation</h1>
@@ -71,7 +71,7 @@
             </div>
 
             <div th:case="'CSGO'">
-                <!-- TODO: when CSGO game is implemented -->
+                <div th:replace="fragments/fragments :: csgo-specific-form"></div>
             </div>
 
         </th:block>

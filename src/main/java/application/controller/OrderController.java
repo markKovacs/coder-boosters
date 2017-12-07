@@ -5,6 +5,8 @@ import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
+import application.model.order.CSGO.CSGOBoostOrder;
+import application.model.order.Division;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.wow.WoWArenaBracket;
 import application.service.AccountService;
@@ -104,7 +106,9 @@ public class OrderController {
     public String handleOrderCreation(@RequestParam Map<String, String> form) {
 
         Account account = sessionData.getAccount();
+        System.out.println(form.get("gameType"));
         List<String> errorMessages = orderService.validateOrderData(form);
+        System.out.println(errorMessages);
 
         // INVALID INPUT
         if (errorMessages.size() > 0) {
@@ -139,7 +143,6 @@ public class OrderController {
     public String serveOrderForm(Model model, @RequestParam Map<String, String> form) {
 
         String gameTypeString = requestUtil.getQueryParamGameType(form);
-
         model.addAttribute("game_type", gameTypeString);
 
         switch (GameType.valueOf(gameTypeString)) {
@@ -150,6 +153,10 @@ public class OrderController {
             case WOW:
                 List<WoWArenaBracket> woWArenaBrackets = orderService.getWoWArenaBrackets();
                 model.addAttribute("wow_brackets", woWArenaBrackets);
+                break;
+            case CSGO:
+                List<Division> CSGOBoostOrders = orderService.getDivisionsAsList(GameType.CSGO);
+                model.addAttribute("csgo_divisions", CSGOBoostOrders);
                 break;
         }
 

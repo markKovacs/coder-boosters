@@ -5,6 +5,8 @@ import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
 import application.model.order.*;
+import application.model.order.CSGO.CSGOBoostOrder;
+import application.model.order.CSGO.CSGODivision;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.lol.LoLBoostOrder;
 import application.model.order.wow.WoWArenaBracket;
@@ -126,6 +128,12 @@ public class OrderService {
                     errors.add("Selected arena bracket is invalid.");
                 }
                 break;
+            case CSGO:
+                if(!Arrays.asList(CSGODivision.values())
+                        .contains(CSGODivision.safeValueOf(inputData.get("currentRank")))) {
+                    errors.add("Selected league/division rank is invalid.");
+                }
+                break;
 
             default:
                 return Collections.singletonList("Wrong game type.");
@@ -139,6 +147,7 @@ public class OrderService {
         // TODO: upon adding new games, this method should be extended
 
         BoostOrder boostOrder;
+        System.out.println(form.get("gameType"));
         switch (form.get("gameType")) {
             case "LOL":
                 boostOrder = new LoLBoostOrder(
@@ -158,6 +167,22 @@ public class OrderService {
             case "WOW":
                 boostOrder = new WoWBoostOrder(
                         WoWArenaBracket.valueOf(form.get("currentBracket")),
+                        dataUtil.castStringToInt(form.get("numberOfGames")),
+                        OrderType.valueOf(form.get("orderType")),
+                        dataUtil.castStringToDouble(form.get("bonusPercentage")),
+                        dataUtil.createDate(
+                                dataUtil.castStringToInt(form.get("year")),
+                                dataUtil.castStringToInt(form.get("month")),
+                                dataUtil.castStringToInt(form.get("day")),
+                                dataUtil.castStringToInt(form.get("hour"))
+                        )
+                );
+                break;
+
+            case "CSGO":
+                System.out.println("dwqdqwdqwdqwdqwdqw");
+                boostOrder = new CSGOBoostOrder(
+                        CSGODivision.valueOf(form.get("currentRank")),
                         dataUtil.castStringToInt(form.get("numberOfGames")),
                         OrderType.valueOf(form.get("orderType")),
                         dataUtil.castStringToDouble(form.get("bonusPercentage")),
@@ -193,4 +218,40 @@ public class OrderService {
     public List<WoWArenaBracket> getWoWArenaBrackets() {
         return Arrays.asList(WoWArenaBracket.values());
     }
+
+    public List<Division> getDivisionsAsList(GameType gameType) {
+        if(gameType.equals(GameType.CSGO)) {
+            return Arrays.asList(CSGODivision.values());
+        } else if (gameType.equals(GameType.FIFA)) {
+            return null;
+        } else if (gameType.equals(GameType.LOL)) {
+            return null;
+        } else if (gameType.equals(GameType.OW)) {
+            return null;
+        } else if (gameType.equals(GameType.WOW)) {
+            return null;
+        }
+        return null;
+    }
+
+
+    public Long divisionBasedPriceCalculator(GameType gameType, Division currentRank, Division desiredRank) {
+        Long orderPrice = 0L;
+        List<Division> divisions = getDivisionsAsList(gameType);
+
+        Boolean doCalculation = false;
+        for(Division division : divisions) {
+            if(division.getDivision().equals(currentRank.getDivision())) {
+                doCalculation = true;
+            }
+            if(doCalculation) {
+                if(division.getDivision().equals(desiredRank.getDivision())) {
+                    doCalculation = false;
+                }
+                orderPrice += division.getPrice();
+            }
+        }
+        return orderPrice;
+    }
+
 }
