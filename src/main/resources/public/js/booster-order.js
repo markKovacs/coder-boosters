@@ -1,7 +1,29 @@
 function main() {
-    $("#all-orders").children().hide();
-    toogleGame("lol");
-    sortStatusBy("available");
+
+    showAll();
+
+
+    function showAll() {
+        $("#show-lol").css("opacity", 1);
+        $("#show-ow").css("opacity", 1);
+        $("#show-rl").css("opacity", 1);
+        $("#show-wow").css("opacity", 1);
+        $("#show-csgo").css("opacity", 1);
+
+        $("#show-done").css("opacity", 1);
+        $("#show-taken").css("opacity", 1);
+        $("#show-available").css("opacity", 1);
+
+        showGame("lol");
+        showGame("csgo");
+        showGame("rl");
+        showGame("wow");
+        showGame("ow");
+
+        $("#pricing-table").find(".done").show();
+        $("#pricing-table").find(".available").show();
+        $("#pricing-table").find(".taken").show();
+    }
 
 
     function sortStatusBy(selected) {
@@ -22,18 +44,16 @@ function main() {
         $("#show-csgo").css("opacity", 0.4);
         $("#show-"+clicked).css("opacity", 1);
 
-        $(".database > .lol-order").hide();
-        $(".database > .ow-order").hide();
-        $(".database > .rl-order").hide();
-        $(".database > .wow-order").hide();
-        $(".database > .csgo-order").hide();
         $("#pricing-table").empty();
-        
+
+        showGame(clicked);
+    }
+
+    function showGame(clicked) {
         $("#all-orders").find("."+ clicked + "-order").each(function() {
             var thisClasses = $(this).attr('class');
             $("#pricing-table").append('<div class="'+ thisClasses + '">' + $(this).html() + '</div>');
         });
-        
     }
 
     $("#show-lol").click(function () {
