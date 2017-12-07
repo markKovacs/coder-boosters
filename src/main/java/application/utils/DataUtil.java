@@ -1,9 +1,12 @@
 package application.utils;
 
+import org.springframework.stereotype.Component;
+
 import java.util.Calendar;
 import java.util.Date;
 import java.util.InputMismatchException;
 
+@Component
 public class DataUtil {
 
     public Date createDate(int y, int m, int d, int h) {

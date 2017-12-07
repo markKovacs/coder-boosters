@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorator="account/layout">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+<head>
+    <title>Order Form</title>
+</head>
+
+<body>
+
+<div layout:fragment="content">
+    <th:block th:switch="${game_type}">
+
+        <th:block th:case="'LOL'">
+            <h1>LoL Boost Order Creation</h1>
+        </th:block>
+
+        <th:block th:case="'WOW'">
+            <h1>WoW Boost Order Creation</h1>
+        </th:block>
+
+        <th:block th:case="'OW'">
+            <h1>OW Boost Order Creation</h1>
+        </th:block>
+
+        <th:block th:case="'RL'">
+            <h1>Rocket League Boost Order Creation</h1>
+        </th:block>
+
+        <th:block th:case="'CSGO'">
+            <h1>CSGO Boost Order Creation</h1>
+        </th:block>
+
+    </th:block>
+
+    <!-- ERRORS -->
+    <div th:if="${errors}" id="error-messages" >
+        <div th:each="error : ${errors}">
+            <span class="alert" th:text="${error}"></span>
+            <br>
+        </div>
+    </div>
+
+    <!-- ORDER FORM -->
+    <form action="/create-order" method="POST">
+
+        <!-- GENERIC PART -->
+        <div th:replace="fragments/fragments :: general-order-part"></div>
+
+        <!-- GAME SPECIFIC PART -->
+        <th:block th:switch="${game_type}">
+
+            <div th:case="'LOL'">
+                <div th:replace="fragments/fragments :: lol-specific-form"></div>
+            </div>
+
+            <div th:case="'WOW'">
+                <div th:replace="fragments/fragments :: wow-specific-form"></div>
+            </div>
+
+            <div th:case="'OW'">
+                <div th:replace="fragments/fragments :: ow-specific-form"></div>
+            </div>
+
+            <div th:case="'RL'">
+                <div th:replace="fragments/fragments :: rl-specific-form"></div>
+            </div>
+
+            <div th:case="'CSGO'">
+                <div th:replace="fragments/fragments :: csgo-specific-form"></div>
+            </div>
+
+        </th:block>
+
+        <!-- CANCEL/SUBMIT BUTTONS -->
+        <a th:href="@{~/customer-orders}"><input class="btn btn-default" type="button" value="Cancel"></a>
+        <button class="btn btn-success" type="submit">Submit</button>
+
+    </form>
+
+</div>
+</body>
+</html>

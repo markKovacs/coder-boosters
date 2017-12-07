@@ -2,181 +2,175 @@ package application.controller;
 
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
-import application.model.account.CustomerAccount;
 import application.service.AccountService;
 import application.utils.Path;
 import application.utils.RequestUtil;
-import application.utils.ViewUtil;
-import spark.Route;
+import application.utils.SessionData;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Controller
 public class AccountController {
 
-    private ViewUtil viewUtil;
+    private SessionData sessionData;
     private RequestUtil requestUtil;
     private AccountService accountService;
 
-    public AccountController(AccountService accountService, ViewUtil viewUtil, RequestUtil requestUtil) {
-        this.accountService = accountService;
-        this.viewUtil = viewUtil;
+    public AccountController(SessionData sessionData, RequestUtil requestUtil, AccountService accountService) {
+        this.sessionData = sessionData;
         this.requestUtil = requestUtil;
+        this.accountService = accountService;
     }
 
-    public Route serveRegistrationPage = (request, response) -> {
+    @ModelAttribute
+    public void addAttributes(Model model) {
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Account account = accountService.findAccountById(accountId);
+        Account account = sessionData.getAccount();
+        if (account != null) {
+            sessionData.setAccount(accountService.refresh(account));
+        }
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("userData", new HashMap<>());
+        requestUtil.addCommonAttributes(model, account);
+    }
 
-        return viewUtil.render(request, model, Path.Template.REGISTER, account);
-    };
+    @GetMapping(value = Path.Web.REGISTER)
+    public String serveRegistrationPage(Model model){
+        model.addAttribute("userData", requestUtil.collectRegistrationData(new HashMap<>()));
 
-    public Route serveLoginPage = (request, response) -> {
+        return Path.Template.REGISTER;
+    }
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Account account = accountService.findAccountById(accountId);
+    @GetMapping(value = Path.Web.LOGIN)
+    public String serveLoginPage(){
 
-        Map<String, Object> model = new HashMap<>();
+        return Path.Template.LOGIN;
+    }
 
-        return viewUtil.render(request, model, Path.Template.LOGIN, account);
-    };
+    @GetMapping(value = Path.Web.CUSTOMER_PROFILE)
+    public String serveCustomerProfilePage(Model model, @RequestParam(name = "edited", required = false) String edited){
 
-    public Route serveCustomerProfilePage = (request, response) -> {
+        Account account = sessionData.getAccount();
+        boolean isProfileEdited = requestUtil.isProfileEdited(edited);
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        boolean isProfileEdited = requestUtil.isProfileEdited(request);
-
-        CustomerAccount account = accountService.findCustomerById(accountId);
         List<String> successMessage = accountService.getSuccessMessageOnEdit(isProfileEdited);
 
-        Map<String, Object> model = new HashMap<>();
-        model.put("userData", account);
-        model.put("success", successMessage);
+        // TODO account datas need to be cleared
+        model.addAttribute("userData", account);
+        model.addAttribute("success", successMessage);
 
-        return viewUtil.render(request, model, Path.Template.CUSTOMER_PROFILE, account);
-    };
+        return Path.Template.CUSTOMER_PROFILE;
+    }
 
-    public Route handleRegistration = (request, response) -> {
+    @PostMapping(value = Path.Web.REGISTER)
+    public String handleRegistration(Model model, @RequestParam Map<String, String> formData){
 
-        Map<String, String> inputData = requestUtil.collectRegistrationData(request);
-        List<String> errorMessages = accountService.validateRegistrationInput(inputData);
+        //Map<String, String> inputData = requestUtil.collectRegistrationData(request);
+        List<String> errorMessages = accountService.validateRegistrationInput(formData);
 
-        Map<String, Object> model;
 
         // IN CASE OF INVALID INPUT, RE-RENDER REGISTRATION PAGE
         if (errorMessages.size() > 0) {
-            model = new HashMap<>();
-            model.put("errors", errorMessages);
-            model.put("userData", inputData);
+            model.addAttribute("errors", errorMessages);
+            model.addAttribute("userData", formData);
 
-            return viewUtil.render(request, model, Path.Template.REGISTER, null);
+            return Path.Template.REGISTER;
         }
 
         // CREATE HASHED PASSWORD AND HANDLE IF ERROR OCCURRED
-        String passwordHash = accountService.createHashedPassword(inputData.get("password1"));
+        String passwordHash = accountService.createHashedPassword(formData.get("password1"));
         if (passwordHash == null) {
-            model = new HashMap<>();
-            model.put("errors", accountService.getHashingErrorMessage());
-            model.put("userData", inputData);
+            model.addAttribute("errors", accountService.getHashingErrorMessage());
+            model.addAttribute("userData", formData);
 
-            return viewUtil.render(request, model, Path.Template.REGISTER, null);
+            return Path.Template.REGISTER;
         }
 
         // SAVE ACCOUNT TO DATABASE
-        Account account = accountService.saveAccount(inputData, passwordHash);
+        Account account = accountService.saveAccount(formData, passwordHash);
 
         // SEND WELCOME EMAIL
         // TODO: once SMTP properly set, this can be used
         // accountService.sendWelcomeEmail(account);
 
-        response.redirect(Path.Web.LOGIN);
-        return null;
-    };
+        return "redirect:" + Path.Web.LOGIN;
+    }
 
-    public Route handleLogin = (request, response) -> {
+    @PostMapping(Path.Web.LOGIN)
+    public String handleLogin(@RequestParam Map<String, String> form, Model model) {
 
-        Map<String, String> inputData = requestUtil.collectLoginData(request);
-        Long accountId = accountService.validateLoginCredentials(inputData);
+        Map<String, String> inputData = requestUtil.collectLoginData(form);
+        Account account = accountService.validateLoginCredentials(inputData);
 
         // INVALID LOGIN CREDENTIALS
-        if (accountId == -1) {
-            Map<String, Object> model = new HashMap<>();
-            model.put("errors", accountService.getInvalidLoginCredsErrorMessage());
+        if (account == null) {
+            model.addAttribute("errors", accountService.getInvalidLoginCredsErrorMessage());
 
-            return viewUtil.render(request, model, Path.Template.LOGIN, null);
+            return Path.Template.LOGIN;
         }
 
         // SUCCESSFUL LOGIN - ADD TO SESSION AND REDIRECT ACCORDINGLY
-        requestUtil.createSessionForAccount(request, accountId);
-        Account account = accountService.findAccountById(accountId);
+        sessionData.setAccount(account);
 
         // TODO: change from instanceof and use an accountType instance variable
         if (account instanceof BoosterAccount) {
-            response.redirect(Path.Web.BOOSTER_ORDERS);
-        } else {
-            response.redirect(Path.Web.CUSTOMER_ORDERS);
+            return "redirect:" + Path.Web.BOOSTER_ORDERS;
         }
-        return null;
-    };
+        return "redirect:" + Path.Web.CUSTOMER_ORDERS;
+    }
 
-    public Route handleLogout = (request, response) -> {
+    @GetMapping(Path.Web.LOGOUT)
+    public String handleLogout() {
 
-        requestUtil.removeAccountFromSession(request);
-        response.redirect(Path.Web.INDEX);
+        sessionData.clear();
+        return "redirect:" + Path.Web.INDEX;
+    }
 
-        return null;
-    };
-
-    public Route handleCustomerProfileEditing = (request, response) -> {
+    @PostMapping(Path.Web.CUSTOMER_PROFILE)
+    public String handleCustomerProfileEditing(@RequestParam Map<String, String> form, Model model) {
 
         // TODO: not implemented yet, for later use
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Map<String, String> inputData = requestUtil.collectEditData(request);
+        Map<String, String> inputData = requestUtil.collectEditData(form);
 
         List<String> errorMessages = accountService.validateCustomerProfileEditInfo(inputData);
-        Account account = accountService.findAccountById(accountId);
+        Account account = sessionData.getAccount();
 
         // INVALID INPUT
         if (errorMessages.size() > 0) {
-            Map<String, Object> model = new HashMap<>();
-            model.put("errors", errorMessages);
-            model.put("userData", inputData);
+            model.addAttribute("errors", errorMessages);
+            model.addAttribute("userData", inputData);
 
-            return viewUtil.render(request, model, Path.Template.CUSTOMER_PROFILE, account);
+            return Path.Template.CUSTOMER_PROFILE;
         }
 
-        accountService.update(accountId, inputData);
+        accountService.update(account.getId(), inputData);
+        return "redirect:" + Path.Web.CUSTOMER_PROFILE_EDIT_SUCCESS;
+    }
 
-        response.redirect(Path.Web.CUSTOMER_PROFILE_EDIT_SUCCESS);
-        return null;
-    };
+    @GetMapping(Path.Web.CUSTOMER_PAYPAL)
+    public String serveCustomerPayPal() {
 
-    public Route serveCustomerPayPal = (request, response) -> {
+        Account account = sessionData.getAccount();
 
-        Long accountId = requestUtil.getSessionAccountId(request);
-        Account account = accountService.findAccountById(accountId);
+        return Path.Template.CUSTOMER_PAYPAL;
+    }
 
-        Map<String, Object> model = new HashMap<>();
+    @PostMapping(Path.Web.CUSTOMER_PAYPAL)
+    public String handleCustomerPayPal(@RequestParam Map<String, String> form) {
 
-        return viewUtil.render(request, model, Path.Template.CUSTOMER_PAYPAL, account);
-    };
-
-    public Route handleCustomerPayPal = (request, response) -> {
-
-        Long accountId = requestUtil.getSessionAccountId(request);
-        int amount = requestUtil.getQueryParamAmount(request);
-
-        CustomerAccount customerAccount = accountService.findCustomerById(accountId);
+        Account customerAccount = sessionData.getAccount();
+        int amount = requestUtil.getQueryParamAmount(form);
         accountService.increaseBoostCoinAmount(customerAccount, amount);
 
-        response.redirect(Path.Web.CUSTOMER_PROFILE);
-        return null;
-    };
+        return "redirect:" + Path.Web.CUSTOMER_PROFILE;
+    }
 
 }

@@ -184,6 +184,5 @@ buildNumber.properties
 # End of https://www.gitignore.io/api/java,maven,java-web,intellij,intellij+iml,intellij+all
 /src/main/java/application/Config.java
 /DEVNOTES.md
-/src/main/resources/META-INF/drop-schema.ddl
-/src/main/resources/META-INF/create-schema.ddl
-/src/main/resources/META-INF/persistence.xml
+
+/src/main/resources/application.properties

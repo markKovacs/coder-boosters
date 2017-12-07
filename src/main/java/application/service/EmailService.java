@@ -1,6 +1,7 @@
 package application.service;
 
 import application.Config;
+import org.springframework.stereotype.Service;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.FileTemplateResolver;
@@ -12,6 +13,7 @@ import java.io.StringWriter;
 import java.util.Map;
 import java.util.Properties;
 
+@Service
 public class EmailService {
 
     private static final String PATH = "src/main/resources/templates/";

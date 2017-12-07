@@ -1,31 +1,28 @@
 package application.service;
 
-import application.dao.AccountDao;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.repository.AccountRepository;
 import application.utils.InputField;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
+@Service
 public class AccountService {
 
-    private AccountDao accountDao;
+    private AccountRepository accountRepository;
     private PasswordHashService passwordHashService;
     private EmailService emailService;
 
-    public AccountService(AccountDao accountDao, PasswordHashService passwordHashService, EmailService emailService) {
-        this.accountDao = accountDao;
+    public AccountService(AccountRepository accountRepository,
+                          PasswordHashService passwordHashService,
+                          EmailService emailService) {
+
+        this.accountRepository = accountRepository;
         this.passwordHashService = passwordHashService;
         this.emailService = emailService;
-    }
-
-    public Account findAccountById(Long accountId) {
-        return accountDao.findAccountById(accountId);
-    }
-
-    public CustomerAccount findCustomerById(Long accountId) {
-        return accountDao.findCustomerById(accountId);
     }
 
     public List<String> getSuccessMessageOnEdit(boolean isProfileEdited) {
@@ -38,12 +35,12 @@ public class AccountService {
 
         if (!InputField.USERNAME.validate(regInput.get("username"))) {
             errorMessages.add("Username field is wrong.");
-        } else if (accountDao.getAllAccountNames().contains(regInput.get("username"))) {
+        } else if (accountRepository.getAccountNames().contains(regInput.get("username"))) {
             errorMessages.add("Username is already taken.");
         }
         if (!InputField.EMAIL.validate(regInput.get("email"))) {
             errorMessages.add("E-mail field is wrong.");
-        } else if (accountDao.getAllEmails().contains(regInput.get("email"))) {
+        } else if (accountRepository.getEmails().contains(regInput.get("email"))) {
             errorMessages.add("E-mail field is already registered.");
         }
         if (!regInput.get("password1").equals(regInput.get("password2"))) {
@@ -76,7 +73,7 @@ public class AccountService {
             account = new CustomerAccount(inputData.get("username"), inputData.get("email"), passwordHash);
         }
 
-        accountDao.add(account);
+        accountRepository.save(account);
         return account;
     }
 
@@ -92,14 +89,14 @@ public class AccountService {
         emailService.send(to, body, subject);
     }
 
-    public Long validateLoginCredentials(Map<String, String> loginInput) {
+    public Account validateLoginCredentials(Map<String, String> loginInput) {
 
         String accountName = loginInput.get("username");
         String password = loginInput.get("password");
-        Account account = accountDao.findAccountByName(accountName);
+        Account account = accountRepository.findByAccountName(accountName);
 
         if (account == null) {
-            return -1L;
+            return null;
         }
         String hash = account.getPassword();
 
@@ -108,12 +105,12 @@ public class AccountService {
             validPassword = passwordHashService.verifyPassword(password, hash);
         } catch (PasswordHashService.CannotPerformOperationException e) {
             System.out.println("Cannot perform operation.");
-            return -1L;
+            return null;
         } catch (PasswordHashService.InvalidHashException e) {
-            return -1L;
+            return null;
         }
 
-        return validPassword ? account.getId() : -1L;
+        return validPassword ? account : null;
     }
 
     public List<String> validateCustomerProfileEditInfo(Map<String, String> inputData) {
@@ -128,34 +125,40 @@ public class AccountService {
     }
 
     public void update(Long accountId, Map<String, String> inputData) {
-        accountDao.update(accountId, inputData);
     }
 
-    public boolean increaseBoostCoinAmount(CustomerAccount account, int amount) {
+    public boolean increaseBoostCoinAmount(Account account, int amount) {
 
         if (amount < 0) return false;
 
-        accountDao.changeBoostCoinByAmount(account, amount);
+        account.setBoostCoin(account.getBoostCoin() + amount);
+        accountRepository.save(account);
         return true;
     }
 
-    public BoosterAccount findBoosterById(Long accountId) {
-        return accountDao.findBoosterById(accountId);
-    }
-
-    public boolean decreaseBoostCoinAmount(CustomerAccount account, int amount) {
+    public boolean decreaseBoostCoinAmount(Account account, int amount) {
 
         // TODO: put logic here if customer does not have enough money, return false and cancel process
 
-        accountDao.changeBoostCoinByAmount(account, (-1) * amount);
+        account.setBoostCoin(account.getBoostCoin() + (-1) * amount);
+        accountRepository.save(account);
         return true;
     }
 
-    public void transferBoostCoin(BoosterAccount boosterAccount, int totalPrice) {
-        accountDao.transferBoostCoin(boosterAccount, totalPrice);
+    public void transferBoostCoin(Account boosterAccount, int totalPrice) {
+        boosterAccount.changeBoostCoin(totalPrice);
+        accountRepository.save(boosterAccount);
     }
 
     public List<String> getInvalidLoginCredsErrorMessage() {
         return new ArrayList<>(Collections.singletonList("Invalid credentials."));
+    }
+
+    public Account refresh(Account account) {
+        return accountRepository.save(account);
+    }
+
+    public Account getAccountById(Long accountId) {
+        return accountRepository.findById(accountId);
     }
 }

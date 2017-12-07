@@ -1,27 +1,27 @@
 package application.service;
 
-import application.dao.OrderDao;
+import application.repository.BoostOrderRepository;
 import application.utils.DataUtil;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
+import org.mockito.runners.MockitoJUnitRunner;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class OrderServiceTest {
 
     @Mock
-    private OrderDao orderDaoMock;
+    private BoostOrderRepository orderRepositoryMock;
     @Mock
     private DataUtil dataUtilMock;
     @InjectMocks
@@ -181,11 +181,6 @@ public class OrderServiceTest {
         List<String> actualErrorMessage = orderService.validateOrderData(testInputData);
         assertArrayEquals(castListToArray(expectedErrorMessage), castListToArray(actualErrorMessage));
     }
-
-
-
-
-
 
     private String[] castListToArray(List<String> stringList) {
         String[] stringArray = new String[stringList.size()];

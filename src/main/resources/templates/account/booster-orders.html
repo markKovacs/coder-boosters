@@ -1,6 +1,13 @@
 <!DOCTYPE html>
-<html layout:decorate="~{account/layout}" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorator="account/layout">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+
+<head>
+    <title>Booster Orders</title>
+</head>
 
 <div layout:fragment="content">
 
@@ -14,11 +21,11 @@
     <!-- GAME FILTER SECTION -->
     <div class="row">
         <div class="col-sm-12" id="gamePicker">
-            <img class="img-circle" id="show-lol" src="https://i1.wp.com/wiki-fx.net/wp-content/uploads/2013/05/League_Of_Legends_Logo1.png?fit=256%2C256">
-            <img class="img-circle" id="show-csgo" src="https://versatileservers.com/wp-content/uploads/2017/08/csgo-icon-4.png">
-            <img class="img-circle" id="show-fifa" src="http://www.godisageek.com/wp-content/uploads/EA_Sports_LOGO.png">
-            <img class="img-circle" id="show-wow" src="https://vignette.wikia.nocookie.net/wow/images/7/77/World_of_warcraft-icon.png/revision/latest?cb=20110530143143&path-prefix=nl">
-            <img class="img-circle" id="show-ow" src="http://www.gamasutra.com/db_area/images/news/2017/Sep/306316/ow.jpg">
+            <img class="img-circle" id="show-lol"  src="/pictures/game-picture/lol.png">
+            <img class="img-circle" id="show-csgo" src="/pictures/game-picture/csgo.png">
+            <img class="img-circle" id="show-rl" src="/pictures/game-picture/rl.png">
+            <img class="img-circle" id="show-wow" src="/pictures/game-picture/wow.png">
+            <img class="img-circle" id="show-ow" src="/pictures/game-picture/ow.png">
         </div>
 
         <div class="col-sm-12">
@@ -33,19 +40,39 @@
     <div id="all-orders" class="clear" style="display: none">
         <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
          '-order plan ' + #strings.toLowerCase(order.status)}">
-            <h3><img
-                    th:attr="src=${order.gameType.getIcon()}"
-                    class="img-circle"></h3>
+            <h3>
+                <img th:src="${order.gameType.icon}" class="img-circle">
+            </h3>
             <ul>
-                </li>
-                <li><b>[[${order.status}]]</b>
-                </li>
-                <li><b>[[${order.gameType.getName()}]]</b>
-                </li>
-                <li><b>Current Rank</b> [[${order.currentRank}]]</li>
-                <!--<li><b>Goal</b> Plat V</li>-->
-                <li><b>Price</b> [[${order.getTotalPrice()}]]Ƀ</li>
-                <li><b>DeadLine</b> [[${order.deadlineString()}]]</li>
+                <li><b th:text="${order.status}"></b></li>
+                <li><b th:text="${order.gameType.getName()}"></b></li>
+
+                <th:block th:switch="${order.gameType.toString()}">
+
+                    <th:block th:case="'LOL'">
+                        <li><b>Current Rank </b><span th:text="${order.currentRank}"></span></li>
+                    </th:block>
+
+                    <th:block th:case="'WOW'">
+                        <li><b>Current Bracket </b><span th:text="${order.currentBracket}"></span></li>
+                    </th:block>
+
+                    <th:block th:case="'OW'">
+                        <!-- TODO: when OW game is implemented -->
+                    </th:block>
+
+                    <th:block th:case="'RL'">
+                        <li><b>Current Rank </b><span th:text="${order.currentRank}"></span></li>
+                    </th:block>
+
+                    <th:block th:case="'CSGO'">
+                        <!-- TODO: when CSGO game is implemented -->
+                    </th:block>
+
+                </th:block>
+
+                <li><b>Price </b><span th:text="${order.getTotalPrice() + 'Ƀ'}"></span></li>
+                <li><b>DeadLine </b><span th:text="${order.deadlineString()}"></span></li>
                 <th:block th:if="${order.status.toString()} eq 'AVAILABLE'">
                     <li><b>Account Name</b> N/A</li>
                     <li><b>Account Password</b> N/A</li>
@@ -55,8 +82,8 @@
                     </form>
                 </th:block>
                 <th:block th:if="${order.status.toString()} eq 'TAKEN'">
-                    <li><b>Account Name</b> [[${order.getGameAccountName()}]]</li>
-                    <li><b>Account Password</b> [[${order.getGameAccountPassword()}]]</li>
+                    <li><b>Account Name </b><span th:text="${order.getGameAccountName()}"></span></li>
+                    <li><b>Account Password </b><span th:text="${order.getGameAccountPassword()}"></span></li>
                     <form th:action="@{~/close-order}" method="POST">
                         <input type="text" th:value="${order.id}" name="boostOrderId" hidden>
                         <input type="submit" name="Close" value="Close" class="btn btn-success">
