@@ -37,7 +37,7 @@
         <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
          '-order plan ' + #strings.toLowerCase(order.status)}">
             <h3><img
-                    th:attr="src=${order.gameType.icon}"
+                    th:attr="src=${order.gameType.getIcon()}"
                     class="img-circle"></h3>
             <ul>
                 <li><b th:text="${order.status}"></b></li>

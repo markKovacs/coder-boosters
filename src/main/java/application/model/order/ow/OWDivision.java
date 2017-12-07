@@ -1,4 +1,4 @@
-package application.model.order;
+package application.model.order.ow;
 
 public enum OWDivision {
     BRONZE,

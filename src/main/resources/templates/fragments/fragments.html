@@ -40,3 +40,12 @@
                 th:value="${wb}"></option>
     </select>
 </div>
+
+<div th:fragment="ow-specific-form" xmlns:th="http://www.w3.org/1999/xhtml">
+    <br>Current Rank:<br>
+    <select name="currentRank">
+        <option th:each="ow_lg : ${ow_divisions}"
+                th:text="${ow_lg}"
+                th:value="${ow_lg}"></option>
+    </select>
+</div>

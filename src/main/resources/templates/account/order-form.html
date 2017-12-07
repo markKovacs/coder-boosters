@@ -63,7 +63,7 @@
             </div>
 
             <div th:case="'OW'">
-                <!-- TODO: when OW game is implemented -->
+                <div th:replace="fragments/fragments :: ow-specific-form"></div>
             </div>
 
             <div th:case="'FIFA'">
