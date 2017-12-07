@@ -5,10 +5,16 @@ import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
+import application.model.order.CSGO.CSGOBoostOrder;
+import application.model.order.CSGO.CSGODivision;
 import application.model.order.OrderType;
 import application.model.order.Status;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.lol.LoLBoostOrder;
+import application.model.order.ow.OWBoostOrder;
+import application.model.order.ow.OWDivision;
+import application.model.order.rocketleague.RocketLeague;
+import application.model.order.rocketleague.RocketLeagueOrder;
 import application.model.order.wow.WoWArenaBracket;
 import application.model.order.wow.WoWBoostOrder;
 import application.repository.AccountRepository;
@@ -262,43 +268,31 @@ public class OrderService {
     public List<OWDivision> getOWDivisions() {
         return Arrays.asList(OWDivision.values());
     }
-    public List<RocketLeague> getRocketLeagueDivison() {
+    public List<RocketLeague> getRocketLeagueDivisons() {
         return Arrays.asList(RocketLeague.values());
     }
 
-    public List<Division> getDivisionsAsList(GameType gameType) {
-        if(gameType.equals(GameType.CSGO)) {
-            return Arrays.asList(CSGODivision.values());
-        } else if (gameType.equals(GameType.FIFA)) {
-            return null;
-        } else if (gameType.equals(GameType.LOL)) {
-            return null;
-        } else if (gameType.equals(GameType.OW)) {
-            return null;
-        } else if (gameType.equals(GameType.WOW)) {
-            return null;
-        }
-        return null;
+    public List<CSGODivision> getCSGOLeagueDivisons() {
+        return Arrays.asList(CSGODivision.values());
     }
 
-
-    public Long divisionBasedPriceCalculator(GameType gameType, Division currentRank, Division desiredRank) {
-        Long orderPrice = 0L;
-        List<Division> divisions = getDivisionsAsList(gameType);
-
-        Boolean doCalculation = false;
-        for(Division division : divisions) {
-            if(division.getDivision().equals(currentRank.getDivision())) {
-                doCalculation = true;
-            }
-            if(doCalculation) {
-                if(division.getDivision().equals(desiredRank.getDivision())) {
-                    doCalculation = false;
-                }
-                orderPrice += division.getPrice();
-            }
-        }
-        return orderPrice;
-    }
+//    public Long divisionBasedPriceCalculator(GameType gameType, Division currentRank, Division desiredRank) {
+//        Long orderPrice = 0L;
+//        List<Division> divisions = getDivisionsAsList(gameType);
+//
+//        Boolean doCalculation = false;
+//        for(Division division : divisions) {
+//            if(division.getDivision().equals(currentRank.getDivision())) {
+//                doCalculation = true;
+//            }
+//            if(doCalculation) {
+//                if(division.getDivision().equals(desiredRank.getDivision())) {
+//                    doCalculation = false;
+//                }
+//                orderPrice += division.getPrice();
+//            }
+//        }
+//        return orderPrice;
+//    }
 
 }

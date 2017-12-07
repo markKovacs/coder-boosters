@@ -1,11 +1,6 @@
 package application.model.order.CSGO;
 
-import application.model.order.Division;
-
-import java.util.Arrays;
-import java.util.List;
-
-public enum CSGODivision implements Division {
+public enum CSGODivision{
 
     SILVER_1(10L, "SILVER_1"),
     SILVER_2(11L, "SILVER_2"),
@@ -34,12 +29,10 @@ public enum CSGODivision implements Division {
         this.division = division;
     }
 
-    @Override
     public Long getPrice() {
         return price;
     }
 
-    @Override
     public String getDivision() {
         return division;
     }
