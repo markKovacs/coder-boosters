@@ -4,10 +4,10 @@ import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
-import application.model.order.csgo.CSGOBoostOrder;
-import application.model.order.csgo.CSGODivision;
 import application.model.order.OrderType;
 import application.model.order.Status;
+import application.model.order.csgo.CSGOBoostOrder;
+import application.model.order.csgo.CSGODivision;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.lol.LoLBoostOrder;
 import application.model.order.ow.OWBoostOrder;
@@ -113,7 +113,7 @@ public class OrderService {
             errors.add("Game account password is invalid.");
         }
 
-        switch (GameType.valueOf(inputData.get("gameType"))) {
+        switch (GameType.valueOf(inputData.get("game_type"))) {
             case LOL:
                 if (!Arrays.asList(LeagueDivision.values())
                         .contains(LeagueDivision.safeValueOf(inputData.get("currentRank")))) {
@@ -157,7 +157,7 @@ public class OrderService {
     public BoostOrder createOrder(Account account, Map<String, String> form) {
 
         BoostOrder boostOrder;
-        switch (form.get("gameType")) {
+        switch (form.get("game_type")) {
             case "LOL":
                 boostOrder = new LoLBoostOrder(
                         LeagueDivision.valueOf(form.get("currentRank")),
@@ -266,24 +266,5 @@ public class OrderService {
     public List<CSGODivision> getCSGOLeagueDivisions() {
         return Arrays.asList(CSGODivision.values());
     }
-
-//    public Long divisionBasedPriceCalculator(GameType gameType, Division currentRank, Division desiredRank) {
-//        Long orderPrice = 0L;
-//        List<Division> divisions = getDivisionsAsList(gameType);
-//
-//        Boolean doCalculation = false;
-//        for(Division division : divisions) {
-//            if(division.getDivision().equals(currentRank.getDivision())) {
-//                doCalculation = true;
-//            }
-//            if(doCalculation) {
-//                if(division.getDivision().equals(desiredRank.getDivision())) {
-//                    doCalculation = false;
-//                }
-//                orderPrice += division.getPrice();
-//            }
-//        }
-//        return orderPrice;
-//    }
 
 }
