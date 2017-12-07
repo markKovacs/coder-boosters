@@ -11,33 +11,9 @@
 
 <body>
 
-<div layout:fragment="content">
-    <th:block th:switch="${game_type}">
-
-        <th:block th:case="'LOL'">
-            <h1>LoL Boost Order Creation</h1>
-        </th:block>
-
-        <th:block th:case="'WOW'">
-            <h1>WoW Boost Order Creation</h1>
-        </th:block>
-
-        <th:block th:case="'OW'">
-            <h1>OW Boost Order Creation</h1>
-        </th:block>
-
-        <th:block th:case="'RL'">
-            <h1>Rocket League Boost Order Creation</h1>
-        </th:block>
-
-        <th:block th:case="'CSGO'">
-            <h1>CSGO Boost Order Creation</h1>
-        </th:block>
-
-    </th:block>
-
+<div layout:fragment="content" th:class="${game_type.toLowerCase() + '-new-order'}">
     <!-- ERRORS -->
-    <div th:if="${errors}" id="error-messages" >
+    <div th:if="${errors}" id="error-messages">
         <div th:each="error : ${errors}">
             <span class="alert" th:text="${error}"></span>
             <br>
@@ -47,38 +23,109 @@
     <!-- ORDER FORM -->
     <form action="/create-order" method="POST">
 
-        <!-- GENERIC PART -->
-        <div th:replace="fragments/fragments :: general-order-part"></div>
 
-        <!-- GAME SPECIFIC PART -->
-        <th:block th:switch="${game_type}">
+        <div id="pricing-create-order-table" class="clear content">
+            <div class="plan">
+                <h3>
+                    <img class="img-circle" id="show-lol"
+                         th:src="${'/pictures/game-picture/' +  game_type.toLowerCase() + '.png'}">
 
-            <div th:case="'LOL'">
-                <div th:replace="fragments/fragments :: lol-specific-form"></div>
+                </h3>
+                <ul>
+                    <li>
+                        <th:block th:switch="${game_type}">
+
+                            <th:block th:case="'LOL'">
+                                <h1>League Of Legends</h1>
+                            </th:block>
+
+                            <th:block th:case="'WOW'">
+                                <h1>World Of Warcraft</h1>
+                            </th:block>
+
+                            <th:block th:case="'OW'">
+                                <h1>Overwatch</h1>
+                            </th:block>
+
+                            <th:block th:case="'RL'">
+                                <h1>Rocket League</h1>
+                            </th:block>
+
+                            <th:block th:case="'CSGO'">
+                                <h1>Counter-Strike:Go</h1>
+                            </th:block>
+
+                        </th:block>
+
+
+                    </li>
+                    <li>
+                        <input type="radio" name="orderType" value="GAMES_WON" checked="checked"/>
+                        Games won
+                        <input type="radio" name="orderType" value="GAMES_PLAYED"/>
+                        Games played
+                    </li>
+                    <li><b>Number of games:</b>
+                        <input type="number" min="1" max="10" name="numberOfGames" required/><br>
+                    </li>
+                    <li><b>Game account name:</b>
+                        <input type="text" name="gameAccName" minlength="4" class="short" required><br>
+                    </li>
+                    <li><b>Game account password:</b>
+                        <input type="text" name="gameAccPassword" minlength="4" class="short" required><br>
+                    </li>
+                    <li><b>Deadline:</b>
+                        <input type="number" min="2017" max="2099" name="year" required/>
+                        <input type="number" min="1" max="12" name="month" required/>
+                        <input type="number" min="1" max="31" name="day" required/>
+                        <input type="number" min="0" max="24" name="hour" required/><br>
+                    </li>
+                    <li><b>Bonus percentage:</b>
+                        <select name="bonusPercentage" required><br>
+                            <option selected value="0">0</option>
+                            <option value="5">5</option>
+                            <option value="10">10</option>
+                            <option value="15">15</option>
+                        </select>
+                    </li>
+                    <li>
+                        <!-- GENERIC PART -->
+                        <div th:replace="fragments/fragments :: general-order-part"></div>
+
+                        <!-- GAME SPECIFIC PART -->
+                        <th:block th:switch="${game_type}">
+
+                            <div th:case="'LOL'">
+                                <div th:replace="fragments/fragments :: lol-specific-form"></div>
+                            </div>
+
+                            <div th:case="'WOW'">
+                                <div th:replace="fragments/fragments :: wow-specific-form"></div>
+                            </div>
+
+                            <div th:case="'OW'">
+                                <div th:replace="fragments/fragments :: ow-specific-form"></div>
+                            </div>
+
+                            <div th:case="'RL'">
+                                <div th:replace="fragments/fragments :: rl-specific-form"></div>
+                            </div>
+
+                            <div th:case="'CSGO'">
+                                <div th:replace="fragments/fragments :: csgo-specific-form"></div>
+
+                        </th:block>
+
+                    </li>
+                    <li>
+                        <!-- CANCEL/SUBMIT BUTTONS -->
+                        <a th:href="@{~/customer-orders}"><input class="btn special" type="button"
+                                                                 value="Cancel"></a>
+                        <button class="btn special" type="submit">Submit</button>
+                    </li>
+                </ul>
             </div>
-
-            <div th:case="'WOW'">
-                <div th:replace="fragments/fragments :: wow-specific-form"></div>
-            </div>
-
-            <div th:case="'OW'">
-                <div th:replace="fragments/fragments :: ow-specific-form"></div>
-            </div>
-
-            <div th:case="'RL'">
-                <div th:replace="fragments/fragments :: rl-specific-form"></div>
-            </div>
-
-            <div th:case="'CSGO'">
-                <div th:replace="fragments/fragments :: csgo-specific-form"></div>
-            </div>
-
-        </th:block>
-
-        <!-- CANCEL/SUBMIT BUTTONS -->
-        <a th:href="@{~/customer-orders}"><input class="btn btn-default" type="button" value="Cancel"></a>
-        <button class="btn btn-success" type="submit">Submit</button>
-
+        </div>
     </form>
 
 </div>

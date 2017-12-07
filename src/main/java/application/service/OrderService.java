@@ -219,7 +219,6 @@ public class OrderService {
                 break;
 
             case "CSGO":
-                System.out.println("dwqdqwdqwdqwdqwdqw");
                 boostOrder = new CSGOBoostOrder(
                         CSGODivision.valueOf(form.get("currentRank")),
                         dataUtil.castStringToInt(form.get("numberOfGames")),

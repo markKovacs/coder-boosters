@@ -18,8 +18,6 @@ public class CSGOBoostOrder extends BoostOrder{
     @Enumerated(EnumType.STRING)
     private CSGODivision currentRank;
 
-//    @Enumerated(EnumType.STRING)
-//    private CSGODivision desiredRank;
 
     public CSGOBoostOrder() {}
 
