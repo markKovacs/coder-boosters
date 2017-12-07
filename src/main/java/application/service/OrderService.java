@@ -9,10 +9,6 @@ import application.model.order.OrderType;
 import application.model.order.Status;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.lol.LoLBoostOrder;
-import application.model.order.ow.OWBoostOrder;
-import application.model.order.ow.OWDivision;
-import application.model.order.rocketleague.RocketLeague;
-import application.model.order.rocketleague.RocketLeagueOrder;
 import application.model.order.wow.WoWArenaBracket;
 import application.model.order.wow.WoWBoostOrder;
 import application.repository.AccountRepository;
@@ -41,10 +37,6 @@ public class OrderService {
     }
 
     public List<BoostOrder> getOrdersByAccount(Account account) {
-
-        if (account instanceof BoosterAccount) {
-            return orderRepository.findByBoosterAccount(account);
-        }
         return orderRepository.findBoostOrdersByCustomerAccount(account);
     }
 
@@ -188,6 +180,7 @@ public class OrderService {
                         )
                 );
                 break;
+
             case "RL":
                 boostOrder = new RocketLeagueOrder(
                         RocketLeague.valueOf(form.get("currentRank")),
@@ -221,6 +214,7 @@ public class OrderService {
             default:
                 return null;
         }
+
         account.addBoostOrderBiDir(boostOrder);
         return orderRepository.save(boostOrder);
     }

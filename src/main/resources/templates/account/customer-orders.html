@@ -39,12 +39,12 @@
 
     <!-- ORDERS LIST SECTION -->
     <div id="pricing-table" class="clear content"></div>
-    <div th:if="not ${orders.isEmpty()}" id="all-orders" class="clear">
+    <div id="all-orders" class="clear" style="display: none">
         <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
          '-order plan ' + #strings.toLowerCase(order.status)}">
-            <h3><img
-                    th:attr="src=${order.gameType.getIcon()}"
-                    class="img-circle"></h3>
+            <h3>
+                <img th:src="${order.gameType.icon}" class="img-circle">
+            </h3>
             <ul>
                 <li><b th:text="${order.status}"></b></li>
                 <li><b th:text="${order.gameType.getName()}"></b></li>
