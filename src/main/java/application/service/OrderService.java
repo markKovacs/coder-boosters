@@ -36,10 +36,10 @@ public class OrderService {
 
     public List<BoostOrder> getOrdersByAccount(Account account) {
 
-        if (account instanceof BoosterAccount) {
+/*        if (account instanceof BoosterAccount) {
             return orderRepository.findByBoosterAccount(account);
-        }
-        return orderRepository.findByCustomerAccount(account);
+        }*/
+        return orderRepository.findBoostOrdersByCustomerAccount(account);
     }
 
     public BoostOrder findBoostOrder(Long boostOrderId) {

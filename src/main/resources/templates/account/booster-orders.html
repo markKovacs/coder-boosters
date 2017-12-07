@@ -5,6 +5,10 @@
       layout:decorator="account/layout">
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
+<head>
+    <title>Booster Orders</title>
+</head>
+
 <div layout:fragment="content">
 
     <!-- Content Header (Page header) -->
@@ -36,9 +40,9 @@
     <div id="all-orders" class="clear" style="display: none">
         <div th:each="order : ${orders}" th:attr="class=${#strings.toLowerCase(order.gameType) +
          '-order plan ' + #strings.toLowerCase(order.status)}">
-            <h3><img
-                    th:attr="src=${order.gameType.icon}"
-                    class="img-circle"></h3>
+            <h3>
+                <img th:src="${order.gameType.icon}" class="img-circle">
+            </h3>
             <ul>
                 <li><b th:text="${order.status}"></b></li>
                 <li><b th:text="${order.gameType.getName()}"></b></li>
