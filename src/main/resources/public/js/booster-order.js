@@ -17,14 +17,14 @@ function main() {
     function toogleGame(clicked) {
         $("#show-lol").css("opacity", 0.4);
         $("#show-ow").css("opacity", 0.4);
-        $("#show-fifa").css("opacity", 0.4);
+        $("#show-rl").css("opacity", 0.4);
         $("#show-wow").css("opacity", 0.4);
         $("#show-csgo").css("opacity", 0.4);
         $("#show-"+clicked).css("opacity", 1);
 
         $(".database > .lol-order").hide();
         $(".database > .ow-order").hide();
-        $(".database > .fifa-order").hide();
+        $(".database > .rl-order").hide();
         $(".database > .wow-order").hide();
         $(".database > .csgo-order").hide();
         $("#pricing-table").empty();
@@ -46,8 +46,8 @@ function main() {
         sortStatusBy("available");
     });
 
-    $("#show-fifa").click(function () {
-        toogleGame("fifa");
+    $("#show-rl").click(function () {
+        toogleGame("rl");
         sortStatusBy("available");
     });
 

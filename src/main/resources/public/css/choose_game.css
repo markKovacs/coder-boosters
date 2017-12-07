@@ -44,7 +44,7 @@ body {
 .panel1 { background-image:url(../pictures/select-game-pictures/WoW.jpg); }
 .panel2 { background-image:url(../pictures/select-game-pictures/LoL.jpg); }
 .panel3 { background-image:url(../pictures/select-game-pictures/OW.jpg); }
-.panel4 { background-image:url(../pictures/select-game-pictures/FIFA.jpg); }
+.panel4 { background-image:url(../pictures/select-game-pictures/RL.jpg); }
 .panel5 { background-image:url(../pictures/select-game-pictures/CSGO.jpg); }
 /* Flex Items */
 .panel > * {
@@ -116,7 +116,7 @@ body {
     font-size: 30px;
 }
 
-#fifa {
+#rl {
     background-color: whitesmoke;
     border:1px solid white;
     font-size: 30px;
