@@ -22,4 +22,9 @@ public enum GameType {
         return "/pictures/game-picture/" + icon;
     }
 
+    @Override
+    public String toString() {
+        return this.name();
+    }
+
 }

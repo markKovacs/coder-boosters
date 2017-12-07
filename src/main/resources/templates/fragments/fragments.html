@@ -22,3 +22,21 @@
         <option value="15">15</option>
     </select>
 </div>
+
+<div th:fragment="lol-specific-form" xmlns:th="http://www.w3.org/1999/xhtml">
+    <br>CurrentRank:<br>
+    <select name="currentRank">
+        <option th:each="lg : ${league_divisions}"
+                th:text="${lg}"
+                th:value="${lg}"></option>
+    </select>
+</div>
+
+<div th:fragment="wow-specific-form" xmlns:th="http://www.w3.org/1999/xhtml">
+    <br>CurrentBracket:<br>
+    <select name="currentBracket">
+        <option th:each="wb : ${wow_brackets}"
+                th:text="${wb}"
+                th:value="${wb}"></option>
+    </select>
+</div>

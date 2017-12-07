@@ -1,10 +1,12 @@
 package application.controller;
 
+import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
-import application.model.order.LeagueDivision;
+import application.model.order.lol.LeagueDivision;
+import application.model.order.wow.WoWArenaBracket;
 import application.service.AccountService;
 import application.service.GameAccountService;
 import application.service.OrderService;
@@ -12,7 +14,6 @@ import application.utils.Path;
 import application.utils.RequestUtil;
 import application.utils.SessionData;
 import org.springframework.stereotype.Controller;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -138,10 +139,19 @@ public class OrderController {
     public String serveOrderForm(Model model, @RequestParam Map<String, String> form) {
 
         String gameTypeString = requestUtil.getQueryParamGameType(form);
-        List<LeagueDivision> leagueDivisions = orderService.getLoLLeagueDivisions();
 
         model.addAttribute("game_type", gameTypeString);
-        model.addAttribute("league_divisions", leagueDivisions);
+
+        switch (GameType.valueOf(gameTypeString)) {
+            case LOL:
+                List<LeagueDivision> leagueDivisions = orderService.getLoLLeagueDivisions();
+                model.addAttribute("league_divisions", leagueDivisions);
+                break;
+            case WOW:
+                List<WoWArenaBracket> woWArenaBrackets = orderService.getWoWArenaBrackets();
+                model.addAttribute("wow_brackets", woWArenaBrackets);
+                break;
+        }
 
         return Path.Template.ORDER_FORM;
     }
