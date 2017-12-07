@@ -12,8 +12,7 @@
 <body>
 
 <div layout:fragment="content">
-
-    <th:block th:switch="${game_type.toString()}">
+    <th:block th:switch="${game_type}">
 
         <th:block th:case="'LOL'">
             <h1>LoL Boost Order Creation</h1>
@@ -27,8 +26,8 @@
             <h1>OW Boost Order Creation</h1>
         </th:block>
 
-        <th:block th:case="'FIFA'">
-            <h1>FIFA Boost Order Creation</h1>
+        <th:block th:case="'RL'">
+            <h1>Rocket League Boost Order Creation</h1>
         </th:block>
 
         <th:block th:case="'CSGO'">
@@ -66,8 +65,8 @@
                 <!-- TODO: when OW game is implemented -->
             </div>
 
-            <div th:case="'FIFA'">
-                <!-- TODO: when FIFA game is implemented -->
+            <div th:case="'RL'">
+                <div th:replace="fragments/fragments :: rl-specific-form"></div>
             </div>
 
             <div th:case="'CSGO'">

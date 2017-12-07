@@ -29,7 +29,7 @@ public class RocketLeagueOrder extends BoostOrder {
     public RocketLeagueOrder(RocketLeague currentRank, int numberOfGames,
                              OrderType orderType, double bonusPercentage, Date deadLine) {
 
-        super(GameType.LOL, numberOfGames, orderType, bonusPercentage, deadLine);
+        super(GameType.RL, numberOfGames, orderType, bonusPercentage, deadLine);
         this.currentRank = currentRank;
         super.setBasePrice(calcBasePrice());
         super.calcTotal();

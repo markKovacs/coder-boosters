@@ -34,9 +34,9 @@ public enum RocketLeague {
         return multiplier;
     }
 
-    public static RocketLeague safeValueOf(String mobileLegends) {
+    public static RocketLeague safeValueOf(String rocketLeague) {
         try {
-            return valueOf(mobileLegends);
+            return valueOf(rocketLeague);
         } catch (IllegalArgumentException ie) {
             return null;
         }
