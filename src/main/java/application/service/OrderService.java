@@ -9,10 +9,6 @@ import application.model.order.OrderType;
 import application.model.order.Status;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.lol.LoLBoostOrder;
-import application.model.order.ow.OWBoostOrder;
-import application.model.order.ow.OWDivision;
-import application.model.order.rocketleague.RocketLeague;
-import application.model.order.rocketleague.RocketLeagueOrder;
 import application.model.order.wow.WoWArenaBracket;
 import application.model.order.wow.WoWBoostOrder;
 import application.repository.AccountRepository;
@@ -145,6 +141,12 @@ public class OrderService {
                     errors.add("Selected league is invalid.");
                 }
                 break;
+            case CSGO:
+                if(!Arrays.asList(CSGODivision.values())
+                        .contains(CSGODivision.safeValueOf(inputData.get("currentRank")))) {
+                    errors.add("Selected league/division rank is invalid.");
+                }
+                break;
 
             default:
                 return Collections.singletonList("Wrong game type.");
@@ -218,9 +220,26 @@ public class OrderService {
                 );
                 break;
 
+            case "CSGO":
+                System.out.println("dwqdqwdqwdqwdqwdqw");
+                boostOrder = new CSGOBoostOrder(
+                        CSGODivision.valueOf(form.get("currentRank")),
+                        dataUtil.castStringToInt(form.get("numberOfGames")),
+                        OrderType.valueOf(form.get("orderType")),
+                        dataUtil.castStringToDouble(form.get("bonusPercentage")),
+                        dataUtil.createDate(
+                                dataUtil.castStringToInt(form.get("year")),
+                                dataUtil.castStringToInt(form.get("month")),
+                                dataUtil.castStringToInt(form.get("day")),
+                                dataUtil.castStringToInt(form.get("hour"))
+                        )
+                );
+                break;
+
             default:
                 return null;
         }
+
         account.addBoostOrderBiDir(boostOrder);
         return orderRepository.save(boostOrder);
     }
@@ -246,4 +265,40 @@ public class OrderService {
     public List<RocketLeague> getRocketLeagueDivison() {
         return Arrays.asList(RocketLeague.values());
     }
+
+    public List<Division> getDivisionsAsList(GameType gameType) {
+        if(gameType.equals(GameType.CSGO)) {
+            return Arrays.asList(CSGODivision.values());
+        } else if (gameType.equals(GameType.FIFA)) {
+            return null;
+        } else if (gameType.equals(GameType.LOL)) {
+            return null;
+        } else if (gameType.equals(GameType.OW)) {
+            return null;
+        } else if (gameType.equals(GameType.WOW)) {
+            return null;
+        }
+        return null;
+    }
+
+
+    public Long divisionBasedPriceCalculator(GameType gameType, Division currentRank, Division desiredRank) {
+        Long orderPrice = 0L;
+        List<Division> divisions = getDivisionsAsList(gameType);
+
+        Boolean doCalculation = false;
+        for(Division division : divisions) {
+            if(division.getDivision().equals(currentRank.getDivision())) {
+                doCalculation = true;
+            }
+            if(doCalculation) {
+                if(division.getDivision().equals(desiredRank.getDivision())) {
+                    doCalculation = false;
+                }
+                orderPrice += division.getPrice();
+            }
+        }
+        return orderPrice;
+    }
+
 }

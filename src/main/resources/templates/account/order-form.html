@@ -70,7 +70,7 @@
             </div>
 
             <div th:case="'CSGO'">
-                <!-- TODO: when CSGO game is implemented -->
+                <div th:replace="fragments/fragments :: csgo-specific-form"></div>
             </div>
 
         </th:block>

@@ -47,11 +47,23 @@
         <option th:each="ow_lg : ${ow_divisions}"
                 th:text="${ow_lg}"
                 th:value="${ow_lg}"></option>
+    </select>
+</div>
+
 <div th:fragment="rl-specific-form" xmlns:th="http://www.w3.org/1999/xhtml">
     <br>CurrentRank:<br>
     <select name="currentRank">
         <option th:each="rl : ${rocket_league}"
                 th:text="${rl}"
                 th:value="${rl}"></option>
+    </select>
+</div>
+
+<div th:fragment="csgo-specific-form" xmlns:th="http://www.w3.org/1999/xhtml">
+    <br>CurrentRank:<br>
+    <select name="currentRank">
+        <option th:each="division : ${csgo_divisions}"
+                th:text="${division}"
+                th:value="${division}"></option>
     </select>
 </div>

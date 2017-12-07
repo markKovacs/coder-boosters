@@ -5,6 +5,8 @@ import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
+import application.model.order.CSGO.CSGOBoostOrder;
+import application.model.order.Division;
 import application.model.order.lol.LeagueDivision;
 import application.model.order.ow.OWDivision;
 import application.model.order.rocketleague.RocketLeague;
@@ -143,7 +145,6 @@ public class OrderController {
 
         String gameTypeString = requestUtil.getQueryParamGameType(form);
 
-
         model.addAttribute("game_type", gameTypeString);
 
         switch (GameType.valueOf(gameTypeString)) {
@@ -161,6 +162,10 @@ public class OrderController {
             case RL:
                 List<RocketLeague> rocketLeagues= orderService.getRocketLeagueDivison();
                 model.addAttribute("rocket_league", rocketLeagues);
+                break;
+            case CSGO:
+                List<Division> CSGOBoostOrders = orderService.getDivisionsAsList(GameType.CSGO);
+                model.addAttribute("csgo_divisions", CSGOBoostOrders);
                 break;
         }
 
