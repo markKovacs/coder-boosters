@@ -1,28 +1,6 @@
 <div th:fragment="general-order-part" xmlns:th="http://www.w3.org/1999/xhtml">
     <input type="hidden" th:value="${game_type}" name="gameType" required/>
-    Game account name:<br>
-    <input type="text" name="gameAccName" minlength="4" class="short" required><br>
-    Game account password:<br>
-    <input type="text" name="gameAccPassword" minlength="4" class="short" required><br>
-    Order type:<br>
-    <input type="radio" name="orderType" value="GAMES_WON" checked="checked"/>
-    <p>Games won</p>
-    <input type="radio" name="orderType" value="GAMES_PLAYED"/>
-    <p>Games played</p><br>
-    Number of games:<br>
-    <input type="number" min="1" max="10" name="numberOfGames" required/><br>
-    Deadline:<br>
-    <input type="number" min="2017" max="2099" name="year" required/>
-    <input type="number" min="1" max="12" name="month" required/>
-    <input type="number" min="1" max="31" name="day" required/>
-    <input type="number" min="0" max="24" name="hour" required/><br>
-    Bonus percentage:<br>
-    <select name="bonusPercentage" required><br>
-        <option selected value="0">0</option>
-        <option value="5">5</option>
-        <option value="10">10</option>
-        <option value="15">15</option>
-    </select>
+
 </div>
 
 <div th:fragment="lol-specific-form" xmlns:th="http://www.w3.org/1999/xhtml">
