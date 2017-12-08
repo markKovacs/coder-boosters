@@ -3,9 +3,9 @@ body {
 }
 
 #pricing-create-order-table {
-    margin: 2%;
+    margin: 0px;
     text-align: center;
-    width: 98%;
+    height: 865px;
 }
 
 .img-circle {
@@ -34,6 +34,7 @@ body {
     width: 300px; /* plan width = 180 + 20 + 20 + 1 + 1 = 222px */
     float: left;
     position: relative;
+    margin: 50px 0px 50px 350px;
 }
 
 #pricing-create-order-table #most-popular {
@@ -225,18 +226,28 @@ form {
 
 .rl-new-order {
     background: url(../pictures/new-order/rl.jpg) center center;
+    height:auto;
+    width:auto;
 }
 .lol-new-order {
     background: url(../pictures/new-order/lol.jpg) center center;
+    height:auto;
+    width:auto;
 }
 .wow-new-order {
     background: url(../pictures/new-order/wow.jpg) center center;
+    height:auto;
+    width:auto;
 }
 .ow-new-order {
     background: url(../pictures/new-order/ow.jpg) center center;
+    height:auto;
+    width:auto;
 }
 .csgo-new-order {
     background: url(../pictures/new-order/csgo.jpg) center center;
+    height:auto;
+    width:auto;
 }
 
 
