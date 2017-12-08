@@ -24,7 +24,7 @@ public class GameAccountService {
     public GameAccount create(Map<String, String> inputData, Account account) {
         String accountName = inputData.get("gameAccName");
         String password = inputData.get("gameAccPassword");
-        GameType gameType = GameType.valueOf(inputData.get("gameType"));
+        GameType gameType = GameType.valueOf(inputData.get("game_type"));
 
         GameAccount gameAccount = new GameAccount(accountName, password, gameType);
 
