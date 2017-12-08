@@ -11,12 +11,12 @@
 
 <body>
 
-<div layout:fragment="content" th:class="${game_type.toLowerCase() + '-new-order'}">
+<div layout:fragment="content" >
 
     <!-- ORDER FORM -->
     <form action="/create-order" method="POST">
 
-        <div id="pricing-create-order-table" class="clear content">
+        <div id="pricing-create-order-table" th:class="${game_type.toLowerCase() + '-new-order clear content'}">
             <div class="plan">
 
                 <h3>
