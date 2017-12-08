@@ -111,7 +111,7 @@ public class OrderController {
         // INVALID INPUT
         if (errorMessages.size() > 0) {
             model.addAttribute("errors", errorMessages);
-            model.addAttribute("game_type", form.get("gameType"));
+            addAttributesToOrderForm(model, form);
 
             return Path.Template.ORDER_FORM;
         }
@@ -140,8 +140,14 @@ public class OrderController {
     @GetMapping(Path.Web.ORDER_FORM)
     public String serveOrderForm(Model model, @RequestParam Map<String, String> form) {
 
-        String gameTypeString = requestUtil.getQueryParamGameType(form);
+        addAttributesToOrderForm(model, form);
 
+        return Path.Template.ORDER_FORM;
+    }
+
+    private void addAttributesToOrderForm(Model model, Map<String, String> form) {
+
+        String gameTypeString = form.get("game_type");
         model.addAttribute("game_type", gameTypeString);
 
         switch (GameType.valueOf(gameTypeString)) {
@@ -165,8 +171,6 @@ public class OrderController {
                 model.addAttribute("csgo_divisions", CSGOBoostOrders);
                 break;
         }
-
-        return Path.Template.ORDER_FORM;
     }
 
 }
