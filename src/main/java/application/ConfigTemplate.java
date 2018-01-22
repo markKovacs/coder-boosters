@@ -4,7 +4,6 @@ public class ConfigTemplate {
 
     // Application environment settings
     public static final boolean isDevEnv = true;
-    public static boolean isStorageJPA = true;
 
     // SMTP server settings (for sending emails to users)
     public static final String EMAIL_FROM = "";

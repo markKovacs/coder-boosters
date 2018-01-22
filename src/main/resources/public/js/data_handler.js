@@ -1,4 +1,3 @@
-
 var app = app || {};
 
 app.dataHandler = {
@@ -12,10 +11,10 @@ app.dataHandler = {
             data: {
                 test_data: testData
             },
-            success: function(response) {
+            success: function (response) {
                 app.logic.testFunction();
             },
-            error: function() {
+            error: function () {
                 app.logic.testFunction();
             }
         });

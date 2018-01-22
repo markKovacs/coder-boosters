@@ -36,7 +36,7 @@ public abstract class BoostOrder {
     @Enumerated(value = EnumType.STRING)
     private OrderType orderType;
 
-    int basePrice;
+    protected int basePrice;
 
     private double bonusPercentage;
 

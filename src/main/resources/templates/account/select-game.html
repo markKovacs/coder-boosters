@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<head>
+    <meta charset="UTF-8">
+    <title>Choose Game</title>
+    <link th:href="@{https://fonts.googleapis.com/css?family=Amatic+SC}" rel='stylesheet' type='text/css'>
+    <!--<link rel="stylesheet" type="text/css" th:href="@{~/css/choose_game.css}" />-->
+    <link th:href="@{~/css/choose_game.css}" rel="stylesheet" type="text/css"/>
+    <script th:src="@{https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js}"></script>
+    <!--<script th:src="@{~/js/logic.js}" defer></script>
+    <script th:src="@{~/js/main.js}" defer></script>-->
+    <script th:src="@{~/js/logic.js}" type="text/javascript" defer></script>
+    <script th:src="@{~/js/main.js}" type="text/javascript" defer></script>
+</head>
+<body>
+<div class="panels">
+    <div class="panel panel1" id="panel1">
+        <span>
+        <h1>World of Warcraft</h1>
+            </span>
+        <a href="/order-form?game_type=WOW">
+            <button class="btn-select btn btn-success" spellcheck="false">
+                SELECT
+            </button>
+        </a>
+
+    </div>
+    <div class="panel panel2" id="panel2">
+        <span>
+        <h1>League of Legends</h1>
+            </span>
+        <p></p>
+        <p></p>
+        <a href="/order-form?game_type=LOL">
+            <button class="btn-select btn btn-success" spellcheck="false">
+                SELECT
+            </button>
+        </a>
+    </div>
+    <div class="panel panel3" id="panel3">
+        <span>
+        <h1>OverWatch</h1>
+            </span>
+        <p></p>
+        <p></p>
+        <a href="/order-form?game_type=OW">
+            <button class="btn-select btn btn-success" spellcheck="false">
+                SELECT
+            </button>
+        </a>
+    </div>
+    <div class="panel panel4" id="panel4">
+        <span>
+        <h1>Rocket League</h1>
+            </span>
+        <p></p>
+        <p></p>
+        <a href="/order-form?game_type=RL">
+            <button class="btn-select btn btn-success" spellcheck="false">
+                SELECT
+            </button>
+        </a>
+    </div>
+    <div class="panel panel5" id="panel5">
+        <span>
+        <h1>Counter-Strike:Go</h1>
+            </span>
+
+        <p></p>
+        <p></p>
+        <a href="/order-form?game_type=CSGO">
+            <button class="btn-select btn btn-success" spellcheck="false">
+                SELECT
+            </button>
+        </a>
+    </div>
+</div>
+</body>
+</html>

@@ -1,27 +1,23 @@
 package application.service;
 
-import application.dao.AccountDao;
 import application.model.account.Account;
 import application.model.account.CustomerAccount;
+import application.repository.AccountRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.junit.MockitoJUnitRunner;
-
+import org.mockito.runners.MockitoJUnitRunner;
 import java.util.*;
-
-import static org.junit.Assert.assertTrue;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 
 @RunWith(MockitoJUnitRunner.class)
 public class AccountServiceTest {
 
     @Mock
-    private AccountDao accountDaoMock;
+    private AccountRepository accountRepositoryMock;
     @Mock
     private PasswordHashService passwordHashServiceMock;
     @InjectMocks
@@ -48,7 +44,7 @@ public class AccountServiceTest {
     public void testRegisterExistingUserNameReturnsErrorMessage() {
 
         List<String> mockedAccountNames = Arrays.asList("mark", "attila");
-        when(accountDaoMock.getAllAccountNames()).thenReturn(mockedAccountNames);
+        when(accountRepositoryMock.getAccountNames()).thenReturn(mockedAccountNames);
 
         registerInputData.put("username", "mark");
 
@@ -63,7 +59,7 @@ public class AccountServiceTest {
     public void testRegisterExistingEmailAddressReturnsErrorMessage() {
 
         List<String> mockedEmails = Arrays.asList("mark@gmail.com", "attila@gmail.com");
-        when(accountDaoMock.getAllEmails()).thenReturn(mockedEmails);
+        when(accountRepositoryMock.getEmails()).thenReturn(mockedEmails);
 
         registerInputData.put("email", "mark@gmail.com");
 
@@ -106,9 +102,9 @@ public class AccountServiceTest {
 /*        when(passwordHashServiceMock.verifyPassword("pass", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX"))
                 .thenReturn(true);*/
 
-        Long expectedId = -1L;
-        Long actualId = accountService.validateLoginCredentials(loginInputData);
-        assertEquals(expectedId, actualId);
+        Account expected = null;
+        Account actualAccount = accountService.validateLoginCredentials(loginInputData);
+        assertEquals(expected, actualAccount);
     }
 
     @Test
@@ -116,14 +112,14 @@ public class AccountServiceTest {
             throws PasswordHashService.InvalidHashException, PasswordHashService.CannotPerformOperationException {
 
         Account dummyAccount = new CustomerAccount("mark", "mark@gmail.com", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
-        when(accountDaoMock.findAccountByName("mark")).thenReturn(dummyAccount);
+        when(accountRepositoryMock.findByAccountName("mark")).thenReturn(dummyAccount);
 
 /*        when(passwordHashServiceMock.verifyPassword("wrongPass", dummyAccount.getPassword()))
                 .thenReturn(true);*/
 
-        Long expectedId = -1L;
-        Long actualId = accountService.validateLoginCredentials(loginInputData);
-        assertEquals(expectedId, actualId);
+        Account expected = null;
+        Account actualAccount = accountService.validateLoginCredentials(loginInputData);
+        assertEquals(expected, actualAccount);
     }
 
     @Test
@@ -133,13 +129,13 @@ public class AccountServiceTest {
         Account dummyAccount = new CustomerAccount("mark", "mark@gmail.com", "sha1:64000:18:oyEUTFE4hzrGFlAC+iX0mviGuaSk7/F3:SkY3/+/Yv7oDmga2KGBeNdcX");
         dummyAccount.setId(666L);
 
-        when(accountDaoMock.findAccountByName("mark")).thenReturn(dummyAccount);
+        when(accountRepositoryMock.findByAccountName("mark")).thenReturn(dummyAccount);
         when(passwordHashServiceMock.verifyPassword("pass", dummyAccount.getPassword()))
                 .thenReturn(true);
 
         Long expectedId = 666L;
-        Long actualId = accountService.validateLoginCredentials(loginInputData);
-        assertEquals(expectedId, actualId);
+        Account actualAccount = accountService.validateLoginCredentials(loginInputData);
+        assertEquals(expectedId, actualAccount.getId());
     }
 
     @Test

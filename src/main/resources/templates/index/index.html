@@ -1,7 +1,9 @@
 <!DOCTYPE HTML>
-
-<html layout:decorate="~{index/index-head}" lang="en" xmlns:layout="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.w3.org/1999/xhtml">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://www.w3.org/1999/xhtml"
+      layout:decorator="index/layout">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 
 <div class="container-fluid page-wrapper" layout:fragment="index-content">
 
@@ -54,7 +56,7 @@
 
     <!-- Three -->
     <section id="three" class="spotlight style3 left">
-        <span class="image fit main bottom"><img th:src="@{~/pictures/index_images/new2pic04.jpg}" alt="" /></span>
+        <span class="image fit main bottom"><img th:src="@{~/pictures/index_images/rl.jpg}" alt="" /></span>
         <div class="content">
             <header>
                 <h2>The security of your account data is garanteed</h2>
