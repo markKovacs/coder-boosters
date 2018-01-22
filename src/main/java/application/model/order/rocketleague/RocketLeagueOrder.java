@@ -18,10 +18,6 @@ public class RocketLeagueOrder extends BoostOrder {
     @Enumerated(EnumType.STRING)
     private RocketLeague currentRank;
 
-    // TODO: desiredRank for later use, when not only gamesWon and gamesPlayed can be set
-    /*@Enumerated(EnumType.STRING)
-    private LeagueDivision desiredRank;*/
-
     // CONSTRUCTORS
     public RocketLeagueOrder() {
     }

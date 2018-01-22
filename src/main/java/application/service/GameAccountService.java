@@ -28,11 +28,12 @@ public class GameAccountService {
 
         GameAccount gameAccount = new GameAccount(accountName, password, gameType);
 
-        //account = accountRepository.save(account);
-        ((CustomerAccount) account).addGameAccountBiDir(gameAccount);
+        // TODO: GameAccounts are not being persisted currently
+        // TODO: commented lines might be needed later
 
-        // TODO: 12/5/17 Check if this is needed or not!
-        //accountRepository.save(account);
+        // account = accountRepository.save(account);
+        ((CustomerAccount) account).addGameAccountBiDir(gameAccount);
+        // accountRepository.save(account);
 
         return gameAccountRepository.save(gameAccount);
     }

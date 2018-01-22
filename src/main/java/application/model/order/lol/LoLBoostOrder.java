@@ -17,12 +17,10 @@ public class LoLBoostOrder extends BoostOrder {
     @Enumerated(EnumType.STRING)
     private LeagueDivision currentRank;
 
-    // TODO: desiredRank for later use, when not only gamesWon and gamesPlayed can be set
-    /*@Enumerated(EnumType.STRING)
-    private LeagueDivision desiredRank;*/
-
     // CONSTRUCTORS
-    public LoLBoostOrder() {}
+    public LoLBoostOrder() {
+    }
+
     public LoLBoostOrder(LeagueDivision currentRank, int numberOfGames,
                          OrderType orderType, double bonusPercentage, Date deadLine) {
 
@@ -39,8 +37,12 @@ public class LoLBoostOrder extends BoostOrder {
         double numOfGamesMultiplied = this.getCurrentRank().getMultiplier() * (double) this.getNumberOfGames();
 
         switch (this.getOrderType()) {
-            case GAMES_WON: calcedPrice = ((int) (8.0 * numOfGamesMultiplied)); break;
-            case GAMES_PLAYED: calcedPrice = ((int) (4.0 * numOfGamesMultiplied)); break;
+            case GAMES_WON:
+                calcedPrice = ((int) (8.0 * numOfGamesMultiplied));
+                break;
+            case GAMES_PLAYED:
+                calcedPrice = ((int) (4.0 * numOfGamesMultiplied));
+                break;
         }
 
         return calcedPrice;
@@ -49,6 +51,7 @@ public class LoLBoostOrder extends BoostOrder {
     public LeagueDivision getCurrentRank() {
         return currentRank;
     }
+
     public void setCurrentRank(LeagueDivision currentRank) {
         this.currentRank = currentRank;
     }

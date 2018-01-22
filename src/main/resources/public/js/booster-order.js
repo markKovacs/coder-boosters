@@ -2,7 +2,6 @@ function main() {
 
     showAll();
 
-
     function showAll() {
         $("#show-lol").css("opacity", 1);
         $("#show-ow").css("opacity", 1);
@@ -79,8 +78,6 @@ function main() {
         toogleGame("ow");
         sortStatusBy("available");
     });
-
-
 
     $("#show-done").click(function () {
         sortStatusBy("done");

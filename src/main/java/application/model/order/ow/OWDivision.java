@@ -10,10 +10,10 @@ public enum OWDivision {
     GRANDMASTER,
     TOP_500;
 
-    public static OWDivision safeValueOf(String divisionString){
-        try{
+    public static OWDivision safeValueOf(String divisionString) {
+        try {
             return valueOf(divisionString);
-        } catch (IllegalArgumentException ie){
+        } catch (IllegalArgumentException ie) {
             return null;
         }
     }

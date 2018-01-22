@@ -1,15 +1,9 @@
 package application.controller;
 
-import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.CustomerAccount;
 import application.model.account.GameAccount;
 import application.model.order.BoostOrder;
-import application.model.order.csgo.CSGODivision;
-import application.model.order.lol.LeagueDivision;
-import application.model.order.ow.OWDivision;
-import application.model.order.rocketleague.RocketLeague;
-import application.model.order.wow.WoWArenaBracket;
 import application.service.AccountService;
 import application.service.GameAccountService;
 import application.service.OrderService;
@@ -61,7 +55,6 @@ public class OrderController {
     public String serveOrderListPage(Model model) {
         Account account = sessionData.getAccount();
 
-        // TODO: start using accountType instead of instanceof
         if (account instanceof CustomerAccount) {
             model.addAttribute("orders", orderService.getOrdersByAccount(account));
             return Path.Template.CUSTOMER_ORDERS;
@@ -81,13 +74,14 @@ public class OrderController {
 
         boolean successful = orderService.takeOrder(account, boostOrder);
 
-        // TODO: message could be added (successful or not)
+        // TODO: add success/error message to model and modify HTML
 
         return "redirect:" + Path.Web.BOOSTER_ORDERS;
     }
 
     @PostMapping(Path.Web.CLOSE_ORDER)
     public String handleCloseOrder(@RequestParam Map<String, String> form) {
+
         Account account = sessionData.getAccount();
         Long boostOrderId = requestUtil.getQueryParamBoostOrderId(form);
 
@@ -95,7 +89,7 @@ public class OrderController {
 
         boolean successful = orderService.closeOrder(boostOrder);
 
-        // TODO: message could be added (successful or not)
+        // TODO: add success/error message to model and modify HTML
 
         accountService.transferBoostCoin(account, boostOrder.getTotalPrice());
 
@@ -111,13 +105,13 @@ public class OrderController {
         // INVALID INPUT
         if (errorMessages.size() > 0) {
             model.addAttribute("errors", errorMessages);
-            addAttributesToOrderForm(model, form);
+            requestUtil.addAttributesToOrderForm(model, form, this);
 
             return Path.Template.ORDER_FORM;
         }
 
         // SUCCESSFUL ORDER CREATION
-        // TODO: first we should check if sufficient funds on customer account balance, then deduct, then create order
+        // TODO: check for sufficient funds before deducting or handle via DB constraint
         BoostOrder boostOrder = orderService.createOrder(account, form);
         if (boostOrder == null) {
             return "redirect:" + Path.Web.CUSTOMER_ORDERS;
@@ -127,6 +121,8 @@ public class OrderController {
         orderService.setGameAccount(boostOrder, gameAccount);
 
         boolean paid = accountService.decreaseBoostCoinAmount(account, boostOrder.getTotalPrice());
+
+        // TODO: add success/error message to model and modify HTML
 
         return "redirect:" + Path.Web.CUSTOMER_ORDERS;
     }
@@ -140,37 +136,9 @@ public class OrderController {
     @GetMapping(Path.Web.ORDER_FORM)
     public String serveOrderForm(Model model, @RequestParam Map<String, String> form) {
 
-        addAttributesToOrderForm(model, form);
+        requestUtil.addAttributesToOrderForm(model, form, this);
 
         return Path.Template.ORDER_FORM;
-    }
-
-    private void addAttributesToOrderForm(Model model, Map<String, String> form) {
-
-        String gameTypeString = form.get("game_type");
-        model.addAttribute("game_type", gameTypeString);
-
-        switch (GameType.valueOf(gameTypeString)) {
-            case LOL:
-                List<LeagueDivision> leagueDivisions = orderService.getLoLLeagueDivisions();
-                model.addAttribute("league_divisions", leagueDivisions);
-                break;
-            case WOW:
-                List<WoWArenaBracket> woWArenaBrackets = orderService.getWoWArenaBrackets();
-                model.addAttribute("wow_brackets", woWArenaBrackets);
-                break;
-            case OW:
-                List<OWDivision> owDivisions = orderService.getOWDivisions();
-                model.addAttribute("ow_divisions", owDivisions);
-            case RL:
-                List<RocketLeague> rocketLeagues= orderService.getRocketLeagueDivisions();
-                model.addAttribute("rocket_league", rocketLeagues);
-                break;
-            case CSGO:
-                List<CSGODivision> CSGOBoostOrders = orderService.getCSGOLeagueDivisions();
-                model.addAttribute("csgo_divisions", CSGOBoostOrders);
-                break;
-        }
     }
 
 }

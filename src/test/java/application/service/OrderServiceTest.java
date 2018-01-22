@@ -31,7 +31,7 @@ public class OrderServiceTest {
 
     @Before
     public void setup() {
-        testInputData.put("gameType", "LOL");
+        testInputData.put("game_type", "LOL");
         testInputData.put("currentRank", "DIAMOND_II");
         testInputData.put("numberOfGames", "5");
         testInputData.put("orderType", "GAMES_PLAYED");
@@ -52,7 +52,7 @@ public class OrderServiceTest {
 
     @Test
     public void validateOrderDataInvalidLOLGameType() {
-        testInputData.put("gameType", "FIFA");
+        testInputData.put("game_type", "FIFA");
 
         List<String> expectedErrorMessage = new ArrayList<>();
         expectedErrorMessage.add("Wrong game type.");

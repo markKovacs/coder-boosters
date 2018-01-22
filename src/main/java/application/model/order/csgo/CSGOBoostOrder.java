@@ -12,14 +12,15 @@ import java.util.Date;
 
 @Entity
 @Table(name = "csgo_boost_order")
-public class CSGOBoostOrder extends BoostOrder{
+public class CSGOBoostOrder extends BoostOrder {
 
 
     @Enumerated(EnumType.STRING)
     private CSGODivision currentRank;
 
 
-    public CSGOBoostOrder() {}
+    public CSGOBoostOrder() {
+    }
 
     public CSGOBoostOrder(CSGODivision currentRank, int numberOfGames, OrderType orderType, double bonusPercentage, Date deadline) {
         super(GameType.CSGO, numberOfGames, orderType, bonusPercentage, deadline);

@@ -1,17 +1,32 @@
 package application.utils;
 
+import application.controller.OrderController;
+import application.model.GameType;
 import application.model.account.Account;
 import application.model.account.BoosterAccount;
 import application.model.account.CustomerAccount;
+import application.model.order.csgo.CSGODivision;
+import application.model.order.lol.LeagueDivision;
+import application.model.order.ow.OWDivision;
+import application.model.order.rocketleague.RocketLeague;
+import application.model.order.wow.WoWArenaBracket;
+import application.service.OrderService;
 import org.springframework.stereotype.Component;
 import org.springframework.ui.Model;
 
 import java.util.HashMap;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Map;
 
 @Component
 public class RequestUtil {
+
+    private OrderService orderService;
+
+    public RequestUtil(OrderService orderService) {
+        this.orderService = orderService;
+    }
 
     public boolean isProfileEdited(String edited) {
         return edited != null;
@@ -65,4 +80,31 @@ public class RequestUtil {
         }
     }
 
+    public void addAttributesToOrderForm(Model model, Map<String, String> form, OrderController orderController) {
+
+        String gameTypeString = form.get("game_type");
+        model.addAttribute("game_type", gameTypeString);
+
+        switch (GameType.valueOf(gameTypeString)) {
+            case LOL:
+                List<LeagueDivision> leagueDivisions = orderService.getLoLLeagueDivisions();
+                model.addAttribute("league_divisions", leagueDivisions);
+                break;
+            case WOW:
+                List<WoWArenaBracket> woWArenaBrackets = orderService.getWoWArenaBrackets();
+                model.addAttribute("wow_brackets", woWArenaBrackets);
+                break;
+            case OW:
+                List<OWDivision> owDivisions = orderService.getOWDivisions();
+                model.addAttribute("ow_divisions", owDivisions);
+            case RL:
+                List<RocketLeague> rocketLeagues = orderService.getRocketLeagueDivisions();
+                model.addAttribute("rocket_league", rocketLeagues);
+                break;
+            case CSGO:
+                List<CSGODivision> CSGOBoostOrders = orderService.getCSGOLeagueDivisions();
+                model.addAttribute("csgo_divisions", CSGOBoostOrders);
+                break;
+        }
+    }
 }

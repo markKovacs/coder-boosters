@@ -62,7 +62,6 @@ public class AccountController {
 
         List<String> successMessage = accountService.getSuccessMessageOnEdit(isProfileEdited);
 
-        // TODO account datas need to be cleared
         model.addAttribute("userData", account);
         model.addAttribute("success", successMessage);
 
@@ -72,9 +71,7 @@ public class AccountController {
     @PostMapping(value = Path.Web.REGISTER)
     public String handleRegistration(Model model, @RequestParam Map<String, String> formData){
 
-        //Map<String, String> inputData = requestUtil.collectRegistrationData(request);
         List<String> errorMessages = accountService.validateRegistrationInput(formData);
-
 
         // IN CASE OF INVALID INPUT, RE-RENDER REGISTRATION PAGE
         if (errorMessages.size() > 0) {
@@ -96,8 +93,7 @@ public class AccountController {
         // SAVE ACCOUNT TO DATABASE
         Account account = accountService.saveAccount(formData, passwordHash);
 
-        // SEND WELCOME EMAIL
-        // TODO: once SMTP properly set, this can be used
+        // SEND WELCOME EMAIL (CURRENTLY DISABLED DUE TO LACK OF SMTP server)
         // accountService.sendWelcomeEmail(account);
 
         return "redirect:" + Path.Web.LOGIN;
@@ -119,7 +115,6 @@ public class AccountController {
         // SUCCESSFUL LOGIN - ADD TO SESSION AND REDIRECT ACCORDINGLY
         sessionData.setAccount(account);
 
-        // TODO: change from instanceof and use an accountType instance variable
         if (account instanceof BoosterAccount) {
             return "redirect:" + Path.Web.BOOSTER_ORDERS;
         }
@@ -130,6 +125,7 @@ public class AccountController {
     public String handleLogout() {
 
         sessionData.clear();
+
         return "redirect:" + Path.Web.INDEX;
     }
 

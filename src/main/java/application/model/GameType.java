@@ -5,7 +5,8 @@ public enum GameType {
     LOL("League of Legends", "lol.png"),
     RL("Rocket League ", "rl.png"),
     WOW("World of Warcraft", "wow.png"),
-    CSGO("Counter-Strike: Global Offensive", "csgo.png");
+    CSGO("Counter-Strike: Global Offensive", "csgo.png"),
+    UNDEFINED("","");
 
     private String name;
     private String icon;
@@ -18,6 +19,7 @@ public enum GameType {
     public String getName() {
         return name;
     }
+
     public String getIcon() {
         return "/pictures/game-picture/" + icon;
     }
@@ -25,6 +27,14 @@ public enum GameType {
     @Override
     public String toString() {
         return this.name();
+    }
+
+    public static GameType safeValueOf(String gameType) {
+        try {
+            return valueOf(gameType);
+        } catch (IllegalArgumentException ie) {
+            return UNDEFINED;
+        }
     }
 
 }

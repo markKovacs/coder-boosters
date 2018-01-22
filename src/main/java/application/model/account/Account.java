@@ -30,10 +30,10 @@ public abstract class Account {
 
     private int boostCoin;
 
-    // TODO: accountType field should be added and used instead of instanceof operator all throughout the app
-
     // CONSTRUCTORS
-    public Account() {}
+    public Account() {
+    }
+
     public Account(String accountName, String email, String password) {
         this.accountName = accountName;
         this.email = email;
@@ -42,39 +42,50 @@ public abstract class Account {
 
     // ABSTRACT METHODS
     public abstract void addBoostOrderBiDir(BoostOrder boostOrder);
+
     public abstract void removeBoostOrderBiDir(BoostOrder boostOrder);
 
     // GETTERS - SETTERS
     public Long getId() {
         return id;
     }
+
     public void setId(Long id) {
         this.id = id;
     }
+
     public String getAccountName() {
         return accountName;
     }
+
     public void setAccountName(String accountName) {
         this.accountName = accountName;
     }
+
     public String getEmail() {
         return email;
     }
+
     public void setEmail(String email) {
         this.email = email;
     }
+
     public String getPassword() {
         return password;
     }
+
     public void setPassword(String password) {
         this.password = password;
     }
+
     public int getBoostCoin() {
         return boostCoin;
     }
+
     public void setBoostCoin(int boostCoin) {
         this.boostCoin = boostCoin;
     }
+
     public void changeBoostCoin(int amount) {
         this.boostCoin += amount;
     }

@@ -17,12 +17,10 @@ public class OWBoostOrder extends BoostOrder {
     @Enumerated(EnumType.STRING)
     private OWDivision currentRank;
 
-    // TODO: desiredRank for later use, when not only gamesWon and gamesPlayed can be set
-    /*@Enumerated(EnumType.STRING)
-    private LeagueDivision desiredRank;*/
-
     // CONSTRUCTORS
-    public OWBoostOrder() {}
+    public OWBoostOrder() {
+    }
+
     public OWBoostOrder(OWDivision currentRank, int numberOfGames,
                         OrderType orderType, double bonusPercentage, Date deadLine) {
 
@@ -34,7 +32,8 @@ public class OWBoostOrder extends BoostOrder {
 
     @Override
     public int calcBasePrice() {
-        // TODO: implement algorithm for calculating LoL basePrice based on given form input
+
+        // TODO: implement custom algorithm
         int calcedPrice = 100;
 
         return calcedPrice;
@@ -43,6 +42,7 @@ public class OWBoostOrder extends BoostOrder {
     public OWDivision getCurrentRank() {
         return currentRank;
     }
+
     public void setCurrentRank(OWDivision currentRank) {
         this.currentRank = currentRank;
     }

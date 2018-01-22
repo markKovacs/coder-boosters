@@ -34,7 +34,7 @@ body {
     width: 300px; /* plan width = 180 + 20 + 20 + 1 + 1 = 222px */
     float: left;
     position: relative;
-    margin: 50px 0px 50px 350px;
+    margin: 50px 0px 50px 50px;
 }
 
 #pricing-create-order-table #most-popular {

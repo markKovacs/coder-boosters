@@ -28,8 +28,7 @@ $(document).ready(function () {
             datePattern: ['m', 'y']
         });
     }
-
-
+    
     addListeners()
 
 });

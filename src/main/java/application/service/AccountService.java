@@ -79,6 +79,8 @@ public class AccountService {
 
     public void sendWelcomeEmail(Account account) {
 
+        // TODO: do not delete, could be used if SMTP server is set
+
         String to = account.getEmail();
         String body = emailService.renderEmailTemplate("index/welcome-email",
                 new HashMap<String, Object>() {{
@@ -113,20 +115,6 @@ public class AccountService {
         return validPassword ? account : null;
     }
 
-    public List<String> validateCustomerProfileEditInfo(Map<String, String> inputData) {
-        List<String> errorMessages = new ArrayList<>();
-        if (!InputField.PHONE.validate(inputData.get("phone"))) {
-            errorMessages.add("Phone field is invalid.");
-        }
-
-        // TODO: NOT READY YET, maybe will not be needed
-
-        return errorMessages;
-    }
-
-    public void update(Long accountId, Map<String, String> inputData) {
-    }
-
     public boolean increaseBoostCoinAmount(Account account, int amount) {
 
         if (amount < 0) return false;
@@ -158,7 +146,13 @@ public class AccountService {
         return accountRepository.save(account);
     }
 
-    public Account getAccountById(Long accountId) {
-        return accountRepository.findById(accountId);
+    public List<String> validateCustomerProfileEditInfo(Map<String, String> inputData) {
+        // TODO: dummy, to be implemented
+        return null;
     }
+
+    public void update(Long accountId, Map<String, String> inputData) {
+        // TODO: dummy, to be implemented
+    }
+
 }

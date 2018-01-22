@@ -1,6 +1,6 @@
 package application.model.order.csgo;
 
-public enum CSGODivision{
+public enum CSGODivision {
 
     SILVER_1(10L, "SILVER_1"),
     SILVER_2(11L, "SILVER_2"),
@@ -24,7 +24,7 @@ public enum CSGODivision{
     private final Long price;
     private final String division;
 
-    CSGODivision(Long price, String division){
+    CSGODivision(Long price, String division) {
         this.price = price;
         this.division = division;
     }
@@ -37,10 +37,10 @@ public enum CSGODivision{
         return division;
     }
 
-    public static CSGODivision safeValueOf(String divisionString){
-        try{
+    public static CSGODivision safeValueOf(String divisionString) {
+        try {
             return valueOf(divisionString);
-        } catch (IllegalArgumentException ie){
+        } catch (IllegalArgumentException ie) {
             return null;
         }
     }

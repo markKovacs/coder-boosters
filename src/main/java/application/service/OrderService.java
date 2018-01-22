@@ -51,8 +51,7 @@ public class OrderService {
 
     public boolean takeOrder(Account boosterAccount, BoostOrder boostOrder) {
 
-        // TODO: logic could be used to see if boosterAccount is eligible to accept boostOrder (honorPoints)
-        // TODO: if not: do not add and return false...
+        // TODO: implement honorPoints check before allowing taking order
 
         boosterAccount.addBoostOrderBiDir(boostOrder);
         orderRepository.save(boostOrder);
@@ -113,7 +112,7 @@ public class OrderService {
             errors.add("Game account password is invalid.");
         }
 
-        switch (GameType.valueOf(inputData.get("game_type"))) {
+        switch (GameType.safeValueOf(inputData.get("game_type"))) {
             case LOL:
                 if (!Arrays.asList(LeagueDivision.values())
                         .contains(LeagueDivision.safeValueOf(inputData.get("currentRank")))) {
@@ -141,7 +140,7 @@ public class OrderService {
                 }
                 break;
             case CSGO:
-                if(!Arrays.asList(CSGODivision.values())
+                if (!Arrays.asList(CSGODivision.values())
                         .contains(CSGODivision.safeValueOf(inputData.get("currentRank")))) {
                     errors.add("Selected league/division rank is invalid.");
                 }
@@ -256,9 +255,11 @@ public class OrderService {
     public List<WoWArenaBracket> getWoWArenaBrackets() {
         return Arrays.asList(WoWArenaBracket.values());
     }
+
     public List<OWDivision> getOWDivisions() {
         return Arrays.asList(OWDivision.values());
     }
+
     public List<RocketLeague> getRocketLeagueDivisions() {
         return Arrays.asList(RocketLeague.values());
     }

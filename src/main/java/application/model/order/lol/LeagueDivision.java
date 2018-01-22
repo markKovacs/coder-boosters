@@ -39,10 +39,10 @@ public enum LeagueDivision {
         return multiplier;
     }
 
-    public static LeagueDivision safeValueOf(String divisionString){
-        try{
+    public static LeagueDivision safeValueOf(String divisionString) {
+        try {
             return valueOf(divisionString);
-        } catch (IllegalArgumentException ie){
+        } catch (IllegalArgumentException ie) {
             return null;
         }
     }
